@@ -1,5 +1,7 @@
 # dashboard
 
+![img](./static/img.png)
+
 # Demo
 
 [blog](https://github.com/miaogaolin/printlove)
