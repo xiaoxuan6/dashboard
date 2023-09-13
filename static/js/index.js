@@ -6,7 +6,7 @@ function init() {
         .then(function (response) {
             let data = response.data;
             if (data.status == 200) {
-                append(data.data)
+                append(data.data.settings)
             } else {
                 Notiflix.Notify.failure("请求失败: " + data.msg);
             }
@@ -18,11 +18,11 @@ function init() {
 
 function append(item) {
     document.getElementById('content').innerHTML = '';
-    for (let i = 0; i < item; i++) {
+    for (let i = 0; i < item.length; i++) {
         const li = document.createElement('li');
         let innerHtml = ""
-        innerHtml = "<div>" + item[i]["title"] + "</div>" +
-            "<div><a href=\"" + item[i]["url"] + "\">" + item[i]["title"] + "</a></div>"
+        innerHtml = "<div>" + item[i].title + "</div>" +
+            "<div><a href=\"" + item[i].url + "\" style='color: white' target=\"_blank\">" + item[i]["title"] + "</a></div>"
 
         li.innerHTML = innerHtml;
         document.getElementById('content').appendChild(li);
