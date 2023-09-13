@@ -2,6 +2,7 @@ package api
 
 import (
     "dashboard/lib"
+    "encoding/json"
     "net/http"
 )
 
@@ -16,10 +17,12 @@ func init() {
 func Run(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json;charset=utf-8")
 
-    var body []byte
+    var body *lib.Response
     if handler, ok := handlers["test"]; ok {
         body = handler.Run()
     }
 
-    _, _ = w.Write(body)
+    res, _ := json.Marshal(body)
+
+    _, _ = w.Write(res)
 }
