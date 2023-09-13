@@ -1,3 +1,8 @@
 {
-  "image": "xiaoxuan6/dashboard"
+    "routes": [
+        {
+            "src": "/api",
+            "dest": "/api/run.go"
+        }
+    ]
 }
