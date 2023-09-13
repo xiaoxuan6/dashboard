@@ -1,6 +1,6 @@
 # dashboard
 
-![img](./static/img.png)
+[![img](./static/img.png)](https://xiaoxuan6.vercel.app/)
 
 # Demo
 
