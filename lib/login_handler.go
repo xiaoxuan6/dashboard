@@ -2,6 +2,7 @@ package lib
 
 import (
     "dashboard/pkg/jwts"
+    "encoding/json"
     "github.com/golang-jwt/jwt"
     "io/ioutil"
     "net/http"
@@ -17,6 +18,11 @@ func (l LoginHandler) Run() *Response {
     return nil
 }
 
+type LoginRequest struct {
+    Email  string `json:"email"`
+    Passwd string `json:"passwd"`
+}
+
 type LoginResponse struct {
     Token string `json:"token"`
     Email string `json:"email"`
@@ -24,12 +30,11 @@ type LoginResponse struct {
 
 func (l LoginHandler) Do(r *http.Request) *Response {
     b, _ := ioutil.ReadAll(r.Body)
-    return successWithData(string(b))
 
-    email := r.PostFormValue("email")
-    passwd := r.PostFormValue("passwd")
+    var request LoginRequest
+    _ = json.Unmarshal(b, &request)
 
-    if email == "" || passwd == "" {
+    if request.Email == "" || request.Passwd == "" {
         return failWithMsg("用户名或密码错误！")
     }
 
@@ -38,8 +43,8 @@ func (l LoginHandler) Do(r *http.Request) *Response {
     expiresAt, _ := strconv.Atoi(os.Getenv("JWT_EXPIRES_AT"))
     duration := time.Duration(expiresAt) * time.Hour
     c := jwts.MyClaims{
-        Email:    email,
-        Password: passwd,
+        Email:    request.Email,
+        Password: request.Passwd,
         StandardClaims: jwt.StandardClaims{
             ExpiresAt: time.Now().Add(duration).Unix(),
         },
@@ -52,7 +57,7 @@ func (l LoginHandler) Do(r *http.Request) *Response {
 
     response := &LoginResponse{
         Token: token,
-        Email: email,
+        Email: request.Email,
     }
     return successWithData(response)
 }

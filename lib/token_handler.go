@@ -2,6 +2,8 @@ package lib
 
 import (
     "dashboard/pkg/jwts"
+    "encoding/json"
+    "io/ioutil"
     "net/http"
 )
 
@@ -13,20 +15,22 @@ func (t TokenHandler) Run() *Response {
 }
 
 func (t TokenHandler) Do(r *http.Request) *Response {
-    email := r.PostFormValue("email")
-    token := r.PostFormValue("token")
+    b, _ := ioutil.ReadAll(r.Body)
 
-    if email == "" || token == "" {
+    var request LoginResponse
+    _ = json.Unmarshal(b, &request)
+
+    if request.Email == "" || request.Token == "" {
         return failWithMsg("无效的 Token")
     }
 
     var c jwts.MyClaims
-    c1, err := jwts.ParseWithClaims(token, &c)
+    c1, err := jwts.ParseWithClaims(request.Token, &c)
     if err != nil {
         return failWithMsg(err.Error())
     }
 
-    if c1.Email != email {
+    if c1.Email != request.Email {
         return failWithMsg("无效的 Token")
     }
 
