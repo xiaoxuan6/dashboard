@@ -21,10 +21,20 @@ function append(item) {
     for (let i = 0; i < item.length; i++) {
         const li = document.createElement('li');
         let innerHtml = ""
-        innerHtml = "<div>" + item[i].title + "</div>" +
-            "<div><a href=\"" + item[i].url + "\" style='color: white' target=\"_blank\">" + item[i]["title"] + "</a></div>"
+        innerHtml = "<div>" + item[i].title + "</div>";
+
+        if (isURL(item[i].url)) {
+            innerHtml = innerHtml + "<div><a href=\"" + item[i].url + "\" style='color: white' target=\"_blank\">" + item[i]["title"] + "</a></div>"
+        } else {
+            innerHtml = innerHtml + "<div><a href=\"" + item[i].url + "\" style='color: white'>" + item[i]["title"] + "</a></div>"
+        }
 
         li.innerHTML = innerHtml;
         document.getElementById('content').appendChild(li);
     }
+}
+
+function isURL(str) {
+    const pattern = new RegExp('^https?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(/\\S*)?$');
+    return pattern.test(str);
 }

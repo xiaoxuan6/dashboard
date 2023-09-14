@@ -1,0 +1,73 @@
+*{
+    /* 初始化 */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+/* logo */
+img{
+    width: 270px;
+}
+/* 搜索框 */
+.ipt-box{
+    width: 650px;
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 200px;
+}
+.ipt-box input{
+    flex: 1;
+    border: 2px solid #c4c7ce;
+    border-radius: 10px 0 0 10px;
+    border-right: none;
+}
+.ipt-box button{
+    width: 108px;
+    height: 44px;
+    background-color: #4e6ef2;
+    color: #fff;
+    border: none;
+    border-radius: 0 10px 10px 0;
+    font-size: 17px;
+}
+/* 切换按钮 */
+.switch{
+    border: 1px solid #c4c7ce;
+    width: 60px;
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 6px;
+    border-radius: 15px;
+    cursor: pointer;
+    position: fixed;
+    top: 15px;
+    right: 15px;
+}
+/* 滑块 */
+.switch::before{
+    content: '';
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #4e6ef2;
+    position: absolute;
+    left: 3px;
+    transition: 0.2s ease-out;
+}
+.switch.dark::before{
+    left: 31px;
+}
+/* 图标 */
+.switch .fa{
+    font-size: 18px;
+    color: #aaa;
+}

@@ -4,5 +4,11 @@
             "src": "/api",
             "dest": "/api/run.go"
         }
+    ],
+    "rewrites": [
+        {
+            "source": "/api/search",
+            "destination": "/search.html"
+        }
     ]
 }
