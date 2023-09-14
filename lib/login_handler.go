@@ -22,10 +22,8 @@ type LoginResponse struct {
 }
 
 func (l LoginHandler) Do(r *http.Request) *Response {
-    _ = r.ParseForm()
-
-    email := r.FormValue("email")
-    passwd := r.FormValue("passwd")
+    email := r.PostFormValue("email")
+    passwd := r.PostFormValue("passwd")
 
     if email == "" || passwd == "" {
         return failWithMsg("用户名或密码错误！")

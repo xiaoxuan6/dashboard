@@ -13,10 +13,8 @@ func (t TokenHandler) Run() *Response {
 }
 
 func (t TokenHandler) Do(r *http.Request) *Response {
-    _ = r.ParseForm()
-
-    email := r.FormValue("email")
-    token := r.FormValue("token")
+    email := r.PostFormValue("email")
+    token := r.PostFormValue("token")
 
     if email == "" || token == "" {
         return failWithMsg("无效的 Token")
