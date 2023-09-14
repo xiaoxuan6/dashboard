@@ -1,6 +1,6 @@
 function search() {
     let token = localStorage.getItem("token")
-    if (token.length < 1) {
+    if (!token) {
         Notiflix.Notify.failure("未登录！", () => {
             window.location.href = "/login"
         });
