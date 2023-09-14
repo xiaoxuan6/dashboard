@@ -17,9 +17,9 @@ func success() *Response {
 
 func successWithData(data interface{}) *Response {
     res := &Response{
-        http.StatusOK,
-        data,
-        "ok",
+        Status: http.StatusOK,
+        Data:   data,
+        Msg:    "ok",
     }
 
     return res

@@ -13,7 +13,7 @@ init()
 function init() {
     let token = localStorage.getItem("token")
     let email = localStorage.getItem("email")
-    if (!token || !email) {
+    if (token !== undefined || email !== undefined) {
         return
     }
 
@@ -59,12 +59,12 @@ function success() {
         let data = response.data;
         if (data.status == 200) {
             Notiflix.Notify.success("登录成功！")
-            localStorage.setItem("token", data.token)
-            localStorage.setItem("email", data.email)
+            localStorage.setItem("token", data.data.token)
+            localStorage.setItem("email", data.data.email)
 
             setTimeout(function () {
                 window.location.href = "/search"
-            }, 1000)
+            }, 2000)
         } else {
             error("账号或密码错误！");
         }
@@ -72,8 +72,8 @@ function success() {
 }
 
 function response() {
-    return function (error) {
+    return function (err) {
         NProgress.done();
-        error(`请求失败: ${error}`);
+        error(`请求失败: ${err}`);
     }
 }

@@ -9,13 +9,13 @@ import (
 
 var handlers map[string]lib.Handler
 
-var allowMethods = []string{"login", "check_token"}
+var allowMethods = []string{"login_do", "check_token"}
 
 func init() {
     handlers = map[string]lib.Handler{
         "test":        lib.TestHandler{},
         "index":       lib.IndexHandler{},
-        "login":       lib.LoginHandler{},
+        "login_do":    lib.LoginHandler{},
         "check_token": lib.TokenHandler{},
     }
 }

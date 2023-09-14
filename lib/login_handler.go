@@ -16,7 +16,7 @@ func (l LoginHandler) Run() *Response {
     return nil
 }
 
-type LoginRepose struct {
+type LoginResponse struct {
     Token string `json:"token"`
     Email string `json:"email"`
 }
@@ -48,9 +48,9 @@ func (l LoginHandler) Do(r *http.Request) *Response {
         return failWithMsg("登录失败")
     }
 
-    var response LoginRepose
-    response.Email = email
-    response.Token = token
-
+    response := &LoginResponse{
+        Token: token,
+        Email: email,
+    }
     return successWithData(response)
 }

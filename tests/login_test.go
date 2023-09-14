@@ -20,8 +20,9 @@ func TestLogin(t *testing.T) {
         URL: u,
     }
     response := loginHandler.Do(request)
+    t.Log(response.Data)
     assert.Equal(t, 200, response.Status)
-    data := response.Data.(lib.LoginRepose)
+    data := response.Data.(*lib.LoginResponse)
     assert.NotEmpty(t, data.Token)
 
     tu := &url.URL{
