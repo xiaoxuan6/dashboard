@@ -3,6 +3,7 @@ package lib
 import (
     "dashboard/pkg/jwts"
     "github.com/golang-jwt/jwt"
+    "io/ioutil"
     "net/http"
     "os"
     "strconv"
@@ -22,6 +23,9 @@ type LoginResponse struct {
 }
 
 func (l LoginHandler) Do(r *http.Request) *Response {
+    b, _ := ioutil.ReadAll(r.Body)
+    return successWithData(string(b))
+
     email := r.PostFormValue("email")
     passwd := r.PostFormValue("passwd")
 
