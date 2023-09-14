@@ -12,6 +12,7 @@ func init() {
     handlers = map[string]lib.Handler{
         "test":  lib.TestHandler{},
         "index": lib.IndexHandler{},
+        "login": lib.LoginHandler{},
     }
 }
 

@@ -7,6 +7,10 @@
         {
             "src": "/search",
             "dest": "/search.html"
+        },
+        {
+            "src": "/login",
+            "dest": "/login.html"
         }
     ]
 }
