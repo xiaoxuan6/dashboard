@@ -7,19 +7,28 @@ function search() {
         return
     }
 
-    // todo::验证token
+    let keyword = document.getElementById("keyword")
+    if (!keyword) {
+        error("请输入搜索问题")
+        return;
+    }
 
-    const now_time = new Date().getHours() + new Date().getMinutes() + new Date().getSeconds();
-    axios.get("/api?action=search&time=" + now_time)
-        .then(function (response) {
-            // let data = response.data;
-            // if (data.status == 200) {
-            //     append(data.data.settings)
-            // } else {
-            //     Notiflix.Notify.failure("请求失败: " + data.msg);
-            // }
-        })
-        .catch(function (error) {
-            Notiflix.Notify.failure(`请求失败: ${error}`);
-        })
+    post("search", {keyword: keyword, token: token}, success(), response())
+}
+
+function success() {
+    return function (response) {
+        // let data = response.data;
+        // if (data.status == 200) {
+        //     append(data.data.settings)
+        // } else {
+        //     Notiflix.Notify.failure("请求失败: " + data.msg);
+        // }
+    }
+}
+
+function response() {
+    return function (error) {
+        Notiflix.Notify.failure(`请求失败: ${error}`);
+    }
 }
