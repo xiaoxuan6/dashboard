@@ -1,8 +1,15 @@
 {
-    "rewrites": [
+    "routes": [
         {
-            "source": "/api/search",
-            "destination": "/search.html"
+            "src": "/api",
+            "dest": "/api/run.go"
+        }
+    ],
+    "redirects": [
+        {
+            "source": "/search",
+            "destination": "/search.html",
+            "permanent": true
         }
     ]
 }
