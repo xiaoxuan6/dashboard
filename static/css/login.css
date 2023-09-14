@@ -48,7 +48,7 @@ body{
     width: 211px;
     height: 108px;
     /* 背景图片 */
-    background: url("../images/owl-login.png") no-repeat;
+    background: url("../owl-login.png") no-repeat;
     /* 绝对定位 */
     position: absolute;
     top: -100px;
@@ -92,7 +92,7 @@ body{
     position: absolute;
     left: 20px;
     top: 40px;
-    background: url("../images/owl-login-arm.png") no-repeat;
+    background: url("../owl-login-arm.png") no-repeat;
     transform: rotate(-20deg);
     transition: 0.3s ease-out;
 }
