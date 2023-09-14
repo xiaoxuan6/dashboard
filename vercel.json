@@ -3,13 +3,10 @@
         {
             "src": "/api",
             "dest": "/api/run.go"
-        }
-    ],
-    "redirects": [
+        },
         {
-            "source": "/search",
-            "destination": "/search.html",
-            "permanent": true
+            "src": "/search",
+            "dest": "/search.html"
         }
     ]
 }
