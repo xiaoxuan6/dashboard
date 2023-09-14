@@ -6,6 +6,7 @@ import (
     "encoding/json"
     "errors"
     "fmt"
+    "net/http"
 )
 
 //go:embed config.json
@@ -22,4 +23,8 @@ func (i IndexHandler) Run() *Response {
     }
 
     return successWithData(c)
+}
+
+func (i IndexHandler) Do(r *http.Request) *Response {
+    return nil
 }

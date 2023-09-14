@@ -8,9 +8,34 @@ $(function () {
     })
 })
 
+init()
+
+function init() {
+    let token = localStorage.getItem("token")
+    let email = localStorage.getItem("email")
+    if (!token || !email) {
+        return
+    }
+
+    post("check_token", {
+        token: token,
+        email: email,
+    }, function (response) {
+        let data = response.data;
+        if (data.status == 200) {
+            setTimeout(function () {
+                window.location.href = "/search"
+            }, 1000)
+        }
+    }, function (error) {
+
+    })
+
+}
+
 function login() {
-    let email = document.getElementById("email")
-    let passwd = document.getElementById("password")
+    let email = document.getElementById("email").value
+    let passwd = document.getElementById("password").value
 
     if (!email) {
         error("账号不能为空！")
@@ -22,7 +47,10 @@ function login() {
     }
 
     NProgress.start()
-    get("login", success(), response())
+    post("login_do", {
+        email: email,
+        passwd: passwd
+    }, success(), response())
 }
 
 function success() {
@@ -32,6 +60,8 @@ function success() {
         if (data.status == 200) {
             Notiflix.Notify.success("登录成功！")
             localStorage.setItem("token", data.token)
+            localStorage.setItem("email", data.email)
+
             setTimeout(function () {
                 window.location.href = "/search"
             }, 1000)

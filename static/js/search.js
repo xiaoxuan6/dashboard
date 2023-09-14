@@ -1,34 +1,21 @@
 function search() {
     let token = localStorage.getItem("token")
-    if (!token) {
-        Notiflix.Notify.failure("未登录！", () => {
+    let email = localStorage.getItem("email")
+    let passwd = localStorage.getItem("password")
+    if (!token || !email || !passwd) {
+        Notiflix.Notify.failure("未登录！");
+        setTimeout(function () {
             window.location.href = "/login"
-        });
+        }, 1000)
         return
     }
 
-    let keyword = document.getElementById("keyword")
+    let keyword = document.getElementById("keyword").value
     if (!keyword) {
         error("请输入搜索问题")
         return;
     }
 
-    post("search", {keyword: keyword, token: token}, success(), response())
-}
-
-function success() {
-    return function (response) {
-        // let data = response.data;
-        // if (data.status == 200) {
-        //     append(data.data.settings)
-        // } else {
-        //     Notiflix.Notify.failure("请求失败: " + data.msg);
-        // }
-    }
-}
-
-function response() {
-    return function (error) {
-        Notiflix.Notify.failure(`请求失败: ${error}`);
-    }
+    localStorage.setItem("keyword", keyword)
+    // window.location.href = "/result"
 }

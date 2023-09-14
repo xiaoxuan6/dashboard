@@ -11,6 +11,17 @@
         {
             "src": "/login",
             "dest": "/login.html"
+        },
+        {
+            "src": "/check_token",
+            "dest": "/api/run.go"
+        },
+        {
+            "src": "/login_do",
+            "dest": "/api/run.go"
         }
-    ]
+    ],
+    "env": {
+        "JWT_EXPIRES_AT": "2"
+    }
 }

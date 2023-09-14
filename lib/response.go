@@ -1,6 +1,7 @@
 package lib
 
 import (
+    "errors"
     "net/http"
 )
 
@@ -32,4 +33,9 @@ func fail(err error) *Response {
     }
 
     return res
+}
+
+func failWithMsg(msg string) *Response {
+    err := errors.New(msg)
+    return fail(err)
 }
