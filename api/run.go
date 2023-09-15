@@ -83,11 +83,11 @@ func allowMethod(method string) bool {
 
 func allowMiddleware(method string) bool {
     var allow = false
-    for _, val := range allowMiddlewares {
-        if strings.Compare(val, method) == 0 {
+    for key, val := range allowMiddlewares {
+        if strings.Compare(key, method) == 0 {
             allow = true
 
-            m, ok := middlewares[method]
+            m, ok := middlewares[val]
             if !ok {
                 return allow
             }

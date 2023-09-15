@@ -9,7 +9,7 @@ function warning(msg) {
     Notiflix.Notify.warning(msg);
 }
 
-const now_time = new Date().getHours() + new Date().getMinutes() + new Date().getSeconds();
+const now_time = new Date().getHours() + "h" + new Date().getMinutes() + "i" + new Date().getSeconds() + "s";
 
 function get(action, then, error) {
     axios.get("/api?action=" + action + "&time=" + now_time)
@@ -17,8 +17,22 @@ function get(action, then, error) {
         .catch(error)
 }
 
+const config = {
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token,
+        'email': email,
+    },
+}
+
 function post(action, params, then, error) {
     axios.post("/api?action=" + action + "&time=" + now_time, params)
+        .then(then)
+        .catch(error);
+}
+
+function postWithHeader(action, params, then, error) {
+    axios.post("/api?action=" + action + "&time=" + now_time, params, config)
         .then(then)
         .catch(error);
 }

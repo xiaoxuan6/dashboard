@@ -35,15 +35,12 @@ func TestMiddleware(t *testing.T) {
     data := response.Data.(*lib.LoginResponse)
     assert.NotEmpty(t, data.Token)
 
-    form2 := &lib.LoginResponse{
-        Token: data.Token,
-        Email: data.Email,
-    }
-    b2, _ := json.Marshal(form2)
+    header := http.Header{}
+    header.Set("Authorization", data.Token)
+    header.Set("email", data.Email)
 
-    body2 := bytes.NewReader(b2)
     request2 := &http.Request{
-        Body: ioutil.NopCloser(body2),
+        Header: header,
     }
 
     var middleware middlewares2.AuthMiddleware
