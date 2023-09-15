@@ -12,6 +12,12 @@ var handlers map[string]lib.Handler
 
 var allowMethods = []string{"login_do", "check_token", "search_do"}
 
+var middlewares map[string]middlewares2.Middleware
+
+var allowMiddlewares map[string]string
+
+var middleware middlewares2.Middleware
+
 func init() {
     handlers = map[string]lib.Handler{
         "test":        lib.TestHandler{},
@@ -73,4 +79,26 @@ func allowMethod(method string) bool {
     }
 
     return allow
+}
+
+func allowMiddleware(method string) bool {
+    var allow = false
+    for _, val := range allowMiddlewares {
+        if strings.Compare(val, method) == 0 {
+            allow = true
+
+            m, ok := middlewares[method]
+            if !ok {
+                return allow
+            }
+
+            middleware = m
+        }
+    }
+
+    return allow
+}
+
+func Handler(r *http.Request) *lib.Response {
+    return middleware.Handler(r)
 }
