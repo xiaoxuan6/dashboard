@@ -1,10 +1,10 @@
 package lib
 
 import (
-    "encoding/json"
     "fmt"
     "io/ioutil"
     "net/http"
+    "net/url"
 )
 
 type Keyword struct {
@@ -21,13 +21,17 @@ func (s SearchHandler) Run() *Response {
 func (s SearchHandler) Do(r *http.Request) *Response {
     b, _ := ioutil.ReadAll(r.Body)
 
-    var key Keyword
-    err := json.Unmarshal(b, &Keyword{})
+    // 解码URL编码的字符串
+    decodedString, err := url.QueryUnescape(string(b))
     if err != nil {
-        return FailWithMsg(fmt.Sprintf("json 解析错误：%s", err.Error()))
+        return FailWithMsg(fmt.Sprintf("解码URL编码字符串时发生错误: %s", err.Error()))
+    }
+
+    keyword := Keyword{
+        Keyword: decodedString,
     }
 
     // todo: 后续逻辑
 
-    return SuccessWithData(key.Keyword)
+    return SuccessWithData(keyword)
 }

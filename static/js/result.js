@@ -35,6 +35,7 @@ function search_do() {
         }
 
         setContent(data.data)
+        NProgress.done();
     }, function (err) {
         NProgress.done();
         error(`请求失败：${err}`)
