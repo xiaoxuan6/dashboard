@@ -30,3 +30,15 @@ function search() {
     localStorage.setItem("keyword", keyword)
     window.location.href = "/result"
 }
+
+function load() {
+    error("功能待开发中……")
+}
+
+function logout() {
+    localStorage.removeItem("token")
+    Notiflix.Notify.success("退出成功")
+    setTimeout(function () {
+        window.location.href = "/login"
+    }, 1000)
+}

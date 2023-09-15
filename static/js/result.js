@@ -43,5 +43,8 @@ function search_do() {
 }
 
 function setContent(data) {
-    console.log(data)
+    $('.loading').hide()
+    let div = $('#data')
+    div.innerHTML = data
+    div.show()
 }

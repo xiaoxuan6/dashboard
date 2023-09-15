@@ -24,7 +24,7 @@ func (s SearchHandler) Do(r *http.Request) *Response {
         return FailWithMsg(fmt.Sprintf("解码URL编码字符串时发生错误: %s", err.Error()))
     }
 
-    keyword := gjson.Get(decodedString, "keyword")
+    keyword := gjson.Get(decodedString, "keyword").String()
     // todo: 后续逻辑
 
     return SuccessWithData(keyword)
