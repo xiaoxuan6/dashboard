@@ -21,7 +21,7 @@ init()
 function init() {
     let token = localStorage.getItem("token")
     let email = localStorage.getItem("email")
-    if (token === undefined || email === undefined) {
+    if (token === undefined || email === undefined || token == null) {
         return
     }
 
