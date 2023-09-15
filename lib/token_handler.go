@@ -3,6 +3,7 @@ package lib
 import (
     "dashboard/pkg/jwts"
     "encoding/json"
+    "fmt"
     "io/ioutil"
     "net/http"
 )
@@ -18,7 +19,10 @@ func (t TokenHandler) Do(r *http.Request) *Response {
     b, _ := ioutil.ReadAll(r.Body)
 
     var request LoginResponse
-    _ = json.Unmarshal(b, &request)
+    err := json.Unmarshal(b, &request)
+    if err != nil {
+        return failWithMsg(fmt.Sprintf("json 解析请求惨错误：%s", err))
+    }
 
     if request.Email == "" || request.Token == "" {
         return failWithMsg("无效的 Token")

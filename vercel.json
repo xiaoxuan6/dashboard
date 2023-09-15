@@ -22,6 +22,6 @@
         }
     ],
     "env": {
-        "JWT_EXPIRES_AT": "2"
+        "JWT_EXPIRES_AT": "12"
     }
 }

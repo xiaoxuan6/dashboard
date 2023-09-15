@@ -1,13 +1,16 @@
 package lib
 
 import (
+    "dashboard/database"
     "dashboard/pkg/jwts"
     "encoding/json"
+    "fmt"
     "github.com/golang-jwt/jwt"
     "io/ioutil"
     "net/http"
     "os"
     "strconv"
+    "strings"
     "time"
 )
 
@@ -32,13 +35,24 @@ func (l LoginHandler) Do(r *http.Request) *Response {
     b, _ := ioutil.ReadAll(r.Body)
 
     var request LoginRequest
-    _ = json.Unmarshal(b, &request)
-
-    if request.Email == "" || request.Passwd == "" {
-        return failWithMsg("用户名或密码错误！")
+    err := json.Unmarshal(b, &request)
+    if err != nil {
+        return failWithMsg(fmt.Sprintf("json 解析请求惨错误：%s", err))
     }
 
-    // todo: 判断用户是否存在
+    if request.Email == "" || request.Passwd == "" {
+        return failWithMsg("用户名或密码为空！")
+    }
+
+    database.Init()
+    passwd, ok := database.Users[request.Email]
+    if !ok {
+        return failWithMsg("用户名不存在！")
+    }
+
+    if strings.Compare(request.Passwd, passwd.Password) != 0 {
+        return failWithMsg("密码错误！")
+    }
 
     expiresAt, _ := strconv.Atoi(os.Getenv("JWT_EXPIRES_AT"))
     duration := time.Duration(expiresAt) * time.Hour
