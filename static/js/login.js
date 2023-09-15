@@ -26,6 +26,8 @@ function init() {
             setTimeout(function () {
                 window.location.href = "/search"
             }, 1000)
+        } else {
+            Notiflix.Notify.warning(data.msg);
         }
     }, function (error) {
 

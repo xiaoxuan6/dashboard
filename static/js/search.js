@@ -4,7 +4,7 @@ let email;
 function init() {
     token = localStorage.getItem("token")
     email = localStorage.getItem("email")
-    if (token === undefined || email === undefined) {
+    if (token === undefined || email === undefined || email == null || token == null) {
         Notiflix.Notify.failure("未登录！");
         setTimeout(function () {
             window.location.href = "/login"
