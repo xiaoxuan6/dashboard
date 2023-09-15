@@ -27,22 +27,6 @@ function search() {
         return;
     }
 
-    post("check_token", {
-        token: token,
-        email: email,
-    }, function (response) {
-        let data = response.data;
-        if (data.status != 200) {
-            warning(data.msg);
-            setTimeout(function () {
-                localStorage.removeItem("token")
-                window.location.href = "/login"
-            }, 1000)
-        }
-    }, function (error) {
-
-    })
-
     localStorage.setItem("keyword", keyword)
     window.location.href = "/result"
 }
