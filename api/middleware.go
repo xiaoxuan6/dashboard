@@ -15,7 +15,7 @@ var middleware middlewares2.Middleware
 
 func allowMiddleware(method string) bool {
     var allow = false
-    for _, val := range allowMethods {
+    for _, val := range allowMiddlewares {
         if strings.Compare(val, method) == 0 {
             allow = true
 
