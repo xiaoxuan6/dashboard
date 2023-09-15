@@ -25,7 +25,9 @@ func init() {
         "auth": middlewares2.AuthMiddleware{},
     }
 
-    allowMiddlewares["search_do"] = "auth"
+    allowMiddlewares = map[string]string{
+        "search_do": "auth",
+    }
 }
 
 func Run(w http.ResponseWriter, r *http.Request) {
