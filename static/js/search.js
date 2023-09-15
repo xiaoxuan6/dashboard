@@ -1,9 +1,9 @@
-init()
-
-let token = localStorage.getItem("token")
-let email = localStorage.getItem("email")
+let token;
+let email;
 
 function init() {
+    token = localStorage.getItem("token")
+    email = localStorage.getItem("email")
     if (token === undefined || email === undefined) {
         Notiflix.Notify.failure("未登录！");
         setTimeout(function () {
@@ -12,6 +12,16 @@ function init() {
         return
     }
 }
+
+init()
+
+$(document).ready(function () {
+    $('#keyword').keypress(function (event) {
+        if (event.which === 13) {
+            search()
+        }
+    });
+});
 
 function search() {
     let keyword = document.getElementById("keyword").value
@@ -26,9 +36,10 @@ function search() {
     }, function (response) {
         let data = response.data;
         if (data.status != 200) {
-            Notiflix.Notify.warning(data.data.msg);
+            Notiflix.Notify.warning(data.msg);
             setTimeout(function () {
-                window.location.href = "/search"
+                localStorage.removeItem("token")
+                window.location.href = "/login"
             }, 1000)
         }
     }, function (error) {

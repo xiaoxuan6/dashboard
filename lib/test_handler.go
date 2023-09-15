@@ -6,7 +6,7 @@ type TestHandler struct {
 }
 
 func (t TestHandler) Run() *Response {
-    return success()
+    return successWithData("hello")
 }
 
 func (t TestHandler) Do(r *http.Request) *Response {
