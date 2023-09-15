@@ -12,10 +12,10 @@ type Response struct {
 }
 
 func success() *Response {
-    return successWithData(nil)
+    return SuccessWithData(nil)
 }
 
-func successWithData(data interface{}) *Response {
+func SuccessWithData(data interface{}) *Response {
     res := &Response{
         Status: http.StatusOK,
         Data:   data,
@@ -35,7 +35,7 @@ func fail(err error) *Response {
     return res
 }
 
-func failWithMsg(msg string) *Response {
+func FailWithMsg(msg string) *Response {
     err := errors.New(msg)
     return fail(err)
 }

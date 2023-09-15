@@ -35,7 +35,7 @@ function init() {
                 window.location.href = "/search"
             }, 1000)
         } else {
-            Notiflix.Notify.warning(data.msg);
+            warning(data.msg);
         }
     }, function (error) {
 

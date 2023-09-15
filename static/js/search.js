@@ -1,11 +1,8 @@
-let token;
-let email;
-
 function init() {
     token = localStorage.getItem("token")
     email = localStorage.getItem("email")
     if (token === undefined || email === undefined || email == null || token == null) {
-        Notiflix.Notify.failure("未登录！");
+        error("未登录！");
         setTimeout(function () {
             window.location.href = "/login"
         }, 2000)
@@ -36,7 +33,7 @@ function search() {
     }, function (response) {
         let data = response.data;
         if (data.status != 200) {
-            Notiflix.Notify.warning(data.msg);
+            warning(data.msg);
             setTimeout(function () {
                 localStorage.removeItem("token")
                 window.location.href = "/login"
@@ -47,5 +44,5 @@ function search() {
     })
 
     localStorage.setItem("keyword", keyword)
-    // window.location.href = "/result"
+    window.location.href = "/result"
 }

@@ -2,6 +2,7 @@ package api
 
 import (
     "dashboard/lib"
+    middlewares2 "dashboard/middlewares"
     "encoding/json"
     "net/http"
     "strings"
@@ -9,7 +10,7 @@ import (
 
 var handlers map[string]lib.Handler
 
-var allowMethods = []string{"login_do", "check_token"}
+var allowMethods = []string{"login_do", "check_token", "search_do"}
 
 func init() {
     handlers = map[string]lib.Handler{
@@ -17,7 +18,14 @@ func init() {
         "index":       lib.IndexHandler{},
         "login_do":    lib.LoginHandler{},
         "check_token": lib.TokenHandler{},
+        "search_do":   lib.SearchHandler{},
     }
+
+    middlewares = map[string]middlewares2.Middleware{
+        "auth": middlewares2.AuthMiddleware{},
+    }
+
+    allowMiddlewares["search_do"] = "auth"
 }
 
 func Run(w http.ResponseWriter, r *http.Request) {
@@ -28,6 +36,18 @@ func Run(w http.ResponseWriter, r *http.Request) {
     var body *lib.Response
     if handler, ok := handlers[action]; ok {
         if allowMethod(action) {
+
+            if allowMiddleware(action) {
+                var response *lib.Response
+                response = Handler(r)
+                if response.Status != http.StatusOK {
+                    res, _ := json.Marshal(response)
+
+                    _, _ = w.Write(res)
+                    return
+                }
+            }
+
             body = handler.Do(r)
         } else {
             body = handler.Run()

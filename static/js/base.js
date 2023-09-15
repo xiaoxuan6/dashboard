@@ -1,5 +1,12 @@
+let token;
+let email;
+
 function error(msg) {
     Notiflix.Notify.failure(msg);
+}
+
+function warning(msg) {
+    Notiflix.Notify.warning(msg);
 }
 
 const now_time = new Date().getHours() + new Date().getMinutes() + new Date().getSeconds();

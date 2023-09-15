@@ -7,28 +7,11 @@ import (
     "github.com/stretchr/testify/assert"
     "io/ioutil"
     "net/http"
-    "os"
     "testing"
 )
 
-var loginHandler = lib.LoginHandler{}
-var tokenHandler = lib.TokenHandler{}
-
 func TestLogin(t *testing.T) {
-    _ = os.Setenv("VERCEL_EMIAL", "123@qq.com")
-    _ = os.Setenv("VERCEL_PASSWORD", "123456")
-
-    form := &lib.LoginRequest{
-        Email:  "123@qq.com",
-        Passwd: "123456",
-    }
-    b, _ := json.Marshal(form)
-
-    body := bytes.NewReader(b)
-    request := &http.Request{
-        Body: ioutil.NopCloser(body),
-    }
-    response := loginHandler.Do(request)
+    response := login()
     t.Log(response)
     assert.Equal(t, 200, response.Status)
     data := response.Data.(*lib.LoginResponse)
@@ -44,6 +27,7 @@ func TestLogin(t *testing.T) {
     request2 := &http.Request{
         Body: ioutil.NopCloser(body2),
     }
+    var tokenHandler lib.TokenHandler
     response2 := tokenHandler.Do(request2)
     t.Log(response2)
     assert.Equal(t, 200, response2.Status)

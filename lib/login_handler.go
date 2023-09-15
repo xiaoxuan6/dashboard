@@ -37,21 +37,21 @@ func (l LoginHandler) Do(r *http.Request) *Response {
     var request LoginRequest
     err := json.Unmarshal(b, &request)
     if err != nil {
-        return failWithMsg(fmt.Sprintf("json 解析请求惨错误：%s", err))
+        return FailWithMsg(fmt.Sprintf("json 解析请求惨错误：%s", err))
     }
 
     if request.Email == "" || request.Passwd == "" {
-        return failWithMsg("用户名或密码为空！")
+        return FailWithMsg("用户名或密码为空！")
     }
 
     database.Init()
     passwd, ok := database.Users[request.Email]
     if !ok {
-        return failWithMsg("用户名不存在！")
+        return FailWithMsg("用户名不存在！")
     }
 
     if strings.Compare(request.Passwd, passwd.Password) != 0 {
-        return failWithMsg("密码错误！")
+        return FailWithMsg("密码错误！")
     }
 
     expiresAt, _ := strconv.Atoi(os.Getenv("JWT_EXPIRES_AT"))
@@ -66,12 +66,12 @@ func (l LoginHandler) Do(r *http.Request) *Response {
 
     token, err := jwts.GenerateToken(c)
     if err != nil {
-        return failWithMsg("登录失败")
+        return FailWithMsg("登录失败")
     }
 
     response := &LoginResponse{
         Token: token,
         Email: request.Email,
     }
-    return successWithData(response)
+    return SuccessWithData(response)
 }

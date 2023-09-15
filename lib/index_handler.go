@@ -22,7 +22,7 @@ func (i IndexHandler) Run() *Response {
         return fail(errors.New(fmt.Sprintf("json 解析错误：%s", err.Error())))
     }
 
-    return successWithData(c)
+    return SuccessWithData(c)
 }
 
 func (i IndexHandler) Do(r *http.Request) *Response {
