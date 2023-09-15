@@ -17,14 +17,6 @@ function get(action, then, error) {
         .catch(error)
 }
 
-const config = {
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token,
-        'email': email,
-    },
-}
-
 function post(action, params, then, error) {
     axios.post("/api?action=" + action + "&time=" + now_time, params)
         .then(then)
@@ -32,6 +24,13 @@ function post(action, params, then, error) {
 }
 
 function postWithHeader(action, params, then, error) {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token,
+            'email': email,
+        },
+    }
     axios.post("/api?action=" + action + "&time=" + now_time, params, config)
         .then(then)
         .catch(error);
