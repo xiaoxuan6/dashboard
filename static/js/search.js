@@ -1,25 +1,24 @@
-function init() {
-    token = localStorage.getItem("token")
-    email = localStorage.getItem("email")
-    if (token === undefined || email === undefined || email == null || token == null) {
-        error("未登录！");
-        setTimeout(function () {
-            window.location.href = "/login"
-        }, 2000)
-        return
-    }
-
-    document.getElementById("right_button").removeAttribute("display")
-}
-
-init()
-
 $(document).ready(function () {
     $('#keyword').keypress(function (event) {
         if (event.which === 13) {
             search()
         }
     });
+    function init() {
+        token = localStorage.getItem("token")
+        email = localStorage.getItem("email")
+        if (token === undefined || email === undefined || email == null || token == null) {
+            error("未登录！");
+            setTimeout(function () {
+                window.location.href = "/login"
+            }, 2000)
+            return
+        }
+
+        document.getElementById("right_button").style.display = "";
+    }
+
+    init()
 });
 
 function search() {

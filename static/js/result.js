@@ -45,6 +45,6 @@ function search_do() {
 function setContent(data) {
     $('.loading').hide()
     let dataDiv = document.getElementById("data")
-    dataDiv.removeAttribute('display')
-    dataDiv.innerHTML = data
+    dataDiv.style.display = "";
+    dataDiv.innerHTML = data.keyword
 }
