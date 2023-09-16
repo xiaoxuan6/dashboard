@@ -39,3 +39,13 @@ func FailWithMsg(msg string) *Response {
     err := errors.New(msg)
     return Fail(err)
 }
+
+func FailAuth(err error) *Response {
+    res := &Response{
+        http.StatusUnauthorized,
+        nil,
+        err.Error(),
+    }
+
+    return res
+}

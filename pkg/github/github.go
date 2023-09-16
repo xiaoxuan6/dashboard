@@ -2,7 +2,8 @@ package github
 
 import (
     "context"
-    "dashboard/api"
+    "dashboard/common"
+    "dashboard/pkg/cache"
     "github.com/google/go-github/v48/github"
     "golang.org/x/oauth2"
     "os"
@@ -21,9 +22,10 @@ var (
 )
 
 func Init() {
+    token, _ := cache.Cache.Get(common.Token)
     one.Do(func() {
         oauth := oauth2.NewClient(ctx, oauth2.StaticTokenSource(&oauth2.Token{
-            AccessToken: api.Token,
+            AccessToken: token.(string),
         }))
 
         Github = github.NewClient(oauth)

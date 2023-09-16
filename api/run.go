@@ -12,7 +12,6 @@ import (
 )
 
 var (
-    Token            = ""
     handlers         map[string]lib.Handler
     allowMethods     = []string{"login_do", "check_token", "search_do", "github_token"}
     allowMiddlewares map[string][]string
@@ -72,6 +71,7 @@ func Run(w http.ResponseWriter, r *http.Request) {
         body = handler.Run()
     }
 
+    // 测试代码
     if strings.Compare(action, "cache") == 0 {
         key := r.URL.Query().Get("value")
         if strings.Compare(action, "set") == 0 {

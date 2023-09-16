@@ -19,7 +19,7 @@ func (i IndexHandler) Run() *Response {
     var c config.Config
     err := json.Unmarshal(settings, &c)
     if err != nil {
-        return fail(errors.New(fmt.Sprintf("json 解析错误：%s", err.Error())))
+        return Fail(errors.New(fmt.Sprintf("json 解析错误：%s", err.Error())))
     }
 
     return SuccessWithData(c)

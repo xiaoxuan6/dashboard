@@ -25,7 +25,14 @@ function search_do() {
         keyword: keyword,
     }, function (response) {
         let data = response.data
-        if (data.status != 200) {
+
+        if (data.status !== 200 && data.status === 401) {
+            NProgress.done();
+            error(data.msg);
+            return;
+        }
+
+        if (data.status !== 200 && data.status !== 401) {
             NProgress.done();
             error(data.msg);
             setTimeout(function () {
