@@ -27,9 +27,14 @@
         {
             "src": "/result",
             "dest": "/result.html"
+        },
+        {
+            "src": "/cache",
+            "dest": "/api/cache.go"
         }
     ],
     "env": {
-        "JWT_EXPIRES_AT": "12"
+        "JWT_EXPIRES_AT": "12",
+        "CACHE_EXPIRATION_AT": "24"
     }
 }
