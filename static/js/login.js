@@ -71,6 +71,8 @@ function success() {
             localStorage.setItem("token", data.data.token)
             localStorage.setItem("email", data.data.email)
 
+            // todu:: 设置 token
+
             setTimeout(function () {
                 window.location.href = "/search"
             }, 2000)

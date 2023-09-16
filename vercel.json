@@ -9,32 +9,19 @@
             "dest": "/search.html"
         },
         {
-            "src": "/search_do",
-            "dest": "/api/run.go"
-        },
-        {
             "src": "/login",
             "dest": "/login.html"
         },
         {
-            "src": "/login_do",
-            "dest": "/api/run.go"
-        },
-        {
-            "src": "/check_token",
-            "dest": "/api/run.go"
-        },
-        {
             "src": "/result",
             "dest": "/result.html"
-        },
-        {
-            "src": "/cache",
-            "dest": "/api/cache.go"
         }
     ],
     "env": {
         "JWT_EXPIRES_AT": "12",
-        "CACHE_EXPIRATION_AT": "24"
+        "CACHE_EXPIRATION_AT": "24",
+        "GITHUB_OWNER": "xiaoxuan6",
+        "GITHUB_REPO": "resource",
+        "CACHE_PREFIX": "vercel_"
     }
 }

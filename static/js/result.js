@@ -10,6 +10,7 @@ function init() {
     token = localStorage.getItem("token")
     if (token === undefined || token == null) {
         window.location.href = "/login"
+        return
     }
 
     email = localStorage.getItem("email")

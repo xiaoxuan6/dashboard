@@ -11,7 +11,7 @@ type Response struct {
     Msg    string      `json:"msg"`
 }
 
-func success() *Response {
+func Success() *Response {
     return SuccessWithData(nil)
 }
 
@@ -25,7 +25,7 @@ func SuccessWithData(data interface{}) *Response {
     return res
 }
 
-func fail(err error) *Response {
+func Fail(err error) *Response {
     res := &Response{
         http.StatusBadRequest,
         nil,
@@ -37,5 +37,5 @@ func fail(err error) *Response {
 
 func FailWithMsg(msg string) *Response {
     err := errors.New(msg)
-    return fail(err)
+    return Fail(err)
 }

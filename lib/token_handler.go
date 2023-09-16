@@ -38,5 +38,5 @@ func (t TokenHandler) Do(r *http.Request) *Response {
         return FailWithMsg("无效的 Token")
     }
 
-    return success()
+    return Success()
 }

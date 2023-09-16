@@ -1,7 +1,9 @@
 package lib
 
 import (
+    "dashboard/common"
     "dashboard/database"
+    "dashboard/pkg/cache"
     "dashboard/pkg/jwts"
     "encoding/json"
     "fmt"
@@ -29,6 +31,11 @@ type LoginRequest struct {
 type LoginResponse struct {
     Token string `json:"token"`
     Email string `json:"email"`
+}
+
+type TokenResponse struct {
+    LoginResponse
+    Disable bool `json:"disable"`
 }
 
 func (l LoginHandler) Do(r *http.Request) *Response {
@@ -69,9 +76,18 @@ func (l LoginHandler) Do(r *http.Request) *Response {
         return FailWithMsg("登录失败")
     }
 
-    response := &LoginResponse{
-        Token: token,
-        Email: request.Email,
+    response := &TokenResponse{
+        LoginResponse: LoginResponse{
+            Token: token,
+            Email: request.Email,
+        },
+        Disable: false,
     }
+
+    _, found := cache.Cache.Get(common.Token)
+    if found {
+        response.Disable = true
+    }
+
     return SuccessWithData(response)
 }
