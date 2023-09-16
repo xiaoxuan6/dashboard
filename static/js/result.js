@@ -44,7 +44,7 @@ function search_do() {
 
 function setContent(data) {
     $('.loading').hide()
-    let div = $('#data')
-    div.innerHTML = data
-    div.show()
+    let dataDiv = document.getElementById("data")
+    dataDiv.removeAttribute('display')
+    dataDiv.innerHTML = data
 }

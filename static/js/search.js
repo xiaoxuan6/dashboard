@@ -9,7 +9,7 @@ function init() {
         return
     }
 
-    $('.close').removeAttribute("display")
+    document.getElementById("right_button").removeAttribute("display")
 }
 
 init()
