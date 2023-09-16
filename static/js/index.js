@@ -1,19 +1,23 @@
 init()
 
 function init() {
-    const now_time = new Date().getHours() + "hrs" + new Date().getMinutes() + "min";
-    axios.get("/api?action=index&time=" + now_time)
-        .then(function (response) {
+    token = localStorage.getItem("token")
+    if (token !== undefined || token !== null) {
+        window.location.href = "/search"
+    }
+
+    get("index", function (response) {
             let data = response.data;
             if (data.status == 200) {
                 append(data.data.settings)
             } else {
-                Notiflix.Notify.failure("请求失败: " + data.msg);
+                error("请求失败: " + data.msg)
             }
-        })
-        .catch(function (error) {
-            Notiflix.Notify.failure(`请求失败: ${error}`);
-        })
+        },
+        function (error) {
+            error(`请求失败: ${error}`);
+        }
+    )
 }
 
 function append(item) {
