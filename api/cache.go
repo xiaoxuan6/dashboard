@@ -12,6 +12,8 @@ func init() {
 }
 
 func Cache(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "application/json;charset=utf-8")
+
     action := r.URL.Query().Get("action")
     key := r.URL.Query().Get("key")
 
