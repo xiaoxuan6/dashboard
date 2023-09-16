@@ -15,7 +15,7 @@ var (
 
 func Init() {
     one.Do(func() {
-        expirationAt, _ := strconv.Atoi(os.Getenv("CACHE_EXPIRATION_AT"))
-        Cache = cache2.New(time.Hour*time.Duration(expirationAt), time.Minute*time.Duration(expirationAt))
+        expirationAt, _ := strconv.Atoi(os.Getenv("CACHE_DEFAULT_EXPIRATION_AT"))
+        Cache = cache2.New(time.Hour*time.Duration(expirationAt), time.Hour*time.Duration(expirationAt))
     })
 }

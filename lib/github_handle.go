@@ -5,9 +5,11 @@ import (
     "dashboard/pkg/cache"
     "encoding/json"
     "fmt"
-    cache2 "github.com/patrickmn/go-cache"
     "io/ioutil"
     "net/http"
+    "os"
+    "strconv"
+    "time"
 )
 
 type GithubHandler struct {
@@ -30,7 +32,10 @@ func (g GithubHandler) Do(r *http.Request) *Response {
         return FailWithMsg(fmt.Sprintf("json 解析请求惨错误：%s", err))
     }
 
-    cache.Cache.Set(common.Token, request.Token, cache2.DefaultExpiration)
+    expirationAt := os.Getenv("CACHE_TOKEN_EXPIRATION_AT")
+    i, _ := strconv.Atoi(expirationAt)
+    d := time.Duration(i) * 7
+    cache.Cache.Set(common.Token, request.Token, d)
 
     LoadData()
 
