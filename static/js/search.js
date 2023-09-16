@@ -9,7 +9,7 @@ function init() {
         return
     }
 
-    $('.close').css("display", "block")
+    $('.close').removeAttribute("display")
 }
 
 init()
