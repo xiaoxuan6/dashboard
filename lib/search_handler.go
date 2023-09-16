@@ -1,6 +1,7 @@
 package lib
 
 import (
+    "dashboard/database"
     "fmt"
     "github.com/tidwall/gjson"
     "io/ioutil"
@@ -27,5 +28,13 @@ func (s SearchHandler) Do(r *http.Request) *Response {
     keyword := gjson.Get(decodedString, "keyword").String()
     // todo: 后续逻辑
 
-    return SuccessWithData(keyword)
+    response := struct {
+        Keyword string `json:"keyword"`
+        Time    string `json:"time"`
+    }{
+        keyword,
+        database.GetNow(),
+    }
+
+    return SuccessWithData(response)
 }

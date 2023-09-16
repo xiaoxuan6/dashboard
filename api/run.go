@@ -6,6 +6,7 @@ import (
     "encoding/json"
     "net/http"
     "strings"
+    _ "dashboard/database"
 )
 
 var handlers map[string]lib.Handler

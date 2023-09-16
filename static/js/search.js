@@ -8,6 +8,8 @@ function init() {
         }, 2000)
         return
     }
+
+    $('.close').css("display", "block")
 }
 
 init()

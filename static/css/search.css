@@ -86,11 +86,10 @@ img {
     border: none;
 }
 
-
 .close {
     position: absolute;
     top: 50px;
-    right: 18px;
+    right: 0px;
     display: flex;
     justify-content: center;
 }
@@ -135,7 +134,7 @@ img {
     --main-color: lightblue;
     position: relative;
     width: 80px;
-    height: 29px;
+    height: 28px;
     cursor: pointer;
     display: flex;
     align-items: center;
