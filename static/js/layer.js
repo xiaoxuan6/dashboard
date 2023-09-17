@@ -1,4 +1,6 @@
 function prompt() {
+    token = localStorage.getItem('token')
+    email = localStorage.getItem('email')
     layer.prompt({title: '输入 token 口令，并确认', formType: 1}, function (pass, index) {
         layer.close(index);
         postWithHeader("github_token", {

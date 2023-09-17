@@ -72,7 +72,9 @@ function success() {
             localStorage.setItem("email", data.data.email)
 
             if (data.data.disable === false) {
-                prompt()
+                setTimeout(function () {
+                    prompt()
+                }, 3000)
                 return
             }
 
