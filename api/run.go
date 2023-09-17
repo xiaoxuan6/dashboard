@@ -1,6 +1,7 @@
 package api
 
 import (
+    "dashboard/common"
     "dashboard/lib"
     middlewares2 "dashboard/middlewares"
     "dashboard/pkg/cache"
@@ -12,31 +13,34 @@ import (
 )
 
 var (
-    handlers         map[string]lib.Handler
-    allowMethods     = []string{"login_do", "check_token", "search_do", "github_token"}
+    handlers map[string]lib.Handler
+    // 允许执行 Do
+    allowMethods = []string{common.LOGIN, common.CHECK, common.SEARCH, common.GITHUB}
+    // 路由允许执行的中间件
     allowMiddlewares map[string][]string
     middleware       []middlewares2.Middleware
-    middlewares      map[string]middlewares2.Middleware
+    // 所有中间件
+    middlewares map[string]middlewares2.Middleware
 )
 
 func init() {
     handlers = map[string]lib.Handler{
-        "test":         lib.TestHandler{},
-        "index":        lib.IndexHandler{},
-        "login_do":     lib.LoginHandler{},
-        "check_token":  lib.TokenHandler{},
-        "search_do":    lib.SearchHandler{},
-        "github_token": lib.GithubHandler{},
+        "test":        lib.TestHandler{},
+        "index":       lib.IndexHandler{},
+        common.LOGIN:  lib.LoginHandler{},
+        common.CHECK:  lib.TokenHandler{},
+        common.SEARCH: lib.SearchHandler{},
+        common.GITHUB: lib.GithubHandler{},
     }
 
     middlewares = map[string]middlewares2.Middleware{
-        "auth":        middlewares2.AuthMiddleware{},
-        "check_token": middlewares2.CheckTokenMiddleware{},
+        common.AUTH:  middlewares2.AuthMiddleware{},
+        common.CHECK: middlewares2.CheckTokenMiddleware{},
     }
 
     allowMiddlewares = map[string][]string{
-        "search_do":    []string{"auth", "check_token"},
-        "github_token": []string{"auth"},
+        common.SEARCH: []string{common.AUTH, common.CHECK},
+        common.GITHUB: []string{common.AUTH},
     }
 
     cache.Init()

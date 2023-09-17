@@ -69,6 +69,7 @@ func (l LoginHandler) Do(r *http.Request) *Response {
         StandardClaims: jwt.StandardClaims{
             ExpiresAt: time.Now().Add(duration).Unix(),
         },
+        Time: time.Now().Format("2006-01-02 03:04:05"),
     }
 
     token, err := jwts.GenerateToken(c)
