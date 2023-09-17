@@ -39,7 +39,8 @@ func init() {
     }
 
     allowMiddlewares = map[string][]string{
-        common.SEARCH: []string{common.AUTH, common.CHECK},
+        //common.SEARCH: []string{common.AUTH, common.CHECK},
+        common.SEARCH: []string{common.AUTH},
         common.GITHUB: []string{common.AUTH},
     }
 
