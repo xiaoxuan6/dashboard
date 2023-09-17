@@ -6,15 +6,14 @@ $(document).ready(function () {
     });
 
     function init() {
+        document.getElementById("right_button").style.display = "";
+
         token = localStorage.getItem("token")
         email = localStorage.getItem("email")
         if (token === undefined || email === undefined || email == null || token == null) {
             error("未登录！");
-            redirect("/login", 2000)
-            return
+            redirect("/login", 0)
         }
-
-        document.getElementById("right_button").style.display = "";
     }
 
     init()
