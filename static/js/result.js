@@ -59,7 +59,7 @@ function setContent(data) {
     $('.loading').hide()
     let dataDiv = document.getElementById("data")
     dataDiv.style.display = "";
-    dataDiv.innerHTML = data.keyword
+    // dataDiv.innerHTML = data.keyword
 
     console.log(data)
 }
