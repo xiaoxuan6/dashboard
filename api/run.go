@@ -77,8 +77,9 @@ func Run(w http.ResponseWriter, r *http.Request) {
 
     // 测试代码
     if strings.Compare(action, "cache") == 0 {
+        method := r.URL.Query().Get("method")
         key := r.URL.Query().Get("value")
-        if strings.Compare(action, "set") == 0 {
+        if strings.Compare(method, "set") == 0 {
             val := r.URL.Query().Get("value")
             cache.Cache.Set(key, val, cache2.DefaultExpiration)
             _, _ = w.Write([]byte("添加成功"))
@@ -88,6 +89,7 @@ func Run(w http.ResponseWriter, r *http.Request) {
         val, found := cache.Cache.Get(key)
         if !found {
             _, _ = w.Write([]byte("暂无参数"))
+            return
         }
 
         var cacheVal interface{}

@@ -38,7 +38,7 @@ func (g GithubHandler) Do(r *http.Request) *Response {
 
     expirationAt := os.Getenv("CACHE_TOKEN_EXPIRATION_AT")
     i, _ := strconv.Atoi(expirationAt)
-    d := time.Duration(i) * 7
+    d := time.Duration(i)
     cache.Cache.Set(common.Token, request.Token, d)
 
     LoadData()
