@@ -24,6 +24,10 @@ func (s SearchHandler) Run() *Response {
     return nil
 }
 
+type Request struct {
+    Keyword string `json:"keyword"`
+}
+
 func (s SearchHandler) Do(r *http.Request) *Response {
     b, _ := ioutil.ReadAll(r.Body)
 
@@ -41,18 +45,7 @@ func (s SearchHandler) Do(r *http.Request) *Response {
     }
 
     // 从缓存中重新获取数据赋值
-    //Reload()
-    github.Menus = []string{"test"}
-    github.Data["test"] = []github.Item{
-        github.Item{
-            Title: "aoa",
-            Url:   "xxx",
-        },
-        github.Item{
-            Title: "test",
-            Url:   "wwww.baid.com",
-        },
-    }
+    //Load()
 
     keyword := gjson.Get(decodedString, "keyword").String()
     keywords := strings.Split(keyword, " ")

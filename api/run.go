@@ -4,10 +4,7 @@ import (
     "dashboard/common"
     "dashboard/lib"
     middlewares2 "dashboard/middlewares"
-    "dashboard/pkg/cache"
-    "dashboard/pkg/github"
     "encoding/json"
-    cache2 "github.com/patrickmn/go-cache"
     "net/http"
     "strings"
 )
@@ -15,7 +12,7 @@ import (
 var (
     handlers map[string]lib.Handler
     // 允许执行 Do
-    allowMethods = []string{common.LOGIN, common.CHECK, common.SEARCH, common.GITHUB}
+    allowMethods = []string{common.LOGIN, common.CHECK, common.SEARCH}
     // 路由允许执行的中间件
     allowMiddlewares map[string][]string
     middleware       []middlewares2.Middleware
@@ -30,21 +27,15 @@ func init() {
         common.LOGIN:  lib.LoginHandler{},
         common.CHECK:  lib.TokenHandler{},
         common.SEARCH: lib.SearchHandler{},
-        common.GITHUB: lib.GithubHandler{},
     }
 
     middlewares = map[string]middlewares2.Middleware{
-        common.AUTH:  middlewares2.AuthMiddleware{},
-        common.CHECK: middlewares2.CheckTokenMiddleware{},
+        common.AUTH: middlewares2.AuthMiddleware{},
     }
 
     allowMiddlewares = map[string][]string{
-        //common.SEARCH: []string{common.AUTH, common.CHECK},
         common.SEARCH: []string{common.AUTH},
-        common.GITHUB: []string{common.AUTH},
     }
-
-    cache.Init()
 }
 
 func Run(w http.ResponseWriter, r *http.Request) {
@@ -74,38 +65,6 @@ func Run(w http.ResponseWriter, r *http.Request) {
     } else {
         handler, _ = handlers["test"]
         body = handler.Run()
-    }
-
-    // 测试代码
-    if strings.Compare(action, "cache") == 0 {
-        method := r.URL.Query().Get("method")
-        key := r.URL.Query().Get("value")
-        if strings.Compare(method, "set") == 0 {
-            val := r.URL.Query().Get("value")
-            cache.Cache.Set(key, val, cache2.DefaultExpiration)
-            _, _ = w.Write([]byte("添加成功"))
-            return
-        }
-
-        val, found := cache.Cache.Get(key)
-        if !found {
-            _, _ = w.Write([]byte("暂无参数"))
-            return
-        }
-
-        var cacheVal interface{}
-        switch valT := val.(type) {
-        case string:
-            cacheVal = valT
-        case []string:
-            cacheVal = valT
-        case map[string][]github.Item:
-            cacheVal = valT
-        }
-
-        b, _ := json.Marshal(cacheVal)
-        _, _ = w.Write(b)
-        return
     }
 
     middleware = nil

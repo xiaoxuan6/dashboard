@@ -3,13 +3,13 @@ let keyword;
 function init() {
     keyword = localStorage.getItem("keyword")
     if (keyword === undefined || keyword == null) {
-        window.location.href = "/search"
+        redirect("/search", 0)
         return
     }
 
     token = localStorage.getItem("token")
     if (token === undefined || token == null) {
-        window.location.href = "/login"
+        redirect("/login", 0)
         return
     }
 
@@ -25,34 +25,12 @@ function search_do() {
         keyword: keyword,
     }, function (response) {
         let data = response.data
-
-        if (data.status !== 200 && data.status === 401) {
-            NProgress.done();
-            error(data.msg);
-            prompt()
-            return;
-        }
-
-        if (data.status !== 200 && data.status !== 401) {
-            NProgress.done();
-            error(data.msg);
-            setTimeout(function () {
-                localStorage.removeItem("keyword")
-                window.location.href = "/search"
-            }, 1000)
-            return
-        }
-
         setContent(data.data)
         NProgress.done();
     }, function (err) {
         NProgress.done();
         error(`请求失败：${err}`)
     })
-}
-
-function redirect() {
-    search_do()
 }
 
 function setContent(data) {

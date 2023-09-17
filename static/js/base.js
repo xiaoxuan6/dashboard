@@ -9,6 +9,12 @@ function warning(msg) {
     Notiflix.Notify.warning(msg);
 }
 
+function redirect(redirectTo, timeout) {
+    setTimeout(function () {
+        window.location.href = redirectTo
+    }, timeout)
+}
+
 const now_time = new Date().getHours() + "h" + new Date().getMinutes() + "i" + new Date().getSeconds() + "s";
 
 function get(action, then, error) {

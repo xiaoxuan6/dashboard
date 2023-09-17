@@ -30,10 +30,8 @@ function init() {
         email: email,
     }, function (response) {
         let data = response.data;
-        if (data.status == 200) {
-            setTimeout(function () {
-                window.location.href = "/search"
-            }, 1000)
+        if (data.status === 200) {
+            redirect("/search", 1000)
         } else {
             warning(data.msg);
         }
@@ -70,26 +68,11 @@ function success() {
             Notiflix.Notify.success("登录成功！")
             localStorage.setItem("token", data.data.token)
             localStorage.setItem("email", data.data.email)
-
-            if (data.data.disable === false) {
-                setTimeout(function () {
-                    prompt()
-                }, 3000)
-                return
-            }
-
-            redirect()
-
+            redirect("/search", 2000)
         } else {
             error("账号或密码错误！");
         }
     }
-}
-
-function redirect() {
-    setTimeout(function () {
-        window.location.href = "/search"
-    }, 2000)
 }
 
 function response() {
