@@ -4,14 +4,13 @@ $(document).ready(function () {
             search()
         }
     });
+
     function init() {
         token = localStorage.getItem("token")
         email = localStorage.getItem("email")
         if (token === undefined || email === undefined || email == null || token == null) {
             error("未登录！");
-            setTimeout(function () {
-                window.location.href = "/login"
-            }, 2000)
+            redirect("/login", 2000)
             return
         }
 
@@ -29,7 +28,7 @@ function search() {
     }
 
     localStorage.setItem("keyword", keyword)
-    window.location.href = "/result"
+    redirect("/result", 0)
 }
 
 function load() {
@@ -39,7 +38,5 @@ function load() {
 function logout() {
     localStorage.removeItem("token")
     Notiflix.Notify.success("退出成功")
-    setTimeout(function () {
-        window.location.href = "/login"
-    }, 1000)
+    redirect("/login", 1000)
 }

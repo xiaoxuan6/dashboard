@@ -1,0 +1,8 @@
+.github
+.gitignore
+.editorconfig
+LICENSE
+Makefile
+README.md
+main.go
+tests/

@@ -37,6 +37,8 @@ func (s SearchHandler) Do(r *http.Request) *Response {
         return FailWithMsg(fmt.Sprintf("解码URL编码字符串时发生错误: %s", err.Error()))
     }
 
+    return SuccessWithData(decodedString)
+
     fn := func(keyword string, item []github.Item) {
         for _, val := range items {
             wg.Add(1)
