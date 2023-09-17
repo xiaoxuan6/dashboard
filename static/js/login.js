@@ -66,20 +66,28 @@ function success() {
     return function (response) {
         NProgress.done();
         let data = response.data;
-        if (data.status == 200) {
+        if (data.status === 200) {
             Notiflix.Notify.success("登录成功！")
             localStorage.setItem("token", data.data.token)
             localStorage.setItem("email", data.data.email)
 
-            // todo:: 设置 token
+            if (data.data.disable === false) {
+                prompt()
+                return
+            }
 
-            setTimeout(function () {
-                window.location.href = "/search"
-            }, 2000)
+            redirect()
+
         } else {
             error("账号或密码错误！");
         }
     }
+}
+
+function redirect() {
+    setTimeout(function () {
+        window.location.href = "/search"
+    }, 2000)
 }
 
 function response() {

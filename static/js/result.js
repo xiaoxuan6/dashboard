@@ -29,8 +29,7 @@ function search_do() {
         if (data.status !== 200 && data.status === 401) {
             NProgress.done();
             error(data.msg);
-
-            // todo:: 设置 token
+            prompt()
             return;
         }
 
@@ -52,9 +51,15 @@ function search_do() {
     })
 }
 
+function redirect() {
+    search_do()
+}
+
 function setContent(data) {
     $('.loading').hide()
     let dataDiv = document.getElementById("data")
     dataDiv.style.display = "";
     dataDiv.innerHTML = data.keyword
+
+    console.log(data)
 }
