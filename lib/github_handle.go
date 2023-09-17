@@ -1,15 +1,7 @@
 package lib
 
 import (
-    "dashboard/common"
-    "dashboard/pkg/cache"
-    "encoding/json"
-    "fmt"
-    "io/ioutil"
     "net/http"
-    "os"
-    "strconv"
-    "time"
 )
 
 type GithubHandler struct {
@@ -24,18 +16,18 @@ type TokenRequest struct {
 }
 
 func (g GithubHandler) Do(r *http.Request) *Response {
-    b, _ := ioutil.ReadAll(r.Body)
+    //_ = r.ParseForm()
+    //token := r.FormValue("token")
 
-    var request TokenRequest
-    err := json.Unmarshal(b, &request)
-    if err != nil {
-        return FailWithMsg(fmt.Sprintf("json 解析请求惨错误：%s", err))
-    }
+    token := r.URL.Query().Get("token")
+    return SuccessWithData(token)
 
-    expirationAt := os.Getenv("CACHE_TOKEN_EXPIRATION_AT")
-    i, _ := strconv.Atoi(expirationAt)
-    d := time.Duration(i) * 7
-    cache.Cache.Set(common.Token, request.Token, d)
+    //expirationAt := os.Getenv("CACHE_TOKEN_EXPIRATION_AT")
+    //i, _ := strconv.Atoi(expirationAt)
+    //d := time.Duration(i) * 7
+    //cache.Cache.Set(common.Token, token, d)
+
+    return SuccessWithData(token)
 
     LoadData()
 

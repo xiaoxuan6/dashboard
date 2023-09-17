@@ -29,6 +29,8 @@ function search_do() {
         if (data.status !== 200 && data.status === 401) {
             NProgress.done();
             error(data.msg);
+
+            // todo:: 设置 token
             return;
         }
 
