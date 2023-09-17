@@ -101,7 +101,7 @@ func Run(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    middleware = []middlewares2.Middleware{}
+    middleware = nil
     res, _ := json.Marshal(body)
 
     _, _ = w.Write(res)
