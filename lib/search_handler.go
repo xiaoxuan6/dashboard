@@ -99,7 +99,7 @@ type dayInfoResponse struct {
 }
 
 func fetchWeek() string {
-    r, _ := http.NewRequest(http.MethodGet, common.HOLIDAY_INFO, nil)
+    r, _ := http.NewRequest(http.MethodGet, fmt.Sprintf(common.HOLIDAY_INFO, time.Now().Format("2006-01-02")), nil)
     defer func() {
         if r.Body != nil && r != nil {
             _ = r.Body.Close()
