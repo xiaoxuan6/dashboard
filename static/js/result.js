@@ -43,6 +43,6 @@ function search_do() {
 
 function setContent(data) {
     console.log(data)
-    document.getElementById('key').innerHTML = localStorage.getItem('keyword')
+    document.getElementById('key').innerHTML = data.keyword
     document.getElementById('date').innerHTML = data.date
 }

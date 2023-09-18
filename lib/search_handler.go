@@ -5,8 +5,12 @@ import (
     "dashboard/pkg/github"
     "encoding/json"
     "fmt"
+    "github.com/tidwall/gjson"
+    "io/ioutil"
     "net/http"
+    "net/url"
     "regexp"
+    "strconv"
     "strings"
     "sync"
     "time"
@@ -35,22 +39,20 @@ type SearchResponse struct {
 }
 
 func (s SearchHandler) Do(r *http.Request) *Response {
-    keyword := r.PostFormValue("keyword")
+    b, _ := ioutil.ReadAll(r.Body)
+
+    // 解码URL编码的字符串
+    decodedString, err := url.QueryUnescape(string(b))
+    if err != nil {
+        return FailWithMsg(fmt.Sprintf("解码URL编码字符串时发生错误: %s", err.Error()))
+    }
+    keyword := gjson.Get(decodedString, "keyword").String()
 
     var response SearchResponse
     response.Keyword = keyword
-    response.Date = fmt.Sprintf("今日 %s %s", time.Now().Format("2006-01-02"), fetchNextDay())
+    response.Date = fmt.Sprintf("今日 %s %s,%s", time.Now().Format("2006-01-02"), fetchWeek(), fetchNextHoliday())
 
     return SuccessWithData(response)
-    //b, _ := ioutil.ReadAll(r.Body)
-    //
-    //// 解码URL编码的字符串
-    //decodedString, err := url.QueryUnescape(string(b))
-    //if err != nil {
-    //    return FailWithMsg(fmt.Sprintf("解码URL编码字符串时发生错误: %s", err.Error()))
-    //}
-    //
-    //return SuccessWithData(decodedString)
 
     //fn := func(keyword string, item []github.Item) {
     //    for _, val := range items {
@@ -87,12 +89,57 @@ func (s SearchHandler) Do(r *http.Request) *Response {
     //return SuccessWithData(items)
 }
 
+var Weeks = map[int]string{1: "星期一", 2: "星期二", 3: "星期三", 4: "星期四", 5: "星期五", 6: "星期六", 7: "星期天"}
+
+type dayInfoResponse struct {
+    Code int `json:"code"`
+    Type struct {
+        Week int `json:"week"`
+    } `json:"type"`
+}
+
+func fetchWeek() string {
+    r, _ := http.NewRequest(http.MethodGet, common.HOLIDAY_INFO, nil)
+    defer func() {
+        if r.Body != nil && r != nil {
+            _ = r.Body.Close()
+        }
+    }()
+
+    r.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.66 Safari/537.36 Edg/103.0.1264.44")
+    response, err := http.DefaultClient.Do(r)
+    if err != nil {
+        return fmt.Sprintf("请求错误：%s", err.Error())
+    }
+    defer func() {
+        if response != nil && response.Body != nil {
+            _ = response.Body.Close()
+        }
+    }()
+
+    var res dayInfoResponse
+    err = json.NewDecoder(response.Body).Decode(&res)
+    if err != nil {
+        return fmt.Sprintf("json 解析错误：%s", err.Error())
+    }
+
+    if res.Code == 0 {
+        if val, ok := Weeks[res.Type.Week]; ok {
+            return val
+        }
+
+        return strconv.Itoa(res.Type.Week)
+    }
+
+    return "未知"
+}
+
 type nextDayResponse struct {
     Code int    `json:"code"`
     Tts  string `json:"tts"`
 }
 
-func fetchNextDay() string {
+func fetchNextHoliday() string {
     r, _ := http.NewRequest(http.MethodGet, common.HOLIDAY, nil)
     defer func() {
         if r.Body != nil && r != nil {
