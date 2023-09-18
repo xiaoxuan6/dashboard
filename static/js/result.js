@@ -25,6 +25,14 @@ function search_do() {
         keyword: keyword,
     }, function (response) {
         let data = response.data
+        if (data.status === 401) {
+            NProgress.done();
+            error(data.msg)
+            localStorage.removeItem("token")
+            redirect("/login", 0)
+            return
+        }
+        localStorage.removeItem('keyword')
         setContent(data.data)
         NProgress.done();
     }, function (err) {
@@ -35,4 +43,6 @@ function search_do() {
 
 function setContent(data) {
     console.log(data)
+    document.getElementById('key').innerHTML = localStorage.getItem('keyword')
+    document.getElementById('date').innerHTML = data.date
 }

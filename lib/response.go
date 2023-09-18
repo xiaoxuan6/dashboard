@@ -49,3 +49,8 @@ func FailAuth(err error) *Response {
 
     return res
 }
+
+func FailAuthWithMsg(msg string) *Response {
+    er := errors.New(msg)
+    return FailAuth(er)
+}
