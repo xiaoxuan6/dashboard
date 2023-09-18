@@ -34,8 +34,5 @@ function search_do() {
 }
 
 function setContent(data) {
-    $('.loading').hide()
-    $('#app').removeClass('bodys')
-    document.getElementsByClassName('typora-export-content').style.display = ''
     console.log(data)
 }
