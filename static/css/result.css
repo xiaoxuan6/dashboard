@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
 }
-body{
+.bodys{
     /* 100%窗口高度 */
     height: 100vh;
     /* 渐变背景 */

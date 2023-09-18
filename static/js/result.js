@@ -35,9 +35,7 @@ function search_do() {
 
 function setContent(data) {
     $('.loading').hide()
-    let dataDiv = document.getElementById("data")
-    dataDiv.style.display = "";
-    // dataDiv.innerHTML = data.keyword
-
+    $('#app').removeClass('bodys')
+    document.getElementsByClassName('typora-export-content').style.display = ''
     console.log(data)
 }
