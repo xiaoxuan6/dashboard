@@ -4,6 +4,7 @@ import (
     "encoding/xml"
     "io/ioutil"
     "net/http"
+    "strings"
     "time"
 )
 
@@ -40,7 +41,8 @@ func Wechat(w http.ResponseWriter, r *http.Request) {
                 Content:      msg,
             }
             b1, _ := xml.Marshal(request)
-            _, _ = w.Write(b1)
+            body := strings.Replace(string(b1), "TextRequest", "xml", -1)
+            _, _ = w.Write([]byte(body))
         }
 
         if response.MsgType == "event" && response.Event == "subscribe" {
