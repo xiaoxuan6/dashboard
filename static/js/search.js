@@ -14,6 +14,11 @@ $(document).ready(function () {
             error("未登录！");
             redirect("/login", 0)
         }
+
+        keyword = localStorage.getItem("keyword")
+        if (keyword !== undefined && keyword != null) {
+            redirect("/result", 0)
+        }
     }
 
     init()

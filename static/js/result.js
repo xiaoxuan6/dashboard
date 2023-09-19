@@ -37,6 +37,7 @@ function search_do() {
         NProgress.done();
     }, function (err) {
         NProgress.done();
+        localStorage.removeItem("keyword")
         error(`请求失败：${err}`)
     })
 }
