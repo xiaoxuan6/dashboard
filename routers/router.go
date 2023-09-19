@@ -1,6 +1,7 @@
 package routers
 
 import (
+    "dashboard/handlers"
     "github.com/gin-gonic/gin"
     "net/http"
 )
@@ -12,4 +13,6 @@ func RegisterRouter(r *gin.RouterGroup) {
             "msg":    "ok",
         })
     })
+
+    r.POST("/dirtyfilter", handlers.DirtryfilterHandler.Filter)
 }
