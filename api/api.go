@@ -15,7 +15,7 @@ func init() {
         path := c.Request.URL.Path
         c.JSON(http.StatusBadRequest, gin.H{
             "status": http.StatusNotFound,
-            "msg":    fmt.Sprintf("%s not found", path),
+            "msg":    fmt.Sprintf("route %s not found", path),
         })
     })
 
