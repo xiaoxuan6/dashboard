@@ -22,7 +22,7 @@ func (d dirtryfilterHandler) Filter(c *gin.Context) {
     err := validation.Validate(keyword, validation.Required)
     if err != nil {
         c.JSON(http.StatusOK, gin.H{
-            "status": 400,
+            "status": http.StatusBadRequest,
             "data":   "",
             "msg":    err.Error(),
         })
