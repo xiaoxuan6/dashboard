@@ -10,12 +10,20 @@ import (
 var app *gin.Engine
 
 func init() {
+    gin.SetMode(gin.ReleaseMode)
     app = gin.New()
     app.NoRoute(func(c *gin.Context) {
         path := c.Request.URL.Path
-        c.JSON(http.StatusBadRequest, gin.H{
+        c.JSON(http.StatusOK, gin.H{
             "status": http.StatusNotFound,
             "msg":    fmt.Sprintf("route %s not found", path),
+        })
+    })
+    app.NoMethod(func(c *gin.Context) {
+        path := c.Request.URL.Path
+        c.JSON(http.StatusOK, gin.H{
+            "status": http.StatusBadRequest,
+            "msg":    fmt.Sprintf("route %s method %s not allow", path, c.Request.Method),
         })
     })
 

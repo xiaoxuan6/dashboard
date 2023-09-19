@@ -23,8 +23,8 @@ func init() {
     }()
     res, _ := http.DefaultClient.Do(r)
     defer func() {
-        if res.Body != nil && r != nil {
-            _ = r.Body.Close()
+        if res.Body != nil && res != nil {
+            _ = res.Body.Close()
         }
     }()
 
