@@ -2,6 +2,7 @@ package api
 
 import (
     "encoding/xml"
+    "github.com/sirupsen/logrus"
     "io/ioutil"
     "net/http"
     "strings"
@@ -31,6 +32,7 @@ func Wechat(w http.ResponseWriter, r *http.Request) {
         b, _ := ioutil.ReadAll(r.Body)
         var response Response
         _ = xml.Unmarshal(b, &response)
+        logrus.Info("request", response)
 
         fn := func(msg string) {
             request := &TextRequest{
@@ -41,7 +43,8 @@ func Wechat(w http.ResponseWriter, r *http.Request) {
                 Content:      msg,
             }
             b1, _ := xml.Marshal(request)
-            body := strings.Replace(string(b1), "TextRequest", "xml", -1)
+            body := strings.ReplaceAll(string(b1), "TextRequest", "xml")
+            logrus.Info("msg", body)
             _, _ = w.Write([]byte(body))
         }
 
