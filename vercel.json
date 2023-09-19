@@ -5,6 +5,10 @@
             "dest": "/api/run.go"
         },
         {
+            "src": "/apis/(.*)",
+            "dest": "/api/api.go"
+        },
+        {
             "src": "/wechat",
             "dest": "/api/wechat.go"
         },
