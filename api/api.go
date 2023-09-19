@@ -11,7 +11,6 @@ var app *gin.Engine
 
 func init() {
     app = gin.New()
-
     app.NoRoute(func(c *gin.Context) {
         path := c.Request.URL.Path
         c.JSON(http.StatusBadRequest, gin.H{
@@ -20,7 +19,8 @@ func init() {
         })
     })
 
-    routers.RegisterRouter(app)
+    r := app.Group("/apis")
+    routers.RegisterRouter(r)
 }
 
 func Api(w http.ResponseWriter, r *http.Request) {

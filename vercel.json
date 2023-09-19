@@ -5,6 +5,10 @@
             "dest": "/api/run.go"
         },
         {
+            "src": "/apis",
+            "dest": "/api/api.go"
+        },
+        {
             "src": "/apis/(.*)",
             "dest": "/api/api.go"
         },

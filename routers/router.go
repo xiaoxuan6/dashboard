@@ -5,7 +5,7 @@ import (
     "net/http"
 )
 
-func RegisterRouter(r *gin.Engine) {
+func RegisterRouter(r *gin.RouterGroup) {
     r.GET("/", func(context *gin.Context) {
         context.JSON(http.StatusOK, gin.H{
             "status": 200,
