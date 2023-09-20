@@ -4,7 +4,7 @@ import (
     _ "embed"
     "encoding/json"
     "github.com/gin-gonic/gin"
-    "github.com/tidwall/gjson"
+    "github.com/sirupsen/logrus"
     "net/http"
 )
 
@@ -53,6 +53,7 @@ type Item struct {
     UrlDemo  string     `json:"url_demo"`
     Params   []params   `json:"params"`
     Response []response `json:"response"`
+    Codes    []codes    `json:"codes"`
 }
 
 type params struct {
@@ -68,13 +69,23 @@ type response struct {
     Desc string `json:"desc"`
 }
 
+type codes struct {
+    Code string `json:"code"`
+    Desc string `json:"desc"`
+}
+
 func (d docsHandler) Edit(c *gin.Context) {
-    id, _ := c.GetQuery("id")
+    id := c.Param("id")
+    logrus.Info("id ", id)
     var docs Docs
     _ = json.Unmarshal(config, &docs)
 
-    b, _ := json.Marshal(docs)
-    result := gjson.Get(string(b), id).Value()
+    var result interface{}
+    switch id {
+    case "dirtyfilter":
+        result = docs.Docs.Dirtyfilter
+    }
+
     c.JSON(http.StatusOK, gin.H{
         "status": http.StatusOK,
         "data":   result,

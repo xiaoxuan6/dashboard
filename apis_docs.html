@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
@@ -11,10 +11,10 @@
     <meta name="keywords" content="API,聚合数据,API数据接口,API,免费接口,免费api接口调用,免费API数据调用,xiaoxan6 API">
     <meta name="author" content="xiaoxan6">
     <meta name="founder" content="xiaoxan6 API">
-    <link href="static/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="static/layui/layer.css">
-    <script src="static/layui/layui.js"></script>
-    <link href="static/css/site.min.css" rel="stylesheet">
+    <link href="/static/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/layui/layer.css">
+    <script src="/static/layui/layui.js"></script>
+    <link href="/static/css/site.min.css" rel="stylesheet">
     <style>.url {
         word-break: break-all;
         cursor: pointer;
@@ -90,8 +90,7 @@
             <div class="layui-tab-item layui-show">
                 <p class="simpleTable">
                     <span class="layui-badge layui-bg-black">接口地址：</span>
-                    <span class="url"
-                          data-clipboard-text="https://api.oioweb.cn/api/ip/ipaddress">https://api.oioweb.cn/api/ip/ipaddress</span>
+                    <span class="url" data-clipboard-text="" id="url"></span>
                 </p>
                 <p class="simpleTable">
                     <span class="layui-badge layui-bg-green">返回格式：</span>
@@ -99,11 +98,11 @@
                 </p>
                 <p class="simpleTable">
                     <span class="layui-badge">请求方式：</span>
-                    <span class="url" data-clipboard-text="GET/POST">GET/POST</span>
+                    <span class="url" data-clipboard-text="" id="method"></span>
                 </p>
                 <p class="simpleTable">
                     <span class="layui-badge layui-bg-blue">请求示例：</span>
-                    <span class="url" data-clipboard-text="https://api.oioweb.cn/api/ip/ipaddress?ip=114.114.114.114">https://api.oioweb.cn/api/ip/ipaddress?ip=114.114.114.114</span>
+                    <span class="url" data-clipboard-text="" id="url_demo"></span>
                 </p>
                 <p class="linep">请求参数说明：</p>
                 <table class="layui-table" lay-size="sm">
@@ -115,13 +114,7 @@
                         <th>说明</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>ip</td>
-                        <td>是</td>
-                        <td>string</td>
-                        <td>支持IPV4/IPV6地址</td>
-                    </tr>
+                    <tbody id="params">
                     </tbody>
                 </table>
                 <p class="linep">返回参数说明：</p>
@@ -133,12 +126,7 @@
                         <th>说明</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>start</td>
-                        <td>string</td>
-                        <td>IP段开始</td>
-                    </tr>
+                    <tbody id="response">
                     </tbody>
                 </table>
                 <p class="linep">返回示例：</p>
@@ -153,19 +141,7 @@
                         <th>说明</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>200</td>
-                        <td>查询成功</td>
-                    </tr>
-                    <tr>
-                        <td>400</td>
-                        <td>输入参数错误导致失败</td>
-                    </tr>
-                    <tr>
-                        <td>500</td>
-                        <td>服务器端出错导致失败</td>
-                    </tr>
+                    <tbody id="codes">
                     </tbody>
                 </table>
             </div>
@@ -200,11 +176,9 @@
         </div>
     </div>
 </footer>
-</body>
-
-<script src="static/layui/clipboard.min.js"></script>
+<script src="/static/layui/clipboard.min.js"></script>
 <script src="/static/js/jquery.min.js"></script>
-<script src="static/js/docs.js"></script>
+<script src="/static/js/docs.js"></script>
 <script>
     const clipboard = new ClipboardJS('.url');
     clipboard.on('success', function (e) {
@@ -214,4 +188,5 @@
         layer.msg('复制成功!');
     });
 </script>
+</body>
 </html>
