@@ -1,0 +1,9 @@
+{
+    "apis": [
+        {
+            "url": "/docs/dirtyfilter",
+            "title": "敏感词过滤",
+            "desc": "基于DFA算法实现的敏感词过滤"
+        }
+    ]
+}

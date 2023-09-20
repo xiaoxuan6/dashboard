@@ -10,5 +10,6 @@ func RegisterRouter(r *gin.RouterGroup) {
         context.Redirect(301, "/apis/index")
     })
 
+    r.GET("/docs", handlers.DocsHandler.Index)
     r.POST("/dirtyfilter", handlers.DirtryfilterHandler.Filter)
 }
