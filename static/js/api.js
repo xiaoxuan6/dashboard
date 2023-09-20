@@ -1,13 +1,13 @@
 load().then(res => {
     let html = ''
     for (let i = 0; i < res.length; i++) {
-        html += '<div className="col-md-4">\n' +
-            '            <a href="' + res.url + '" className="block block-link-hover2 ribbon ribbon-modern ribbon-success"\n' +
+        html += '<div class="col-md-4">\n' +
+            '            <a href="' + res[i].url + '" class="block block-link-hover2 ribbon ribbon-modern ribbon-success"\n' +
             '               target="_blank">\n' +
-            '                <div className="ribbon-box font-w600">状态：正常</div>\n' +
-            '                <div className="block-content">\n' +
-            '                    <div className="h4 push-5">' + res.title + '</div>\n' +
-            '                    <p className="text-muted">' + res.desc + '</p></div>\n' +
+            '                <div class="ribbon-box font-w600">状态：正常</div>\n' +
+            '                <div class="block-content">\n' +
+            '                    <div class="h4 push-5">' + res[i].title + '</div>\n' +
+            '                    <p class="text-muted">' + res[i].desc + '</p></div>\n' +
             '            </a>\n' +
             '        </div>'
     }
