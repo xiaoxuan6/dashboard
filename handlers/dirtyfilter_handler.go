@@ -4,8 +4,9 @@ import (
     "dashboard/pkg/dirtryfilter"
     "github.com/gin-gonic/gin"
     validation "github.com/go-ozzo/ozzo-validation/v4"
-    "github.com/sirupsen/logrus"
+    "io/ioutil"
     "net/http"
+    "net/url"
 )
 
 var DirtryfilterHandler = newDritryfilter()
@@ -18,19 +19,28 @@ func newDritryfilter() *dirtryfilterHandler {
 }
 
 func (d dirtryfilterHandler) Filter(c *gin.Context) {
-    keyword := c.PostForm("keyword")
-    logrus.Info("keyword", keyword)
+    b, _ := ioutil.ReadAll(c.Request.Body)
 
-    k, _ := c.GetPostForm("keyword")
-    logrus.Info("keyword1", k)
-
-    err := validation.Validate(keyword, validation.Required)
+    decodedString, err := url.QueryUnescape(string(b))
     if err != nil {
         c.JSON(http.StatusOK, gin.H{
             "status": http.StatusBadRequest,
             "data":   "",
             "msg":    err.Error(),
         })
+        return
+    }
+
+    values, _ := url.ParseQuery(decodedString)
+    keyword := values.Get("keyword")
+    err = validation.Validate(keyword, validation.Required.Error("keyword not empty"))
+    if err != nil {
+        c.JSON(http.StatusOK, gin.H{
+            "status": http.StatusBadRequest,
+            "data":   "",
+            "msg":    err.Error(),
+        })
+        return
     }
 
     result := dirtryfilter.Filter(keyword)
