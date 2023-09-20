@@ -9,7 +9,11 @@
             "dest": "/api/api.go"
         },
         {
-            "src": "/apis/(.*)",
+            "src": "/apis/index",
+            "dest": "/apis_index.html"
+        },
+        {
+            "src": "/apis/(?!(index$))(.*)",
             "dest": "/api/api.go"
         },
         {

@@ -62,7 +62,7 @@ body {
 }
 
 .main-navbar .navbar-brand.brand-bootcdn {
-    background: url(/Static/images/API.svg) no-repeat 0 center;
+    background: url(https://api.oioweb.cn/Static/images/API.svg) no-repeat 0 center;
     -webkit-background-size: contain;
     background-size: contain
 }
