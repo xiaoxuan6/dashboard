@@ -8,10 +8,7 @@ import (
 
 func RegisterRouter(r *gin.RouterGroup) {
     r.GET("/", func(context *gin.Context) {
-        context.JSON(http.StatusOK, gin.H{
-            "status": 200,
-            "msg":    "ok",
-        })
+        context.HTML(http.StatusOK, "/api_index", nil)
     })
 
     r.POST("/dirtyfilter", handlers.DirtryfilterHandler.Filter)

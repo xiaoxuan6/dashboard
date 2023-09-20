@@ -19,6 +19,10 @@
         {
             "title": "搜一下",
             "url": "/search"
+        },
+        {
+            "title": "免费 API",
+            "url": "/apis"
         }
     ]
 }

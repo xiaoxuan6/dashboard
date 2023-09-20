@@ -27,6 +27,7 @@ func init() {
         })
     })
 
+    app.LoadHTMLGlob("html/*")
     r := app.Group("/apis")
     routers.RegisterRouter(r)
 }
