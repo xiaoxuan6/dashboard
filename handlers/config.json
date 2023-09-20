@@ -1,9 +1,41 @@
 {
     "apis": [
         {
-            "url": "/docs/dirtyfilter",
+            "url": "/dirtyfilter",
             "title": "敏感词过滤",
             "desc": "基于DFA算法实现的敏感词过滤"
         }
-    ]
+    ],
+    "docs": {
+        "dirtyfilter": {
+            "url": "https://xiaoxuan6.vercel.app/apis/dirtryfilter",
+            "method": "post",
+            "url_demo": "https://xiaoxuan6.vercel.app/apis/dirtryfilter",
+            "params": [
+                {
+                    "name": "keyword",
+                    "require": "是",
+                    "type": "string",
+                    "desc": "需要过滤的字符串"
+                }
+            ],
+            "response": [
+                {
+                    "name": "status",
+                    "type": "int",
+                    "desc": "状态码"
+                },
+                {
+                    "name": "msg",
+                    "type": "string",
+                    "desc": "错误信息"
+                },
+                {
+                    "name": "data",
+                    "type": "string",
+                    "desc": "敏感词过滤后的结果"
+                }
+            ]
+        }
+    }
 }

@@ -13,7 +13,11 @@
             "dest": "/apis_index.html"
         },
         {
-            "src": "/apis/(?!(index$))(.*)",
+            "src": "/apis/docs",
+            "dest": "/apis_index.html"
+        },
+        {
+            "src": "/apis/(?!(index$|decs$))(.*)",
             "dest": "/api/api.go"
         },
         {

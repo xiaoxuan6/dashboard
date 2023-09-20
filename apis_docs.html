@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>xiaoxan6 API - 提供免费接口调用平台</title>
+    <link rel="icon" href="https://fav.farm/🚜"/>
+    <meta name="description" content="xiaoxan6 API是 xiaoxan6 免费提供API数据接口调用服务平台 - 我们致力于为用户提供稳定、快速的免费API数据接口服务。">
+    <meta name="keywords" content="API,聚合数据,API数据接口,API,免费接口,免费api接口调用,免费API数据调用,xiaoxan6 API">
+    <meta name="author" content="xiaoxan6">
+    <meta name="founder" content="xiaoxan6 API">
+    <link href="static/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/layui/layer.css">
+    <script src="static/layui/layui.js"></script>
+    <link href="static/css/site.min.css" rel="stylesheet">
+    <style>.url {
+        word-break: break-all;
+        cursor: pointer;
+        margin-left: 5px;
+        color: #777;
+        border: none;
+        border-radius: 0;
+        border-bottom: 2px solid #5FB878;
+    }
+
+    .simpleTable {
+        line-height: 20px;
+        padding-bottom: 16px;
+    }
+
+    .linep {
+        font-size: 14px;
+        font-weight: 700;
+        color: #555;
+        padding-left: 14px;
+        height: 16px;
+        line-height: 16px;
+        margin-bottom: 18px;
+        position: relative;
+        margin-top: 15px;
+    }
+
+    .linep:before {
+        content: '';
+        width: 4px;
+        height: 16px;
+        background: #00aeff;
+        border-radius: 2px;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }</style>
+</head>
+<body class="home-template">
+<header class="site-header">
+    <nav class="navbar navbar-static-top main-navbar" id="top">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar"
+                        aria-controls="bs-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/apis" class="navbar-brand brand-bootcdn text-hide">教书先生API</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container jumbotron">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>xiaoxan6 API</h1>
+                <p>稳定、快速、免费的 API 接口服务
+                </p>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="layui-container">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <ul class="layui-tab-title" style="text-align: center!important;">
+            <li class="layui-this">API文档</li>
+            <li>返回码参照</li>
+<!--            <li>示例代码</li>-->
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <p class="simpleTable">
+                    <span class="layui-badge layui-bg-black">接口地址：</span>
+                    <span class="url"
+                          data-clipboard-text="https://api.oioweb.cn/api/ip/ipaddress">https://api.oioweb.cn/api/ip/ipaddress</span>
+                </p>
+                <p class="simpleTable">
+                    <span class="layui-badge layui-bg-green">返回格式：</span>
+                    <span class="url" data-clipboard-text="JSON">JSON</span>
+                </p>
+                <p class="simpleTable">
+                    <span class="layui-badge">请求方式：</span>
+                    <span class="url" data-clipboard-text="GET/POST">GET/POST</span>
+                </p>
+                <p class="simpleTable">
+                    <span class="layui-badge layui-bg-blue">请求示例：</span>
+                    <span class="url" data-clipboard-text="https://api.oioweb.cn/api/ip/ipaddress?ip=114.114.114.114">https://api.oioweb.cn/api/ip/ipaddress?ip=114.114.114.114</span>
+                </p>
+                <p class="linep">请求参数说明：</p>
+                <table class="layui-table" lay-size="sm">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>必填</th>
+                        <th>类型</th>
+                        <th>说明</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>ip</td>
+                        <td>是</td>
+                        <td>string</td>
+                        <td>支持IPV4/IPV6地址</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="linep">返回参数说明：</p>
+                <table class="layui-table" lay-size="sm">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>类型</th>
+                        <th>说明</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>start</td>
+                        <td>string</td>
+                        <td>IP段开始</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="linep">返回示例：</p>
+                <pre class="layui-code" id="code" lay-options="{about:'教书先生API'}"></pre>
+            </div>
+            <div class="layui-tab-item">
+                <p class="linep">错误码格式说明：</p>
+                <table class="layui-table" lay-size="sm">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>说明</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>200</td>
+                        <td>查询成功</td>
+                    </tr>
+                    <tr>
+                        <td>400</td>
+                        <td>输入参数错误导致失败</td>
+                    </tr>
+                    <tr>
+                        <td>500</td>
+                        <td>服务器端出错导致失败</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+<!--            <div class="layui-tab-item">-->
+<!--                <p class="linep">代码示例：</p>-->
+<!--                <pre class="layui-code">暂无示例，有问题或者不懂请加站长交流群：611987360  获取调用方法。</pre>-->
+<!--            </div>-->
+        </div>
+    </div>
+</div>
+<footer id="footer" class="footer hidden-print">
+    <div class="container">
+        <div class="row">
+            <div class="footer-about col-md-5 col-sm-12" id="about">
+                <h4>关于 xiaoxan6 API</h4>
+                <p>xiaoxan6 API 是 <a href="https://blog.oioweb.cn" target="_blank">xiaoxan6</a> 支持并维护的 API
+                    接口项目，致力于为用户提供稳定、快速的免费 API 接口服务平台。
+                </p>
+            </div>
+            <div class="footer-techs col-md-5 col-sm-12">
+                <h4>友情链接</h4>
+                <ul class="list-unstyled list-inline">
+                    <li><a href="https://xiaoxuan6.vercel.app" target="_blank">xiaoxan6's 博客</a></li>
+                </ul>
+            </div>
+            <!--            <div class="footer-sponsors col-md-2 col-sm-12">-->
+            <!--                <h4>赞助我们</h4>-->
+            <!--                <p>-->
+            <!--                    <img src="">-->
+            <!--                </p>-->
+            <!--            </div>-->
+        </div>
+    </div>
+</footer>
+</body>
+
+<script src="static/layui/clipboard.min.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script src="static/js/docs.js"></script>
+<script>
+    const clipboard = new ClipboardJS('.url');
+    clipboard.on('success', function (e) {
+        layer.msg('复制成功!');
+    });
+    clipboard.on('error', function (e) {
+        layer.msg('复制成功!');
+    });
+</script>
+</html>

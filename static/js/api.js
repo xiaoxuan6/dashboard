@@ -2,7 +2,7 @@ load().then(res => {
     let html = ''
     for (let i = 0; i < res.length; i++) {
         html += '<div class="col-md-4">\n' +
-            '            <a href="' + res[i].url + '" class="block block-link-hover2 ribbon ribbon-modern ribbon-success"\n' +
+            '            <a data-name="' + res[i].url + '" onclick="redirects()" class="block block-link-hover2 ribbon ribbon-modern ribbon-success"\n' +
             '               target="_blank">\n' +
             '                <div class="ribbon-box font-w600">状态：正常</div>\n' +
             '                <div class="block-content">\n' +
@@ -25,4 +25,10 @@ async function load() {
     }
 
     return {}
+}
+
+function redirects() {
+    let target = $(this).data("name")
+    localStorage.setItem("docs", target)
+    window.location.href = "/apis/docs"
 }
