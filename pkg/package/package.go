@@ -13,7 +13,7 @@ import (
 var (
     wg    sync.WaitGroup
     Posts []Post
-    lock  sync.Locker
+    lock  sync.Mutex
 )
 
 type Post struct {
