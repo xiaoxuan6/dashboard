@@ -21,6 +21,8 @@ func Init() error {
         return err
     }
 
+    logrus.Info("_package.Posts", len(_package.Posts))
+
     for i, post := range _package.Posts {
         _ = ind.Index(fmt.Sprintf("%d", i), post)
     }
