@@ -41,9 +41,11 @@ func Search(keyword string) ([]Item, error) {
         return nil, err
     }
 
+    logrus.Info("searchResults.total", searchResults.Total)
     logrus.Info("searchResults.Hits", searchResults.Hits)
     var items []Item
     for _, hit := range searchResults.Hits {
+        logrus.Info("hit.String()", hit.String())
         logrus.Info("hit.Fields", hit.Fields)
         if hit.Fields["Title"] != nil {
             title := hit.Fields["Title"].(string)
