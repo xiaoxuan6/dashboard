@@ -1,191 +1,78 @@
-* {
-    /* 初始化 */
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.ui-dialog-titlebar-close {
+    display: none;
 }
 
-body {
-    min-height: 100vh;
+.resource-link {
+    color: #4a4a4a;
+}
+
+.h-keyword {
+    color: var(--primary-color);
+}
+
+.tag-wrap, .tag-item {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
-/* logo */
-img {
-    width: 270px;
+.tag-wrap {
+    flex-wrap: wrap;
 }
 
-/* 搜索框 */
-.ipt-box {
-    width: 650px;
-    display: flex;
-    margin-top: 20px;
-    margin-bottom: 200px;
-}
-
-.ipt-box input {
-    flex: 1;
-    border: 2px solid #c4c7ce;
-    border-radius: 10px 0 0 10px;
-    border-right: none;
-}
-
-.ipt-box button {
-    width: 108px;
-    height: 44px;
-    background-color: #4e6ef2;
-    color: #fff;
-    border: none;
-    border-radius: 0 10px 10px 0;
-    font-size: 17px;
-}
-
-/* 切换按钮 */
-.switch {
-    border: 1px solid #c4c7ce;
-    width: 60px;
-    height: 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 6px;
-    border-radius: 15px;
-    cursor: pointer;
-    position: fixed;
-    top: 15px;
-    right: 15px;
-}
-
-/* 滑块 */
-.switch::before {
-    content: '';
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background-color: #4e6ef2;
-    position: absolute;
-    left: 3px;
-    transition: 0.2s ease-out;
-}
-
-.switch.dark::before {
-    left: 31px;
-}
-
-/* 图标 */
-.switch .fa {
-    font-size: 18px;
-    color: #aaa;
-}
-
-.transparent-input {
-    background-color: transparent;
-    border: none;
-}
-
-.close {
-    position: absolute;
-    top: 50px;
-    right: 0px;
-    display: flex;
-    justify-content: center;
-}
-
-.close .button {
+.tag-item {
+    margin-bottom: 10px;
     margin-right: 10px;
 }
 
+.tag-item label {
+    margin-bottom: 0;
+    margin-left: 5px;
+}
+
+input[type='radio'] {
+    accent-color: #7d725e;
+    transform-origin: 50% 50%;
+    zoom: 1.4;
+}
+
+/*按钮*/
 .logout {
-    font-size: 14px;
-    display: inline-block;
-    outline: 0;
-    border: 0;
-    cursor: pointer;
-    will-change: box-shadow, transform;
-    background: radial-gradient(100% 100% at 100% 0%, #89E5FF 0%, #5468FF 100%);
-    box-shadow: 0px 0.01em 0.01em rgb(45 35 66 / 40%), 0px 0.3em 0.7em -0.01em rgb(45 35 66 / 30%), inset 0px -0.01em 0px rgb(58 65 111 / 50%);
-    padding: 0 1em;
-    border-radius: 0.3em;
-    color: #fff;
-    height: 2.2em;
-    text-shadow: 0 1px 0 rgb(0 0 0 / 40%);
-    transition: box-shadow 0.15s ease, transform 0.15s ease;
+    -moz-box-shadow:inset 0px 1px 0px 0px #fff6af;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #fff6af;
+    box-shadow:inset 0px 1px 0px 0px #fff6af;
+    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffec64), color-stop(1, #ffab23));
+    background:-moz-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+    background:-webkit-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+    background:-o-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+    background:-ms-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+    background:linear-gradient(to bottom, #ffec64 5%, #ffab23 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffec64', endColorstr='#ffab23',GradientType=0);
+    background-color:#ffec64;
+    -webkit-border-radius:6px;
+    -moz-border-radius:6px;
+    border-radius:6px;
+    border:1px solid #ffaa22;
+    display:inline-block;
+    cursor:pointer;
+    color:#333333;
+    font-family:Arial;
+    font-size:15px;
+    font-weight:bold;
+    padding:7px 14px;
+    text-decoration:none;
+    text-shadow:0px 0px 0px #ffee66;
 }
-
 .logout:hover {
-    box-shadow: 0px 0.1em 0.2em rgb(45 35 66 / 40%), 0px 0.4em 0.7em -0.1em rgb(45 35 66 / 30%), inset 0px -0.1em 0px #3c4fe0;
-    transform: translateY(-0.1em);
+    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffab23), color-stop(1, #ffec64));
+    background:-moz-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+    background:-webkit-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+    background:-o-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+    background:-ms-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+    background:linear-gradient(to bottom, #ffab23 5%, #ffec64 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffab23', endColorstr='#ffec64',GradientType=0);
+    background-color:#ffab23;
 }
-
 .logout:active {
-    box-shadow: inset 0px 0.1em 0.6em #3c4fe0;
-    transform: translateY(0em);
-}
-
-.load {
-    background: radial-gradient(100% 100% at 100% 0%, #89E5FF 0%, #5468FF 100%);
-    /*--main-focus: #2d8cf0;*/
-    --font-color: white;
-    /*--bg-color-sub: #dedede;*/
-    /*--bg-color: #eee;*/
-    --main-color: lightblue;
-    position: relative;
-    width: 80px;
-    height: 28px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    border: 2px solid var(--main-color);
-    box-shadow: 4px 4px var(--main-color);
-    background-color: var(--bg-color);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-left: ;
-}
-
-.load, .button__icon, .button__text {
-    transition: all 0.3s;
-}
-
-.load .button__text {
-    transform: translateX(17px);
-    color: var(--font-color);
-    font-weight: 600;
-}
-
-.load .button__icon {
-    position: absolute;
-    transform: translateX(109px);
-    height: 100%;
-    width: 39px;
-    background-color: var(--bg-color-sub);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.load .svg {
-    width: 20px;
-    fill: var(--main-color);
-}
-
-.load:hover {
-    background: var(--bg-color);
-}
-
-.load:hover .button__text {
-    color: transparent;
-}
-
-.load:hover .button__icon {
-    width: 80px;
-    transform: translateX(0);
-}
-
-.load:active {
-    transform: translate(3px, 3px);
-    box-shadow: 0px 0px var(--main-color);
+    position:relative;
+    top:1px;
 }

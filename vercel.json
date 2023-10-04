@@ -31,10 +31,6 @@
         {
             "src": "/login",
             "dest": "/login.html"
-        },
-        {
-            "src": "/result",
-            "dest": "/result.html"
         }
     ],
     "env": {

@@ -6,18 +6,11 @@ $(document).ready(function () {
     });
 
     function init() {
-        document.getElementById("right_button").style.display = "";
-
         token = localStorage.getItem("token")
         email = localStorage.getItem("email")
         if (token === undefined || email === undefined || email == null || token == null) {
             error("未登录！");
             redirect("/login", 0)
-        }
-
-        keyword = localStorage.getItem("keyword")
-        if (keyword !== undefined && keyword != null) {
-            redirect("/result", 0)
         }
     }
 
@@ -27,16 +20,12 @@ $(document).ready(function () {
 function search() {
     let keyword = document.getElementById("keyword").value
     if (!keyword) {
-        error("请输入搜索问题")
+        error("请输入关键字")
         return;
     }
+    alert(keyword)
 
-    localStorage.setItem("keyword", keyword)
-    redirect("/result", 0)
-}
-
-function load() {
-    error("功能待开发中……")
+    // todo:搜索
 }
 
 function logout() {
