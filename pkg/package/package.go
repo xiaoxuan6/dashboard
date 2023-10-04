@@ -36,6 +36,11 @@ func Load() error {
     newContent = strings.Trim(newContent, "\n")
     contents := strings.Split(newContent, "\n")
 
+    // 重复请求数量相同直接返回
+    if len(Posts) == len(contents) {
+        return nil
+    }
+
     for _, val := range contents {
         wg.Add(1)
 

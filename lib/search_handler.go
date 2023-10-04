@@ -8,7 +8,6 @@ import (
     "io/ioutil"
     "net/http"
     "net/url"
-    "strconv"
     "sync"
 )
 
@@ -63,34 +62,20 @@ func (s SearchHandler) Do(r *http.Request) *Response {
         return Fail(err)
     }
 
-    ids, err := bleve.Search(keyword)
+    posts, err := bleve.Search(keyword)
     if err != nil {
         return Fail(err)
     }
 
     var tags = make(map[string]int, 0)
-    var posts []_package.Post
-    for _, val := range ids {
-        wg.Add(1)
-
-        go func(wg *sync.WaitGroup, val string) {
-            defer wg.Done()
-            i, _ := strconv.Atoi(val)
-            post := _package.Posts[i]
-
-            lock.Lock()
-            posts = append(posts, post)
-            lock.Unlock()
-
-            if _, ok := tags[post.Tag]; !ok {
-                tags[post.Tag] = 1
-            } else {
-                tags[post.Tag] = tags[post.Tag] + 1
-            }
-        }(&wg, val)
+    for _, post := range posts {
+        if _, ok := tags[post.Tag]; !ok {
+            tags[post.Tag] = 1
+        } else {
+            tags[post.Tag] = tags[post.Tag] + 1
+        }
     }
 
-    wg.Wait()
     response.Posts = posts
     response.Tags = tags
 
