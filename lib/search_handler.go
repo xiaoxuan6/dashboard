@@ -30,14 +30,8 @@ type (
 
     SearchResponse struct {
         Keyword string         `json:"keyword"`
-        Items   []Item         `json:"item"`
+        Items   []bleve.Item   `json:"item"`
         Tags    map[string]int `json:"tags"`
-    }
-
-    Item struct {
-        Title string `json:"title"`
-        Url   string `json:"url"`
-        Tag   string `json:"tag"`
     }
 )
 
