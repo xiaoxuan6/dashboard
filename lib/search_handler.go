@@ -1,26 +1,20 @@
 package lib
 
 import (
-    "dashboard/common"
-    "dashboard/pkg/github"
-    "encoding/json"
+    "dashboard/pkg/bleve"
+    _package "dashboard/pkg/package"
     "fmt"
     "github.com/tidwall/gjson"
     "io/ioutil"
     "net/http"
     "net/url"
-    "regexp"
-    "strconv"
-    "strings"
-    "sync"
-    "time"
 )
 
-var (
-    wg    sync.WaitGroup
-    lock  sync.Mutex
-    items []github.Item
-)
+//var (
+//    wg    sync.WaitGroup
+//    lock  sync.Mutex
+//    items []github.Item
+//)
 
 type SearchHandler struct {
 }
@@ -29,14 +23,23 @@ func (s SearchHandler) Run() *Response {
     return nil
 }
 
-type Request struct {
-    Keyword string `json:"keyword"`
-}
+type (
+    Request struct {
+        Keyword string `json:"keyword"`
+    }
 
-type SearchResponse struct {
-    Keyword string `json:"keyword"`
-    Date    string `json:"date"`
-}
+    SearchResponse struct {
+        Keyword string         `json:"keyword"`
+        Items   []Item         `json:"item"`
+        Tags    map[string]int `json:"tags"`
+    }
+
+    Item struct {
+        Title string `json:"title"`
+        Url   string `json:"url"`
+        Tag   string `json:"tag"`
+    }
+)
 
 func (s SearchHandler) Do(r *http.Request) *Response {
     b, _ := ioutil.ReadAll(r.Body)
@@ -50,7 +53,30 @@ func (s SearchHandler) Do(r *http.Request) *Response {
 
     var response SearchResponse
     response.Keyword = keyword
-    response.Date = fmt.Sprintf("今日 %s %s,%s", time.Now().Format("2006-01-02"), fetchWeek(), fetchNextHoliday())
+
+    if err = _package.Load(); err != nil {
+        return Fail(err)
+    }
+
+    if err = bleve.Init(); err != nil {
+        return Fail(err)
+    }
+
+    posts, err := bleve.Search(keyword)
+    if err != nil {
+        return Fail(err)
+    }
+    response.Items = posts
+
+    var tags = make(map[string]int, 0)
+    for _, val := range posts {
+        if _, ok := tags[val.Tag]; !ok {
+            tags[val.Tag] = 1
+        } else {
+            tags[val.Tag] = tags[val.Tag] + 1
+        }
+    }
+    response.Tags = tags
 
     return SuccessWithData(response)
 
@@ -89,105 +115,105 @@ func (s SearchHandler) Do(r *http.Request) *Response {
     //return SuccessWithData(items)
 }
 
-var Weeks = map[int]string{1: "星期一", 2: "星期二", 3: "星期三", 4: "星期四", 5: "星期五", 6: "星期六", 7: "星期天"}
+//var Weeks = map[int]string{1: "星期一", 2: "星期二", 3: "星期三", 4: "星期四", 5: "星期五", 6: "星期六", 7: "星期天"}
 
-type dayInfoResponse struct {
-    Code int `json:"code"`
-    Type struct {
-        Week int `json:"week"`
-    } `json:"type"`
-}
+//type dayInfoResponse struct {
+//    Code int `json:"code"`
+//    Type struct {
+//        Week int `json:"week"`
+//    } `json:"type"`
+//}
 
-func fetchWeek() string {
-    r, _ := http.NewRequest(http.MethodGet, fmt.Sprintf(common.HOLIDAY_INFO, time.Now().Format("2006-01-02")), nil)
-    defer func() {
-        if r.Body != nil && r != nil {
-            _ = r.Body.Close()
-        }
-    }()
+//func fetchWeek() string {
+//    r, _ := http.NewRequest(http.MethodGet, fmt.Sprintf(common.HOLIDAY_INFO, time.Now().Format("2006-01-02")), nil)
+//    defer func() {
+//        if r.Body != nil && r != nil {
+//            _ = r.Body.Close()
+//        }
+//    }()
+//
+//    r.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.66 Safari/537.36 Edg/103.0.1264.44")
+//    response, err := http.DefaultClient.Do(r)
+//    if err != nil {
+//        return fmt.Sprintf("请求错误：%s", err.Error())
+//    }
+//    defer func() {
+//        if response != nil && response.Body != nil {
+//            _ = response.Body.Close()
+//        }
+//    }()
+//
+//    var res dayInfoResponse
+//    err = json.NewDecoder(response.Body).Decode(&res)
+//    if err != nil {
+//        return fmt.Sprintf("json 解析错误：%s", err.Error())
+//    }
+//
+//    if res.Code == 0 {
+//        if val, ok := Weeks[res.Type.Week]; ok {
+//            return val
+//        }
+//
+//        return strconv.Itoa(res.Type.Week)
+//    }
+//
+//    return "未知"
+//}
 
-    r.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.66 Safari/537.36 Edg/103.0.1264.44")
-    response, err := http.DefaultClient.Do(r)
-    if err != nil {
-        return fmt.Sprintf("请求错误：%s", err.Error())
-    }
-    defer func() {
-        if response != nil && response.Body != nil {
-            _ = response.Body.Close()
-        }
-    }()
+//type nextDayResponse struct {
+//    Code int    `json:"code"`
+//    Tts  string `json:"tts"`
+//}
 
-    var res dayInfoResponse
-    err = json.NewDecoder(response.Body).Decode(&res)
-    if err != nil {
-        return fmt.Sprintf("json 解析错误：%s", err.Error())
-    }
+//func fetchNextHoliday() string {
+//    r, _ := http.NewRequest(http.MethodGet, common.HOLIDAY, nil)
+//    defer func() {
+//        if r.Body != nil && r != nil {
+//            _ = r.Body.Close()
+//        }
+//    }()
+//
+//    r.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.66 Safari/537.36 Edg/103.0.1264.44")
+//    response, err := http.DefaultClient.Do(r)
+//    if err != nil {
+//        return fmt.Sprintf("请求错误：%s", err.Error())
+//    }
+//    defer func() {
+//        if response != nil && response.Body != nil {
+//            _ = response.Body.Close()
+//        }
+//    }()
+//
+//    var res nextDayResponse
+//    err = json.NewDecoder(response.Body).Decode(&res)
+//    if err != nil {
+//        return fmt.Sprintf("json 解析错误：%s", err.Error())
+//    }
+//
+//    if res.Code == 0 {
+//        re := regexp.MustCompile(`[0-9]{2}的(.*)，`)
+//        holiday := re.FindStringSubmatch(res.Tts)
+//
+//        matchDays := regexp.MustCompile(`\d+天`)
+//        days := matchDays.FindString(res.Tts)
+//        return fmt.Sprintf("距离%s还有%s", holiday[1], days)
+//    }
+//
+//    return ""
+//}
 
-    if res.Code == 0 {
-        if val, ok := Weeks[res.Type.Week]; ok {
-            return val
-        }
-
-        return strconv.Itoa(res.Type.Week)
-    }
-
-    return "未知"
-}
-
-type nextDayResponse struct {
-    Code int    `json:"code"`
-    Tts  string `json:"tts"`
-}
-
-func fetchNextHoliday() string {
-    r, _ := http.NewRequest(http.MethodGet, common.HOLIDAY, nil)
-    defer func() {
-        if r.Body != nil && r != nil {
-            _ = r.Body.Close()
-        }
-    }()
-
-    r.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.66 Safari/537.36 Edg/103.0.1264.44")
-    response, err := http.DefaultClient.Do(r)
-    if err != nil {
-        return fmt.Sprintf("请求错误：%s", err.Error())
-    }
-    defer func() {
-        if response != nil && response.Body != nil {
-            _ = response.Body.Close()
-        }
-    }()
-
-    var res nextDayResponse
-    err = json.NewDecoder(response.Body).Decode(&res)
-    if err != nil {
-        return fmt.Sprintf("json 解析错误：%s", err.Error())
-    }
-
-    if res.Code == 0 {
-        re := regexp.MustCompile(`[0-9]{2}的(.*)，`)
-        holiday := re.FindStringSubmatch(res.Tts)
-
-        matchDays := regexp.MustCompile(`\d+天`)
-        days := matchDays.FindString(res.Tts)
-        return fmt.Sprintf("距离%s还有%s", holiday[1], days)
-    }
-
-    return ""
-}
-
-func checkKeyword(keyword string, data github.Item) {
-    defer wg.Done()
-
-    if strings.ToLower(keyword) == "all" { // 查询所有数据
-        lock.Lock()
-        items = append(items, data)
-        lock.Unlock()
-    } else {
-        if strings.Contains(data.Title, keyword) { // 查询标题中包含关键字的数据
-            lock.Lock()
-            items = append(items, data)
-            lock.Unlock()
-        }
-    }
-}
+//func checkKeyword(keyword string, data github.Item) {
+//    defer wg.Done()
+//
+//    if strings.ToLower(keyword) == "all" { // 查询所有数据
+//        lock.Lock()
+//        items = append(items, data)
+//        lock.Unlock()
+//    } else {
+//        if strings.Contains(data.Title, keyword) { // 查询标题中包含关键字的数据
+//            lock.Lock()
+//            items = append(items, data)
+//            lock.Unlock()
+//        }
+//    }
+//}

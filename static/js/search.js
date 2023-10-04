@@ -1,6 +1,13 @@
+let keyword
 $(document).ready(function () {
-    $('#keyword').keypress(function (event) {
+    $('.keyword').keypress(function (event) {
         if (event.which === 13) {
+            keyword = $(this).val()
+            if (!keyword) {
+                error("请输入关键字")
+                return;
+            }
+
             search()
         }
     });
@@ -12,20 +19,49 @@ $(document).ready(function () {
             error("未登录！");
             redirect("/login", 0)
         }
+
+        let target = localStorage.getItem('disable')
+        if (target === "true") {
+            document.getElementById('pre').style.display = "none"
+            document.getElementById('next').style.display = "block"
+        }
     }
 
     init()
 });
 
-function search() {
-    let keyword = document.getElementById("keyword").value
+function onSearch(than) {
+    keyword = $(than).prev('input').val()
     if (!keyword) {
         error("请输入关键字")
         return;
     }
-    alert(keyword)
+    search()
+}
 
-    // todo:搜索
+function search() {
+    NProgress.start()
+    postWithHeader('search_do', {'keyword': keyword}, function (response) {
+        NProgress.done();
+        let data = response.data;
+        if (data.status === 200) {
+            console.log("data", data.data.)
+        } else {
+            error(data.msg);
+        }
+    }, function (err) {
+        NProgress.done();
+        error(`请求失败: ${err}`);
+    })
+
+    document.getElementById('keyword').value = keyword
+
+    let target = localStorage.getItem('disable')
+    if (!target) {
+        document.getElementById('pre').style.display = "none"
+        document.getElementById('next').style.display = "block"
+        localStorage.setItem('disable', "true")
+    }
 }
 
 function logout() {
