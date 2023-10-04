@@ -45,7 +45,7 @@ function search() {
         NProgress.done();
         let data = response.data;
         if (data.status === 200) {
-            console.log("data", data.data.)
+            console.log("data", data.data)
         } else {
             error(data.msg);
         }
