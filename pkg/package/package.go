@@ -3,7 +3,6 @@ package _package
 import (
     "dashboard/common"
     "errors"
-    "github.com/sirupsen/logrus"
     "io/ioutil"
     "net/http"
     "regexp"
@@ -57,7 +56,6 @@ func Load() error {
 
     wg.Wait()
 
-    logrus.Info("Posts", len(Posts))
     return nil
 }
 

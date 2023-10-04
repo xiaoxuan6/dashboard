@@ -8,6 +8,8 @@ import (
     "io/ioutil"
     "net/http"
     "net/url"
+    "strconv"
+    "sync"
 )
 
 //var (
@@ -15,6 +17,11 @@ import (
 //    lock  sync.Mutex
 //    items []github.Item
 //)
+
+var (
+	wg sync.WaitGroup
+	lock sync.Mutex
+)
 
 type SearchHandler struct {
 }
@@ -29,9 +36,9 @@ type (
     }
 
     SearchResponse struct {
-        Keyword string         `json:"keyword"`
-        Items   []bleve.Item   `json:"item"`
-        Tags    map[string]int `json:"tags"`
+        Keyword string          `json:"keyword"`
+        Posts   []_package.Post `json:"posts"`
+        Tags    map[string]int  `json:"tags"`
     }
 )
 
@@ -56,20 +63,35 @@ func (s SearchHandler) Do(r *http.Request) *Response {
         return Fail(err)
     }
 
-    posts, err := bleve.Search(keyword)
+    ids, err := bleve.Search(keyword)
     if err != nil {
         return Fail(err)
     }
-    response.Items = posts
 
     var tags = make(map[string]int, 0)
-    for _, val := range posts {
-        if _, ok := tags[val.Tag]; !ok {
-            tags[val.Tag] = 1
-        } else {
-            tags[val.Tag] = tags[val.Tag] + 1
-        }
+    var posts []_package.Post
+    for _, val := range ids {
+        wg.Add(1)
+
+        go func(wg *sync.WaitGroup, val string) {
+            defer wg.Done()
+            i, _ := strconv.Atoi(val)
+            post := _package.Posts[i]
+
+            lock.Lock()
+            posts = append(posts, post)
+            lock.Unlock()
+
+            if _, ok := tags[post.Tag]; !ok {
+                tags[post.Tag] = 1
+            } else {
+                tags[post.Tag] = tags[post.Tag] + 1
+            }
+        }(&wg, val)
     }
+
+    wg.Wait()
+    response.Posts = posts
     response.Tags = tags
 
     return SuccessWithData(response)
