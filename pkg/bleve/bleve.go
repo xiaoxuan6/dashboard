@@ -4,6 +4,7 @@ import (
     _package "dashboard/pkg/package"
     "fmt"
     "github.com/blevesearch/bleve/v2"
+    "github.com/sirupsen/logrus"
 )
 
 var index bleve.Index
@@ -38,13 +39,18 @@ func Search(keyword string) ([]Item, error) {
         return nil, err
     }
 
+    logrus.Info("searchResults.Hits", searchResults.Hits)
     var items []Item
     for _, hit := range searchResults.Hits {
-        items = append(items, Item{
-            Title: hit.Fields["Title"].(string),
-            Url:   hit.Fields["Url"].(string),
-            Tag:   hit.Fields["Tag"].(string),
-        })
+        logrus.Info("hit.Fields", hit.Fields)
+        if hit.Fields["Title"] != nil {
+            title := hit.Fields["Title"].(string)
+            items = append(items, Item{
+                Title: title,
+                Url:   hit.Fields["Url"].(string),
+                Tag:   hit.Fields["Tag"].(string),
+            })
+        }
     }
 
     return items, nil
