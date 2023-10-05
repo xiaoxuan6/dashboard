@@ -32,14 +32,15 @@ $(document).ready(function () {
     $(document).on('click', '.tag-item', function () {
         let than = $(this);
         let val = than.find('input[type="radio"]').data('val');
-        console.log("val", val);
+        than.find('input[type="radio"]').prop('checked', true);
+
         let data = localStorage.getItem('search_posts');
+        data = JSON.parse(data);
         document.getElementById('accordion').innerHTML = '';
         if (val === '') {
             appendContent(data);
         } else {
             let posts = [];
-            data = JSON.parse(data); // 将字符串解析为对象或数组
             for (let i = 0; i < data.length; i++) {
                 if (data[i].tag === val) {
                     posts.push(data[i]);
