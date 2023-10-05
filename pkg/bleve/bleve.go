@@ -5,12 +5,13 @@ import (
     "fmt"
     "github.com/blevesearch/bleve/v2"
     "strconv"
+    "strings"
     "sync"
 )
 
 var (
     index  bleve.Index
-    Fields = []string{"Title"}
+    Fields = []string{"Title", "Url", "Tag"}
     lock   sync.Mutex
 )
 
@@ -45,13 +46,21 @@ func Search(keyword string) ([]_package.Post, error) {
             continue
         }
 
-        for _, fragments := range hit.Fragments {
+        for fragmentField, fragments := range hit.Fragments {
+            // 高亮字段只处理 title
+            if fragmentField != "Title" {
+                continue
+            }
+
             var highlightValue string
             for _, fragment := range fragments {
                 highlightValue = fmt.Sprintf("%s", fragment)
             }
             id, _ := strconv.Atoi(hit.ID)
             post := _package.Posts[id]
+
+            highlightValue = strings.ReplaceAll(highlightValue, "<mark>", "<span class=\"h-keyword\">")
+            highlightValue = strings.ReplaceAll(highlightValue, "</mark>", "</span>")
 
             lock.Lock()
             posts = append(posts, _package.Post{

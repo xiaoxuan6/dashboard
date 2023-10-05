@@ -39,13 +39,54 @@ function onSearch(than) {
     search()
 }
 
+function appendContent(data) {
+    let html = ''
+    for (let i = 0; i < data.length; i++) {
+        html += '<div class="card mb-1 rounded-0 shadow border-0 card-PDF">\n' +
+            '    <div id="will-updates-also-be-free">\n' +
+            '        <div class="card-body font-secondary text-color">\n' +
+            '            <h5>\n' +
+            '                <a class="resource-link" target="_blank" rel="noopener noreferrer nofollow"\n' +
+            '                   href="' + data[1].url + '">' + data[i].title + '</a>\n' +
+            '            </h5>\n' +
+            '            <p>\n' +
+            '            </p>\n' +
+            '            <p style="margin-bottom: 0">\n' +
+            '                <span>' + data[i].tag + '</span>\n' +
+            '            </p>\n' +
+            '        </div>\n' +
+            '    </div>\n' +
+            '</div>'
+    }
+    document.getElementById('accordion').innerHTML = html
+}
+
+function append(data) {
+    let posts = data.posts
+    appendContent(posts)
+    localStorage.setItem('search_posts', posts)
+
+    let tags = data.tags
+    let tags_html = '<span class="tag-item tag-item-all" style="margin-right: 20px">\n' +
+        '   <input type="radio" class="tag" data-val=""/>\n' +
+        '   <label>全部</label>\n' +
+        '</span>\n'
+    $.each(tags, function (key, value) {
+        tags_html += '<span class="tag-item" data-ext="DOC">\n' +
+            '   <input type="radio" class="tag" data-val="' + key + '"/>\n' +
+            '   <label>' + key + '(' + value + ')</label>\n' +
+            '</span>'
+    })
+    document.getElementById('tags').innerHTML = tags_html
+}
+
 function search() {
     NProgress.start()
     postWithHeader('search_do', {'keyword': keyword}, function (response) {
         NProgress.done();
         let data = response.data;
         if (data.status === 200) {
-            console.log("data", data.data)
+            append(data.data)
         } else {
             error(data.msg);
         }
