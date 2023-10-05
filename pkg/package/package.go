@@ -3,6 +3,7 @@ package _package
 import (
     "dashboard/common"
     "errors"
+    "fmt"
     "io/ioutil"
     "net/http"
     "regexp"
@@ -46,7 +47,7 @@ func Load() error {
                 lock.Lock()
                 Posts = append(Posts, Post{
                     Title: regexpStr[3],
-                    Url:   regexpStr[2],
+                    Url:   fmt.Sprintf("https://%s", regexpStr[2]),
                     Tag:   "go-package",
                 })
                 lock.Unlock()
