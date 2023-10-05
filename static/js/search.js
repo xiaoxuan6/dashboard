@@ -29,24 +29,25 @@ $(document).ready(function () {
 
     init()
 
-    $('.tag-item').click(function () {
-        let than = $(this)
-        let val = than.find('input[type="radio"]').data('val')
-        console.log("val", val)
-        let data = localStorage.getItem('search_posts')
-        document.getElementById('accordion').innerHTML = ''
+    $(document).on('click', '.tag-item', function () {
+        let than = $(this);
+        let val = than.find('input[type="radio"]').data('val');
+        console.log("val", val);
+        let data = localStorage.getItem('search_posts');
+        document.getElementById('accordion').innerHTML = '';
         if (val === '') {
-            appendContent(data)
+            appendContent(data);
         } else {
-            let posts = []
+            let posts = [];
+            data = JSON.parse(data); // 将字符串解析为对象或数组
             for (let i = 0; i < data.length; i++) {
                 if (data[i].tag === val) {
-                    posts.push(data[i])
+                    posts.push(data[i]);
                 }
             }
-            appendContent(posts)
+            appendContent(posts);
         }
-    })
+    });
 });
 
 function onSearch(than) {
@@ -87,7 +88,7 @@ function append(data) {
     if (posts !== null) {
         appendContent(posts)
 
-        localStorage.setItem('search_posts', posts)
+        localStorage.setItem('search_posts', JSON.stringify(posts));
         let tags = data.tags
         let tags_html = '<span class="tag-item tag-item-all" style="margin-right: 20px">\n' +
             '   <input type="radio" class="tag" name="tag" data-val=""/>\n' +
