@@ -33,7 +33,7 @@ func Init() error {
 func Search(keyword string) ([]_package.Post, error) {
     var posts []_package.Post
     query := bleve.NewQueryStringQuery(keyword)
-    search := bleve.NewSearchRequest(query)
+    search := bleve.NewSearchRequestOptions(query, 100, 0, false)
     search.Fields = Fields
     search.Highlight = bleve.NewHighlight()
     searchResults, err := index.Search(search)

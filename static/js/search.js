@@ -30,9 +30,9 @@ $(document).ready(function () {
     init()
 
     $('.tag-item').click(function () {
-        alert('ok')
         let than = $(this)
         let val = than.find('input[type="radio"]').data('val')
+        console.log("val", val)
         let data = localStorage.getItem('search_posts')
         document.getElementById('accordion').innerHTML = ''
         if (val === '') {
