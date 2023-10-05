@@ -28,6 +28,24 @@ $(document).ready(function () {
     }
 
     init()
+
+    $('.tag').click(function () {
+        let than = $(this)
+        let val = than.data('val')
+        let data = localStorage.getItem('search_posts')
+        document.getElementById('accordion').innerHTML = ''
+        if (val === '') {
+            appendContent(data)
+        } else {
+            let posts = []
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].tag === val) {
+                    posts.push(data[i])
+                }
+            }
+            appendContent(posts)
+        }
+    })
 });
 
 function onSearch(than) {
@@ -47,7 +65,7 @@ function appendContent(data) {
             '        <div class="card-body font-secondary text-color">\n' +
             '            <h5>\n' +
             '                <a class="resource-link" target="_blank" rel="noopener noreferrer nofollow"\n' +
-            '                   href="' + data[1].url + '">' + data[i].title + '</a>\n' +
+            '                   href="' + data[i].url + '">' + data[i].title + '</a>\n' +
             '            </h5>\n' +
             '            <p>\n' +
             '            </p>\n' +
@@ -63,21 +81,28 @@ function appendContent(data) {
 
 function append(data) {
     let posts = data.posts
-    appendContent(posts)
-    localStorage.setItem('search_posts', posts)
+    $('#tags').html('');
+    $('#accordion').html('');
+    if (posts !== null) {
+        appendContent(posts)
 
-    let tags = data.tags
-    let tags_html = '<span class="tag-item tag-item-all" style="margin-right: 20px">\n' +
-        '   <input type="radio" class="tag" data-val=""/>\n' +
-        '   <label>全部</label>\n' +
-        '</span>\n'
-    $.each(tags, function (key, value) {
-        tags_html += '<span class="tag-item" data-ext="DOC">\n' +
-            '   <input type="radio" class="tag" data-val="' + key + '"/>\n' +
-            '   <label>' + key + '(' + value + ')</label>\n' +
-            '</span>'
-    })
-    document.getElementById('tags').innerHTML = tags_html
+        localStorage.setItem('search_posts', posts)
+        let tags = data.tags
+        let tags_html = '<span class="tag-item tag-item-all" style="margin-right: 20px">\n' +
+            '   <input type="radio" class="tag" name="tag" data-val=""/>\n' +
+            '   <label>全部</label>\n' +
+            '</span>\n'
+        $.each(tags, function (key, value) {
+            tags_html += '<span class="tag-item" data-ext="DOC">\n' +
+                '   <input type="radio" class="tag" name="tag" data-val="' + key + '"/>\n' +
+                '   <label>' + key + '(' + value + ')</label>\n' +
+                '</span>'
+        })
+        $('#tags').append(tags_html)
+        $('.tag-item-all').next('input').addClass('selected');
+    } else {
+        error("没有找到相关资源")
+    }
 }
 
 function search() {
@@ -87,10 +112,16 @@ function search() {
         let data = response.data;
         if (data.status === 200) {
             append(data.data)
+        } else if (data.status === 401) {
+            error(data.msg);
+            localStorage.removeItem('token')
+            redirect('/login', 1000)
         } else {
             error(data.msg);
         }
     }, function (err) {
+        $('#tags').html('');
+        $('#accordion').html('');
         NProgress.done();
         error(`请求失败: ${err}`);
     })

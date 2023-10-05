@@ -48,7 +48,7 @@ func Search(keyword string) ([]_package.Post, error) {
 
         for fragmentField, fragments := range hit.Fragments {
             // 高亮字段只处理 title
-            if fragmentField != "Title" {
+            if fragmentField != "Title" && fragmentField != "title" {
                 continue
             }
 
