@@ -139,5 +139,5 @@ function search() {
 function logout() {
     localStorage.removeItem("token")
     Notiflix.Notify.success("退出成功")
-    redirect("/login", 1000)
+    redirect("/", 1000)
 }

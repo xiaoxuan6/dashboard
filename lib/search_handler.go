@@ -1,25 +1,21 @@
 package lib
 
 import (
+    "context"
     "dashboard/pkg/bleve"
+    "dashboard/pkg/github"
     _package "dashboard/pkg/package"
     "fmt"
+    github2 "github.com/google/go-github/v48/github"
+    "github.com/sirupsen/logrus"
     "github.com/tidwall/gjson"
     "io/ioutil"
     "net/http"
     "net/url"
+    "os"
+    "regexp"
+    "strings"
     "sync"
-)
-
-//var (
-//    wg    sync.WaitGroup
-//    lock  sync.Mutex
-//    items []github.Item
-//)
-
-var (
-	wg sync.WaitGroup
-	lock sync.Mutex
 )
 
 type SearchHandler struct {
@@ -54,8 +50,11 @@ func (s SearchHandler) Do(r *http.Request) *Response {
     var response SearchResponse
     response.Keyword = keyword
 
-    if err = _package.Load(); err != nil {
-        return Fail(err)
+    if len(_package.Posts) < 1 {
+        Load()
+        if err = _package.Load(); err != nil {
+            return Fail(err)
+        }
     }
 
     if err = bleve.Init(); err != nil {
@@ -81,39 +80,66 @@ func (s SearchHandler) Do(r *http.Request) *Response {
 
     return SuccessWithData(response)
 
-    //fn := func(keyword string, item []github.Item) {
-    //    for _, val := range items {
-    //        wg.Add(1)
-    //        go checkKeyword(keyword, val)
-    //    }
-    //}
-    //
-    //// 从缓存中重新获取数据赋值
-    ////Load()
-    //
-    //keyword := gjson.Get(decodedString, "keyword").String()
-    //keywords := strings.Split(keyword, " ")
-    //if len(keywords) == 2 {
-    //    tag := keywords[1]
-    //    for _, val := range github.Menus {
-    //        if strings.Compare(val, tag) == 0 {
-    //            item, _ := github.Data[tag]
-    //
-    //            fn(keywords[0], item)
-    //            wg.Wait()
-    //            return SuccessWithData(items)
-    //        }
-    //    }
-    //}
-    //
-    //var dates []github.Item
-    //for _, val := range github.Data {
-    //    dates = append(dates, val...)
-    //}
-    //
-    //fn(keyword, dates)
-    //wg.Wait()
-    //return SuccessWithData(items)
+}
+
+var (
+    ctx      = context.Background()
+    filename = "result.txt"
+    lock     sync.Mutex
+    wg       sync.WaitGroup
+)
+
+func Load() {
+    defer func() {
+        if r := recover(); r != nil {
+            logrus.Error("github load data Recovered in f", r)
+            return
+        }
+    }()
+
+    github.Init()
+    repositoryContent, _, _, err := github.Client.Repositories.GetContents(ctx, os.Getenv("GITHUB_OWNER"), os.Getenv("GITHUB_REPO"), filename, &github2.RepositoryContentGetOptions{})
+    if err != nil {
+        panic(err)
+    }
+
+    content, err2 := repositoryContent.GetContent()
+    if err2 != nil {
+        panic(err2)
+    }
+
+    contents := strings.Split(content, "\n")
+    for _, val := range contents {
+        wg.Add(1)
+        go func(wg *sync.WaitGroup, val string) {
+            defer wg.Done()
+            uri := github.RegexpUrl(val)
+            title := github.RegexpTitle(val)
+            tag := RegexpTag(val)
+            if uri != "" && title != "" && tag != "" {
+                lock.Lock()
+                _package.Posts = append(_package.Posts, _package.Post{
+                    Title: title,
+                    Url:   uri,
+                    Tag:   tag,
+                })
+                lock.Unlock()
+            }
+        }(&wg, val)
+    }
+
+    wg.Wait()
+    return
+}
+
+func RegexpTag(str string) string {
+    re := regexp.MustCompile(`\)\|(.*?)\|`)
+    matches := re.FindStringSubmatch(str)
+    if len(matches) > 1 {
+        return matches[1]
+    }
+
+    return ""
 }
 
 //var Weeks = map[int]string{1: "星期一", 2: "星期二", 3: "星期三", 4: "星期四", 5: "星期五", 6: "星期六", 7: "星期天"}
@@ -201,20 +227,4 @@ func (s SearchHandler) Do(r *http.Request) *Response {
 //    }
 //
 //    return ""
-//}
-
-//func checkKeyword(keyword string, data github.Item) {
-//    defer wg.Done()
-//
-//    if strings.ToLower(keyword) == "all" { // 查询所有数据
-//        lock.Lock()
-//        items = append(items, data)
-//        lock.Unlock()
-//    } else {
-//        if strings.Contains(data.Title, keyword) { // 查询标题中包含关键字的数据
-//            lock.Lock()
-//            items = append(items, data)
-//            lock.Unlock()
-//        }
-//    }
 //}

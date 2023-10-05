@@ -11,7 +11,7 @@ import (
 )
 
 var (
-    Github *github.Client
+    Client *github.Client
     one    sync.Once
     lock   sync.Mutex
     ctx    = context.Background()
@@ -26,7 +26,7 @@ func Init() {
             AccessToken: token,
         }))
 
-        Github = github.NewClient(oauth)
+        Client = github.NewClient(oauth)
     })
 }
 
@@ -36,7 +36,7 @@ type Item struct {
 }
 
 func FetchMenus() {
-    _, directoryContent, _, _ := Github.Repositories.GetContents(ctx, os.Getenv("GITHUB_OWNER"), os.Getenv("GITHUB_REPO"), "", &github.RepositoryContentGetOptions{})
+    _, directoryContent, _, _ := Client.Repositories.GetContents(ctx, os.Getenv("GITHUB_OWNER"), os.Getenv("GITHUB_REPO"), "", &github.RepositoryContentGetOptions{})
 
     for _, val := range directoryContent {
         if strings.HasSuffix(val.GetName(), ".md") {
@@ -49,7 +49,7 @@ func FetchMenus() {
 
 func FetchContent(filename string, wg *sync.WaitGroup) {
     defer wg.Done()
-    repositoryContent, _, _, err := Github.Repositories.GetContents(ctx, os.Getenv("GITHUB_OWNER"), os.Getenv("GITHUB_REPO"), filename, &github.RepositoryContentGetOptions{})
+    repositoryContent, _, _, err := Client.Repositories.GetContents(ctx, os.Getenv("GITHUB_OWNER"), os.Getenv("GITHUB_REPO"), filename, &github.RepositoryContentGetOptions{})
     if err != nil {
         return
     }
@@ -62,12 +62,12 @@ func FetchContent(filename string, wg *sync.WaitGroup) {
     var items []Item
     contents := strings.Split(content, "\n")
     for _, val := range contents {
-        url := regexpUrl(val)
+        url := RegexpUrl(val)
         if url == "" {
             continue
         }
 
-        title := regexpTitle(val)
+        title := RegexpTitle(val)
         items = append(items, Item{
             Title: title,
             Url:   url,
@@ -80,7 +80,7 @@ func FetchContent(filename string, wg *sync.WaitGroup) {
     lock.Unlock()
 }
 
-func regexpTitle(str string) string {
+func RegexpTitle(str string) string {
     re := regexp.MustCompile(`\[(.*?)\]`)
     matches := re.FindStringSubmatch(str)
     if len(matches) > 1 {
@@ -90,7 +90,7 @@ func regexpTitle(str string) string {
     return ""
 }
 
-func regexpUrl(str string) string {
+func RegexpUrl(str string) string {
     re := regexp.MustCompile(`\((.*?)\)`)
     matches := re.FindStringSubmatch(str)
     if len(matches) > 1 {
