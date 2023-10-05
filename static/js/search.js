@@ -99,7 +99,7 @@ function append(data) {
                 '</span>'
         })
         $('#tags').append(tags_html)
-        $('.tag-item-all').next('input').addClass('selected');
+        $('.tag-item-all').next('input[type="radio"]').prop('checked', true);
     } else {
         error("没有找到相关资源")
     }
