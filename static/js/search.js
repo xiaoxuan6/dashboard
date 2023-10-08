@@ -93,7 +93,7 @@ function append(data) {
         let tags = data.tags
         let tags_html = '<span class="tag-item tag-item-all" style="margin-right: 20px">\n' +
             '   <input type="radio" class="tag" name="tag" data-val=""/>\n' +
-            '   <label>全部</label>\n' +
+            '   <label>全部(' + data.total + '/' + data.page_count + ')</label>\n' +
             '</span>\n'
         $.each(tags, function (key, value) {
             tags_html += '<span class="tag-item" data-ext="DOC">\n' +
@@ -141,6 +141,7 @@ function search() {
 
 function logout() {
     localStorage.removeItem("token")
+    localStorage.removeItem("disable")
     Notiflix.Notify.success("退出成功")
     redirect("/", 1000)
 }

@@ -31,9 +31,11 @@ type (
     }
 
     SearchResponse struct {
-        Keyword string          `json:"keyword"`
-        Posts   []_package.Post `json:"posts"`
-        Tags    map[string]int  `json:"tags"`
+        Keyword   string          `json:"keyword"`
+        Posts     []_package.Post `json:"posts"`
+        Tags      map[string]int  `json:"tags"`
+        Total     int64           `json:"total"`
+        PageCount int             `json:"page_count"`
     }
 )
 
@@ -77,6 +79,8 @@ func (s SearchHandler) Do(r *http.Request) *Response {
 
     response.Posts = posts
     response.Tags = tags
+    response.Total = int64(bleve.Total)
+    response.PageCount = len(posts)
 
     return SuccessWithData(response)
 

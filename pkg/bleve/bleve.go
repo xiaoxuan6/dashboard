@@ -13,6 +13,7 @@ var (
     index  bleve.Index
     Fields = []string{"Title", "Url", "Tag"}
     lock   sync.Mutex
+    Total  uint64
 )
 
 func Init() error {
@@ -41,6 +42,7 @@ func Search(keyword string) ([]_package.Post, error) {
         return posts, err
     }
 
+    Total = searchResults.Total
     for _, hit := range searchResults.Hits {
         if hit.Fragments == nil {
             continue
