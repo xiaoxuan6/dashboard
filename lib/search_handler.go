@@ -48,6 +48,7 @@ func (s SearchHandler) Do(r *http.Request) *Response {
         return FailWithMsg(fmt.Sprintf("解码URL编码字符串时发生错误: %s", err.Error()))
     }
     keyword := gjson.Get(decodedString, "keyword").String()
+    page := int(gjson.Get(decodedString, "page").Int())
 
     var response SearchResponse
     response.Keyword = keyword
@@ -63,7 +64,10 @@ func (s SearchHandler) Do(r *http.Request) *Response {
         return Fail(err)
     }
 
-    posts, err := bleve.Search(keyword)
+    if page == 0 {
+        page = 1
+    }
+    posts, err := bleve.Search(keyword, page)
     if err != nil {
         return Fail(err)
     }

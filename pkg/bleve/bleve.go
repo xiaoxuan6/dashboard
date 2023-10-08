@@ -10,10 +10,11 @@ import (
 )
 
 var (
-    index  bleve.Index
-    Fields = []string{"Title", "Url", "Tag"}
-    lock   sync.Mutex
-    Total  uint64
+    index    bleve.Index
+    Fields   = []string{"Title", "Url", "Tag"}
+    lock     sync.Mutex
+    Total    uint64
+    pageSize = 100
 )
 
 func Init() error {
@@ -31,13 +32,11 @@ func Init() error {
     return nil
 }
 
-func Search(keyword string) ([]_package.Post, error) {
+func Search(keyword string, page int) ([]_package.Post, error) {
     var posts []_package.Post
-    query := bleve.NewQueryStringQuery(keyword)
-    search := bleve.NewSearchRequestOptions(query, 100, 0, false)
-    search.Fields = Fields
-    search.Highlight = bleve.NewHighlight()
-    searchResults, err := index.Search(search)
+
+    from := (page - 1) * pageSize
+    searchResults, err := queryWithPageExec(keyword, pageSize, from)
     if err != nil {
         return posts, err
     }
@@ -86,4 +85,24 @@ func Search(keyword string) ([]_package.Post, error) {
     }
 
     return posts, nil
+}
+
+func queryExec(keyword string) (*bleve.SearchResult, error) {
+    q := bleve.NewQueryStringQuery(keyword)
+    search := bleve.NewSearchRequest(q)
+    search.Fields = Fields
+    search.Highlight = bleve.NewHighlight()
+    searchResults, err := index.Search(search)
+
+    return searchResults, err
+}
+
+func queryWithPageExec(keyword string, size, from int) (*bleve.SearchResult, error) {
+    q := bleve.NewQueryStringQuery(keyword)
+    search := bleve.NewSearchRequestOptions(q, size, from, false)
+    search.Fields = Fields
+    search.Highlight = bleve.NewHighlight()
+    searchResults, err := index.Search(search)
+
+    return searchResults, err
 }
