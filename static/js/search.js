@@ -25,6 +25,13 @@ $(document).ready(function () {
             document.getElementById('pre').style.display = "none"
             document.getElementById('next').style.display = "block"
         }
+
+        keyword = localStorage.getItem('keyword')
+        if (keyword) {
+            localStorage.removeItem('keyword')
+            search()
+        }
+
     }
 
     init()
@@ -118,6 +125,7 @@ function search() {
         } else if (data.status === 401) {
             error(data.msg);
             localStorage.removeItem('token')
+            localStorage.setItem('keyword', keyword)
             redirect('/login', 1000)
         } else {
             error(data.msg);
