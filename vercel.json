@@ -34,7 +34,7 @@
         }
     ],
     "env": {
-        "JWT_EXPIRES_AT": "12",
+        "JWT_EXPIRES_AT": "72",
         "GITHUB_OWNER": "xiaoxuan6",
         "GITHUB_REPO": "resource"
     }

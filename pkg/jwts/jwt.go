@@ -9,7 +9,7 @@ import (
 type MyClaims struct {
     Email    string `json:"email"`
     Password string `json:"password"`
-    Time     string `json:"time"` // 生成 token 时的时间，方式生成的 token 不变
+    Time     string `json:"time"` // 生成 token 时的时间，防止生成的 token 不变
     jwt.StandardClaims
 }
 
