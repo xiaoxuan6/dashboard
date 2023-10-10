@@ -48,7 +48,7 @@ func Load() error {
                 Posts = append(Posts, Post{
                     Title: regexpStr[3],
                     Url:   fmt.Sprintf("https://%s", regexpStr[2]),
-                    Tag:   "go-package",
+                    Tag:   common.GoTags,
                 })
                 lock.Unlock()
             }
@@ -61,7 +61,7 @@ func Load() error {
 }
 
 func fileGetContent() (b []byte, err error) {
-    response, err := http.Get(common.PACKAGE_URL)
+    response, err := http.Get(common.PackageUrl)
     if err != nil {
         return b, errors.New("请求错误：" + err.Error())
     }
