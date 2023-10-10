@@ -2,11 +2,13 @@ package lib
 
 import (
     "context"
+    "dashboard/common"
     "dashboard/pkg/bleve"
     "dashboard/pkg/github"
     _package "dashboard/pkg/package"
     "fmt"
     github2 "github.com/google/go-github/v48/github"
+    "github.com/mgutz/str"
     "github.com/sirupsen/logrus"
     "github.com/tidwall/gjson"
     "io/ioutil"
@@ -50,9 +52,6 @@ func (s SearchHandler) Do(r *http.Request) *Response {
     keyword := gjson.Get(decodedString, "keyword").String()
     page := int(gjson.Get(decodedString, "page").Int())
 
-    var response SearchResponse
-    response.Keyword = keyword
-
     if len(_package.Posts) < 1 {
         Load()
         if err = _package.Load(); err != nil {
@@ -60,16 +59,29 @@ func (s SearchHandler) Do(r *http.Request) *Response {
         }
     }
 
-    if err = bleve.Init(); err != nil {
-        return Fail(err)
-    }
+    var (
+        posts    []_package.Post
+        response SearchResponse
+    )
+    response.Keyword = keyword
+    if str.SliceContains(common.TAGS, keyword) {
+        for _, post := range _package.Posts {
+            if post.Tag == keyword {
+                posts = append(posts, post)
+            }
+        }
+    } else {
+        if err = bleve.Init(); err != nil {
+            return Fail(err)
+        }
 
-    if page == 0 {
-        page = 1
-    }
-    posts, err := bleve.Search(keyword, page)
-    if err != nil {
-        return Fail(err)
+        if page == 0 {
+            page = 1
+        }
+        posts, err = bleve.Search(keyword, page)
+        if err != nil {
+            return Fail(err)
+        }
     }
 
     var tags = make(map[string]int, 0)
