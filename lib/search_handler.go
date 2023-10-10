@@ -52,34 +52,25 @@ func (s SearchHandler) Do(r *http.Request) *Response {
     keyword := gjson.Get(decodedString, "keyword").String()
     page := int(gjson.Get(decodedString, "page").Int())
 
+    if len(_package.Posts) < 1 {
+        Load()
+        if err = _package.Load(); err != nil {
+            return Fail(err)
+        }
+    }
+
     var (
-        tag      = ""
         posts    []_package.Post
         response SearchResponse
     )
     response.Keyword = keyword
     if str.SliceContains(common.TAGS, keyword) {
-        tag = keyword
-        if keyword == common.GoTags {
-            _ = _package.Load()
-        } else {
-            Load()
-        }
         for _, post := range _package.Posts {
             if post.Tag == keyword {
                 posts = append(posts, post)
             }
         }
     } else {
-        if len(tag) > 0 {
-            tag = ""
-            _package.Posts = []_package.Post{}
-        }
-        if len(_package.Posts) == 0 {
-            Load()
-            _ = _package.Load()
-        }
-
         if err = bleve.Init(); err != nil {
             return Fail(err)
         }
