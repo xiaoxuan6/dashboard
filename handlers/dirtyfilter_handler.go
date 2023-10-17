@@ -9,13 +9,9 @@ import (
     "net/url"
 )
 
-var DirtryfilterHandler = newDritryfilter()
+var DirtryfilterHandler = new(dirtryfilterHandler)
 
 type dirtryfilterHandler struct {
-}
-
-func newDritryfilter() *dirtryfilterHandler {
-    return new(dirtryfilterHandler)
 }
 
 func (d dirtryfilterHandler) Filter(c *gin.Context) {

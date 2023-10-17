@@ -28,7 +28,7 @@ func init() {
         }
     }()
 
-    words := []string{}
+    words := make([]string, 0, 1000)
     br := bufio.NewReader(res.Body)
     for {
         a, _, c := br.ReadLine()

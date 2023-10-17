@@ -4,31 +4,27 @@ import (
     _ "embed"
     "encoding/json"
     "github.com/gin-gonic/gin"
-    "github.com/sirupsen/logrus"
     "net/http"
 )
 
 //go:embed config.json
 var config []byte
 
-var DocsHandler = newDocsHandler()
-
-func newDocsHandler() *docsHandler {
-    return new(docsHandler)
-}
+var DocsHandler = new(docsHandler)
 
 type docsHandler struct {
 }
 
-type Config struct {
-    Apis []Api `json:"apis"`
-}
-
-type Api struct {
-    Url   string `json:"url"`
-    Title string `json:"title"`
-    Desc  string `json:"desc"`
-}
+type (
+    Config struct {
+        Apis []Api `json:"apis"`
+    }
+    Api struct {
+        Url   string `json:"url"`
+        Title string `json:"title"`
+        Desc  string `json:"desc"`
+    }
+)
 
 func (d docsHandler) Index(c *gin.Context) {
     var cs Config
@@ -41,42 +37,39 @@ func (d docsHandler) Index(c *gin.Context) {
     })
 }
 
-type Docs struct {
+type (
     Docs struct {
-        Dirtyfilter Item `json:"dirtyfilter"`
-    } `json:"docs"`
-}
-
-type Item struct {
-    Url      string     `json:"url"`
-    Method   string     `json:"method"`
-    UrlDemo  string     `json:"url_demo"`
-    Params   []params   `json:"params"`
-    Response []response `json:"response"`
-    Codes    []codes    `json:"codes"`
-}
-
-type params struct {
-    Name    string `json:"name"`
-    Require string `json:"require"`
-    Type    string `json:"type"`
-    Desc    string `json:"desc"`
-}
-
-type response struct {
-    Name string `json:"name"`
-    Type string `json:"type"`
-    Desc string `json:"desc"`
-}
-
-type codes struct {
-    Code string `json:"code"`
-    Desc string `json:"desc"`
-}
+        Docs struct {
+            Dirtyfilter Item `json:"dirtyfilter"`
+        } `json:"docs"`
+    }
+    Item struct {
+        Url      string     `json:"url"`
+        Method   string     `json:"method"`
+        UrlDemo  string     `json:"url_demo"`
+        Params   []params   `json:"params"`
+        Response []response `json:"response"`
+        Codes    []codes    `json:"codes"`
+    }
+    params struct {
+        Name    string `json:"name"`
+        Require string `json:"require"`
+        Type    string `json:"type"`
+        Desc    string `json:"desc"`
+    }
+    response struct {
+        Name string `json:"name"`
+        Type string `json:"type"`
+        Desc string `json:"desc"`
+    }
+    codes struct {
+        Code string `json:"code"`
+        Desc string `json:"desc"`
+    }
+)
 
 func (d docsHandler) Edit(c *gin.Context) {
     id := c.Param("id")
-    logrus.Info("id ", id)
     var docs Docs
     _ = json.Unmarshal(config, &docs)
 

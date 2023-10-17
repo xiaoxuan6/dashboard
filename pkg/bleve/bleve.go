@@ -33,7 +33,7 @@ func Init() error {
 }
 
 func Search(keyword string, page int) ([]_package.Post, error) {
-    var posts []_package.Post
+    posts := make([]_package.Post, 0, 100)
 
     from := (page - 1) * pageSize
     searchResults, err := queryWithPageExec(keyword, pageSize, from)

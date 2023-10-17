@@ -60,7 +60,7 @@ func (s SearchHandler) Do(r *http.Request) *Response {
     }
 
     var (
-        posts    []_package.Post
+        posts    = make([]_package.Post, 0, 100)
         response SearchResponse
     )
     response.Keyword = keyword

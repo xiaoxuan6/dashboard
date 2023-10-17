@@ -59,7 +59,7 @@ func FetchContent(filename string, wg *sync.WaitGroup) {
         return
     }
 
-    var items []Item
+    items := make([]Item, 0, 100)
     contents := strings.Split(content, "\n")
     for _, val := range contents {
         url := RegexpUrl(val)
