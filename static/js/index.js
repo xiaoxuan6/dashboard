@@ -1,11 +1,6 @@
 init()
 
 function init() {
-    token = localStorage.getItem("token")
-    if (token !== undefined && token !== null) {
-        window.location.href = "/search"
-        return
-    }
 
     get("index", function (response) {
             let data = response.data;
@@ -15,8 +10,8 @@ function init() {
                 error("请求失败: " + data.msg)
             }
         },
-        function (error) {
-            error(`请求失败: ${error}`);
+        function (err) {
+            error(`请求失败: ${err}`);
         }
     )
 }
