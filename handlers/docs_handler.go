@@ -68,7 +68,7 @@ type (
     }
 )
 
-func (d docsHandler) Edit(c *gin.Context) {
+func (d docsHandler) Show(c *gin.Context) {
     id := c.Param("id")
     var docs Docs
     _ = json.Unmarshal(config, &docs)
