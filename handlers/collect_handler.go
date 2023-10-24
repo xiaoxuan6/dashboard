@@ -3,9 +3,15 @@ package handlers
 import (
     "bytes"
     "fmt"
+    "github.com/OwO-Network/gdeeplx"
+    "github.com/abadojack/whatlanggo"
     "github.com/gin-gonic/gin"
+    "github.com/sirupsen/logrus"
+    "io/ioutil"
     "net/http"
+    "net/url"
     "os"
+    "strings"
 )
 
 var CollectHandler = new(collectHandler)
@@ -14,11 +20,24 @@ type collectHandler struct {
 }
 
 func (c collectHandler) Put(ctx *gin.Context) {
-    auth := ctx.PostForm("auth")
-    url := ctx.PostForm("url")
+    b, _ := ioutil.ReadAll(ctx.Request.Body)
+    decodedString, err := url.QueryUnescape(string(b))
+    if err != nil {
+        ctx.JSON(http.StatusOK, gin.H{
+            "status": http.StatusBadRequest,
+            "data":   "",
+            "msg":    err.Error(),
+        })
+        return
+    }
 
-    if auth == "" || url == "" {
-        ctx.JSON(200, gin.H{
+    values, _ := url.ParseQuery(decodedString)
+    auth := values.Get("auth")
+    uri := values.Get("url")
+    description := values.Get("description")
+
+    if auth == "" || uri == "" {
+        ctx.JSON(http.StatusOK, gin.H{
             "status": 400,
             "data":   "",
             "msg":    "auth or url not empty",
@@ -27,7 +46,7 @@ func (c collectHandler) Put(ctx *gin.Context) {
     }
 
     if auth != os.Getenv("GITHUB_OWNER") {
-        ctx.JSON(200, gin.H{
+        ctx.JSON(http.StatusOK, gin.H{
             "status": 400,
             "data":   "",
             "msg":    "auth error",
@@ -35,8 +54,30 @@ func (c collectHandler) Put(ctx *gin.Context) {
         return
     }
 
+    u, _ := url.Parse(uri)
+    if u.Host != "github.com" {
+        ctx.JSON(http.StatusOK, gin.H{
+            "status": 400,
+            "data":   "",
+            "msg":    "url error",
+        })
+        return
+    }
+
+    if description != "" {
+        info := whatlanggo.Detect(description)
+        if strings.Compare(info.Lang.String(), "English") == 0 {
+            result, err := gdeeplx.Translate(description, "en", "zh", 0)
+            if err == nil {
+                res := result.(map[string]interface{})
+                description = fmt.Sprintf("%s(%s)", strings.TrimSpace(description), strings.TrimSpace(res["data"].(string)))
+            }
+        }
+    }
+    logrus.Info("description", description)
+
     var body bytes.Buffer
-    body.WriteString(fmt.Sprintf(`{"event_type": "push", "client_payload": {"url": "%s", "description":"", "demo_url":""}}`, url))
+    body.WriteString(fmt.Sprintf(`{"event_type": "push", "client_payload": {"url": "%s", "description":"%s", "demo_url":""}}`, uri, description))
 
     r, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("https://api.github.com/repos/%s/go-package-example/dispatches", auth), &body)
     r.Header.Set("Accept", "application/vnd.github+json")
@@ -45,7 +86,7 @@ func (c collectHandler) Put(ctx *gin.Context) {
 
     res, _ := http.DefaultClient.Do(r)
     if res.StatusCode != 204 {
-        ctx.JSON(200, gin.H{
+        ctx.JSON(http.StatusOK, gin.H{
             "status": 400,
             "data":   "",
             "msg":    "dispatch error",
@@ -53,8 +94,8 @@ func (c collectHandler) Put(ctx *gin.Context) {
         return
     }
 
-    ctx.JSON(200, gin.H{
-        "status": 200,
+    ctx.JSON(http.StatusOK, gin.H{
+        "status": http.StatusOK,
         "data":   "",
         "msg":    "ok",
     })

@@ -3,6 +3,8 @@ module dashboard
 go 1.18
 
 require (
+	github.com/OwO-Network/gdeeplx v0.0.1
+	github.com/abadojack/whatlanggo v1.0.1
 	github.com/antlinker/go-dirtyfilter v1.2.0
 	github.com/blevesearch/bleve/v2 v2.3.10
 	github.com/gin-gonic/gin v1.9.1
@@ -18,6 +20,7 @@ require (
 
 require (
 	github.com/RoaringBitmap/roaring v1.2.3 // indirect
+	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/antlinker/go-cmap v0.0.0-20160407022646-0c5e57012e96 // indirect
 	github.com/bits-and-blooms/bitset v1.2.0 // indirect
 	github.com/blevesearch/bleve_index_api v1.0.6 // indirect
