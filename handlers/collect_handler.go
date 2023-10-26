@@ -64,13 +64,14 @@ func (c collectHandler) Put(ctx *gin.Context) {
         return
     }
 
+    description = strings.TrimSpace(description)
     if description != "" {
         info := whatlanggo.Detect(description)
         if strings.Compare(info.Lang.String(), "English") == 0 {
             result, err := gdeeplx.Translate(description, "en", "zh", 0)
             if err == nil {
                 res := result.(map[string]interface{})
-                description = fmt.Sprintf("%s(%s)", strings.TrimSpace(description), strings.TrimSpace(res["data"].(string)))
+                description = fmt.Sprintf("%s(%s)", description, strings.TrimSpace(res["data"].(string)))
             }
         }
     }
@@ -86,6 +87,7 @@ func (c collectHandler) Put(ctx *gin.Context) {
 
     res, _ := http.DefaultClient.Do(r)
     if res.StatusCode != 204 {
+        logrus.Error("dispatch error", body.String())
         ctx.JSON(http.StatusOK, gin.H{
             "status": 400,
             "data":   "",
