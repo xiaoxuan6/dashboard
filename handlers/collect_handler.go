@@ -67,15 +67,15 @@ func (c collectHandler) Put(ctx *gin.Context) {
     description = strings.TrimSpace(description)
     if description != "" {
         info := whatlanggo.Detect(description)
-        if strings.Compare(info.Lang.String(), "English") == 0 {
-            result, err := gdeeplx.Translate(description, "en", "zh", 0)
+        lang := info.Lang.String()
+        if lang != "" && lang != "Mandarin" {
+            result, err := gdeeplx.Translate(description, "", "zh", 0)
             if err == nil {
                 res := result.(map[string]interface{})
                 description = fmt.Sprintf("%s(%s)", description, strings.TrimSpace(res["data"].(string)))
             }
         }
     }
-    logrus.Info("description", description)
 
     var body bytes.Buffer
     body.WriteString(fmt.Sprintf(`{"event_type": "push", "client_payload": {"url": "%s", "description":"%s", "demo_url":""}}`, uri, description))
