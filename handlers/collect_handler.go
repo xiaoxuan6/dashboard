@@ -2,6 +2,7 @@ package handlers
 
 import (
     "bytes"
+    _package "dashboard/pkg/package"
     "fmt"
     "github.com/OwO-Network/gdeeplx"
     "github.com/abadojack/whatlanggo"
@@ -62,6 +63,21 @@ func (c collectHandler) Put(ctx *gin.Context) {
             "msg":    "url error",
         })
         return
+    }
+
+    if len(_package.Posts) < 1 {
+        _ = _package.Load()
+    }
+
+    for _, post := range _package.Posts {
+        if post.Url == uri {
+            ctx.JSON(http.StatusOK, gin.H{
+                "status": 400,
+                "data":   "",
+                "msg":    "url exists",
+            })
+            return
+        }
     }
 
     description = strings.TrimSpace(description)
