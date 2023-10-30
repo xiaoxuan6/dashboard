@@ -13,6 +13,7 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/go-github/v48 v48.2.0
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
+	github.com/mcnijman/go-emailaddress v1.1.0
 	github.com/mgutz/str v1.2.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.8.4
@@ -26,6 +27,7 @@ require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/antlinker/go-cmap v0.0.0-20160407022646-0c5e57012e96 // indirect
+	github.com/asaskevich/govalidator v0.0.0-20200108200545-475eaeb16496 // indirect
 	github.com/bits-and-blooms/bitset v1.2.0 // indirect
 	github.com/blevesearch/bleve_index_api v1.0.6 // indirect
 	github.com/blevesearch/geo v0.1.18 // indirect

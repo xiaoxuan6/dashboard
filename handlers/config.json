@@ -4,6 +4,11 @@
             "url": "/dirtyfilter",
             "title": "敏感词过滤",
             "desc": "基于DFA算法实现的敏感词过滤"
+        },
+        {
+            "url": "/email_check",
+            "title": "检查是否是一次性邮箱",
+            "desc": "检查电子邮件格式是否符合规范以及主机（域）是否确实能够接收电子邮件。"
         }
     ],
     "docs": {
@@ -34,6 +39,46 @@
                     "name": "data",
                     "type": "string",
                     "desc": "敏感词过滤后的结果"
+                }
+            ],
+            "codes": [
+                {
+                    "code": "200",
+                    "desc": "执行成功"
+                },
+                {
+                    "code": "400",
+                    "desc": "请求参数错误"
+                }
+            ]
+        },
+        "email": {
+            "url": "https://xiaoxuan6.vercel.app/apis/email_check",
+            "method": "post",
+            "url_demo": "https://xiaoxuan6.vercel.app/apis/email_check",
+            "params": [
+                {
+                    "name": "email",
+                    "require": "是",
+                    "type": "string",
+                    "desc": "需要检查的邮箱"
+                }
+            ],
+            "response": [
+                {
+                    "name": "status",
+                    "type": "int",
+                    "desc": "状态码"
+                },
+                {
+                    "name": "msg",
+                    "type": "string",
+                    "desc": "错误信息"
+                },
+                {
+                    "name": "data",
+                    "type": "string",
+                    "desc": "检查结果"
                 }
             ],
             "codes": [

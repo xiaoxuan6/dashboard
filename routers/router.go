@@ -14,4 +14,5 @@ func RegisterRouter(r *gin.RouterGroup) {
     r.GET("/docs", handlers.DocsHandler.Index)
     r.POST("/dirtyfilter", handlers.DirtryfilterHandler.Filter)
     r.POST("/collect", handlers.CollectHandler.Put)
+    r.POST("/email_check", handlers.EmailHandler.Check)
 }

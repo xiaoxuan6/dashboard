@@ -16,7 +16,7 @@ func TestEmail(t *testing.T) {
     _ = os.Setenv("MAIL_SUBJECT", "大富人家一天一颗预估很发达代发")
 
     opt := email.Option{
-       Text: []byte("test"),
+        Text: []byte("test"),
     }
 
     err := email.Send(opt)
