@@ -52,7 +52,7 @@
                 }
             ]
         },
-        "email": {
+        "email_check": {
             "url": "https://xiaoxuan6.vercel.app/apis/email_check",
             "method": "post",
             "url_demo": "https://xiaoxuan6.vercel.app/apis/email_check",
