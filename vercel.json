@@ -31,11 +31,25 @@
         {
             "src": "/login",
             "dest": "/login.html"
+        },
+        {
+            "src": "/trending",
+            "dest": "/api/trending.go"
         }
     ],
     "env": {
         "JWT_EXPIRES_AT": "72",
         "GITHUB_OWNER": "xiaoxuan6",
-        "GITHUB_REPO": "resource"
-    }
+        "GITHUB_REPO": "resource",
+        "MAIL_HOST": "smtp.qq.com",
+        "MAIL_PORT": "587",
+        "MAIL_TO": "1527736751@qq.com",
+        "MAIL_SUBJECT": "Github Trending"
+    },
+    "crons": [
+        {
+            "path": "/api/trending.go",
+            "schedule": "0 8 * * *"
+        }
+    ]
 }
