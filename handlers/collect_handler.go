@@ -2,7 +2,9 @@ package handlers
 
 import (
     "bytes"
+    "dashboard/common"
     _package "dashboard/pkg/package"
+    "dashboard/pkg/redis"
     "fmt"
     "github.com/OwO-Network/gdeeplx"
     "github.com/abadojack/whatlanggo"
@@ -13,9 +15,15 @@ import (
     "net/url"
     "os"
     "strings"
+    "sync"
+    "time"
 )
 
-var CollectHandler = new(collectHandler)
+var (
+    lock           sync.Mutex
+    wg             sync.WaitGroup
+    CollectHandler = new(collectHandler)
+)
 
 type collectHandler struct {
 }
@@ -65,12 +73,27 @@ func (c collectHandler) Put(ctx *gin.Context) {
         return
     }
 
-    if len(_package.Posts) < 1 {
+    urls, _ := redis.Remember("collect", common.CollectExpiration*time.Minute, func() []string {
         _ = _package.Load()
-    }
 
-    for _, post := range _package.Posts {
-        if post.Url == uri {
+        var urls []string
+        for _, post := range _package.Posts {
+            wg.Add(1)
+            go func(wg *sync.WaitGroup, url string) {
+                defer wg.Done()
+                lock.Lock()
+                urls = append(urls, url)
+                lock.Unlock()
+            }(&wg, post.Url)
+        }
+
+        wg.Wait()
+
+        return urls
+    })
+
+    for _, ur := range urls {
+        if ur == uri {
             ctx.JSON(http.StatusOK, gin.H{
                 "status": 400,
                 "data":   "",
