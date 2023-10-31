@@ -33,11 +33,9 @@ func (e emailHandler) Check(c *gin.Context) {
     email := values.Get("email")
     err = validation.Validate(
         email,
-        validation.Map(
-            validation.Key("email", validation.Required.Error("email not empty")),
-            validation.Key("email", validation.Length(5, 50).Error("email length 5-50")),
-            validation.Key("email", validation.Required, is.Email.Error("email format error")),
-        ),
+        validation.Required.Error("email not empty"),
+        validation.Length(5, 50).Error("email length 5-50"),
+        is.Email.Error("email format error"),
     )
     if err != nil {
         c.JSON(http.StatusOK, gin.H{
