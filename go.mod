@@ -3,6 +3,7 @@ module dashboard
 go 1.18
 
 require (
+	github.com/AfterShip/email-verifier v1.3.3
 	github.com/OwO-Network/gdeeplx v0.0.1
 	github.com/abadojack/whatlanggo v1.0.1
 	github.com/andygrunwald/go-trending v0.0.0-20231024092240-c15f8d9c1844
@@ -13,7 +14,6 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/go-github/v48 v48.2.0
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
-	github.com/mcnijman/go-emailaddress v1.1.0
 	github.com/mgutz/str v1.2.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.8.4
@@ -57,6 +57,7 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
+	github.com/hbollon/go-edlib v1.6.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect

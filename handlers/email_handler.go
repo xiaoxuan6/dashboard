@@ -2,10 +2,10 @@ package handlers
 
 import (
     "fmt"
+    emailverifier "github.com/AfterShip/email-verifier"
     "github.com/gin-gonic/gin"
     validation "github.com/go-ozzo/ozzo-validation/v4"
     "github.com/go-ozzo/ozzo-validation/v4/is"
-    "github.com/mcnijman/go-emailaddress"
     "io/ioutil"
     "net/http"
     "net/url"
@@ -35,7 +35,7 @@ func (e emailHandler) Check(c *gin.Context) {
         email,
         validation.Required.Error("email not empty"),
         validation.Length(5, 50).Error("email length 5-50"),
-        is.Email.Error("email format error"),
+        is.Email,
     )
     if err != nil {
         c.JSON(http.StatusOK, gin.H{
@@ -46,30 +46,15 @@ func (e emailHandler) Check(c *gin.Context) {
         return
     }
 
-    emailed, err := emailaddress.Parse(email)
-    if err != nil {
-        c.JSON(http.StatusOK, gin.H{
-            "status": http.StatusBadRequest,
-            "data":   "",
-            "msg":    fmt.Sprintf("email parse error: %s", err.Error()),
-        })
-        return
-    }
+    var verifier = emailverifier.
+        NewVerifier().
+        EnableAutoUpdateDisposable()
 
-    if err := emailed.ValidateHost(); err != nil {
-        c.JSON(http.StatusOK, gin.H{
-            "status": http.StatusBadRequest,
+    if verifier.IsDisposable(email) {
+        c.JSON(http.StatusNotFound, gin.H{
+            "status": http.StatusNotFound,
             "data":   "",
-            "msg":    "email host error",
-        })
-        return
-    }
-
-    if err := emailed.ValidateIcanSuffix(); err != nil {
-        c.JSON(http.StatusOK, gin.H{
-            "status": http.StatusBadRequest,
-            "data":   "",
-            "msg":    "email suffix error",
+            "msg":    "disposable email",
         })
         return
     }
