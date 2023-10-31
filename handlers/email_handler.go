@@ -1,6 +1,7 @@
 package handlers
 
 import (
+    "fmt"
     "github.com/gin-gonic/gin"
     validation "github.com/go-ozzo/ozzo-validation/v4"
     "github.com/go-ozzo/ozzo-validation/v4/is"
@@ -23,7 +24,7 @@ func (e emailHandler) Check(c *gin.Context) {
         c.JSON(http.StatusOK, gin.H{
             "status": http.StatusBadRequest,
             "data":   "",
-            "msg":    err.Error(),
+            "msg":    fmt.Sprintf("url decode error: %s", err.Error()),
         })
         return
     }
@@ -52,7 +53,7 @@ func (e emailHandler) Check(c *gin.Context) {
         c.JSON(http.StatusOK, gin.H{
             "status": http.StatusBadRequest,
             "data":   "",
-            "msg":    err.Error(),
+            "msg":    fmt.Sprintf("email parse error: %s", err.Error()),
         })
         return
     }
