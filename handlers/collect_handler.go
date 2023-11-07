@@ -2,26 +2,20 @@ package handlers
 
 import (
     "bytes"
-    "dashboard/common"
-    _package "dashboard/pkg/package"
-    "dashboard/pkg/redis"
     "fmt"
     "github.com/OwO-Network/gdeeplx"
     "github.com/abadojack/whatlanggo"
     "github.com/gin-gonic/gin"
     "github.com/sirupsen/logrus"
+    db "github.com/xiaoxuan6/go-package-db"
     "io/ioutil"
     "net/http"
     "net/url"
     "os"
     "strings"
-    "sync"
-    "time"
 )
 
 var (
-    lock           sync.Mutex
-    wg             sync.WaitGroup
     CollectHandler = new(collectHandler)
 )
 
@@ -73,34 +67,24 @@ func (c collectHandler) Put(ctx *gin.Context) {
         return
     }
 
-    urls, _ := redis.Remember("collect", common.CollectExpiration*time.Minute, func() []string {
-        _ = _package.Load()
+    db.Init(
+        os.Getenv("DB_HOST"),
+        os.Getenv("DB_PORT"),
+        os.Getenv("DB_USER"),
+        os.Getenv("DB_PASSWORD"),
+        os.Getenv("DB_NAME"),
+    )
+    defer db.Close()
+    db.AutoMigrate()
 
-        var urls []string
-        for _, post := range _package.Posts {
-            wg.Add(1)
-            go func(wg *sync.WaitGroup, url string) {
-                defer wg.Done()
-                lock.Lock()
-                urls = append(urls, url)
-                lock.Unlock()
-            }(&wg, post.Url)
-        }
-
-        wg.Wait()
-
-        return urls
-    })
-
-    for _, ur := range urls {
-        if ur == uri {
-            ctx.JSON(http.StatusOK, gin.H{
-                "status": 400,
-                "data":   "",
-                "msg":    "url exists",
-            })
-            return
-        }
+    uri = strings.ReplaceAll(uri, "https://", "")
+    if db.DB.Where("url = ?", uri).First(&db.Collect{}).RowsAffected > 0 {
+        ctx.JSON(http.StatusOK, gin.H{
+            "status": 400,
+            "data":   "",
+            "msg":    "url exists",
+        })
+        return
     }
 
     description = strings.TrimSpace(description)
