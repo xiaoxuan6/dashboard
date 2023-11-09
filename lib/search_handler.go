@@ -8,9 +8,9 @@ import (
     _package "dashboard/pkg/package"
     "fmt"
     github2 "github.com/google/go-github/v48/github"
-    "github.com/mgutz/str"
     "github.com/sirupsen/logrus"
     "github.com/tidwall/gjson"
+    db "github.com/xiaoxuan6/go-package-db"
     "io/ioutil"
     "net/http"
     "net/url"
@@ -54,9 +54,7 @@ func (s SearchHandler) Do(r *http.Request) *Response {
 
     if len(_package.Posts) < 1 {
         Load()
-        if err = _package.Load(); err != nil {
-            return Fail(err)
-        }
+        LoadPackage()
     }
 
     var (
@@ -64,24 +62,16 @@ func (s SearchHandler) Do(r *http.Request) *Response {
         response SearchResponse
     )
     response.Keyword = keyword
-    if str.SliceContains(common.TAGS, keyword) {
-        for _, post := range _package.Posts {
-            if post.Tag == keyword {
-                posts = append(posts, post)
-            }
-        }
-    } else {
-        if err = bleve.Init(); err != nil {
-            return Fail(err)
-        }
+    if err = bleve.Init(); err != nil {
+        return Fail(err)
+    }
 
-        if page == 0 {
-            page = 1
-        }
-        posts, err = bleve.Search(keyword, page)
-        if err != nil {
-            return Fail(err)
-        }
+    if page == 0 {
+        page = 1
+    }
+    posts, err = bleve.Search(keyword, page)
+    if err != nil {
+        return Fail(err)
     }
 
     var tags = make(map[string]int, 0)
@@ -100,6 +90,33 @@ func (s SearchHandler) Do(r *http.Request) *Response {
 
     return SuccessWithData(response)
 
+}
+
+func LoadPackage() {
+    db.Init(
+        os.Getenv("DB_HOST"),
+        os.Getenv("DB_PORT"),
+        os.Getenv("DB_USER"),
+        os.Getenv("DB_PASSWORD"),
+        os.Getenv("DB_NAME"),
+    )
+    defer db.Close()
+    db.AutoMigrate()
+
+    var collect []db.Collect
+    err := db.DB.Where("id > 0").Find(&collect).Error
+    if err != nil {
+        fmt.Println("加载 go package 失败")
+    }
+    for _, value := range collect {
+        lock.Lock()
+        _package.Posts = append(_package.Posts, _package.Post{
+            Title: value.Name,
+            Url:   value.Url,
+            Tag:   common.GoTags,
+        })
+        lock.Unlock()
+    }
 }
 
 var (

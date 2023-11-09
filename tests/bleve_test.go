@@ -18,7 +18,7 @@ func TestBleve(t *testing.T) {
         assert.Error(t, err)
     }
 
-    ids, err := bleve.Search("图片")
+    ids, err := bleve.Search("图片", 1)
     if err != nil {
         assert.Error(t, err)
     }

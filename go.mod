@@ -7,6 +7,7 @@ require (
 	github.com/OwO-Network/gdeeplx v0.0.1
 	github.com/abadojack/whatlanggo v1.0.1
 	github.com/andygrunwald/go-trending v0.0.0-20231024092240-c15f8d9c1844
+	github.com/antchfx/htmlquery v1.3.0
 	github.com/antlinker/go-dirtyfilter v1.2.0
 	github.com/blevesearch/bleve/v2 v2.3.10
 	github.com/gin-gonic/gin v1.9.1
@@ -15,7 +16,6 @@ require (
 	github.com/google/go-github/v48 v48.2.0
 	github.com/joho/godotenv v1.5.1
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
-	github.com/mgutz/str v1.2.0
 	github.com/redis/go-redis/v9 v9.2.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.8.4
@@ -29,6 +29,7 @@ require (
 	github.com/RoaringBitmap/roaring v1.2.3 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
+	github.com/antchfx/xpath v1.2.3 // indirect
 	github.com/antlinker/go-cmap v0.0.0-20160407022646-0c5e57012e96 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20200108200545-475eaeb16496 // indirect
 	github.com/bits-and-blooms/bitset v1.2.0 // indirect
@@ -60,6 +61,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/golang/geo v0.0.0-20210211234256-740aa86cb551 // indirect
+	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect

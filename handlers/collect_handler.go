@@ -5,6 +5,7 @@ import (
     "fmt"
     "github.com/OwO-Network/gdeeplx"
     "github.com/abadojack/whatlanggo"
+    "github.com/antchfx/htmlquery"
     "github.com/gin-gonic/gin"
     "github.com/sirupsen/logrus"
     db "github.com/xiaoxuan6/go-package-db"
@@ -34,10 +35,12 @@ func (c collectHandler) Put(ctx *gin.Context) {
         return
     }
 
+    logrus.Info("decodedString", decodedString)
     values, _ := url.ParseQuery(decodedString)
     auth := values.Get("auth")
     uri := values.Get("url")
     description := values.Get("description")
+    language := values.Get("language")
 
     if auth == "" || uri == "" {
         ctx.JSON(http.StatusOK, gin.H{
@@ -87,21 +90,11 @@ func (c collectHandler) Put(ctx *gin.Context) {
         return
     }
 
-    description = strings.TrimSpace(description)
-    if description != "" {
-        info := whatlanggo.Detect(description)
-        lang := info.Lang.String()
-        if lang != "" && lang != "Mandarin" {
-            result, err := gdeeplx.Translate(description, "", "zh", 0)
-            if err == nil {
-                res := result.(map[string]interface{})
-                description = fmt.Sprintf("%s(%s)", description, strings.TrimSpace(res["data"].(string)))
-            }
-        }
-    }
+    description = descriptionDo(strings.TrimSpace(description))
+    language = languageDo(uri, language)
 
     var body bytes.Buffer
-    body.WriteString(fmt.Sprintf(`{"event_type": "push", "client_payload": {"url": "%s", "description":"%s", "demo_url":""}}`, uri, description))
+    body.WriteString(fmt.Sprintf(`{"event_type": "push", "client_payload": {"url": "%s", "description":"%s", "demo_url":"", "language": "%s"}}`, uri, description, language))
 
     r, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("https://api.github.com/repos/%s/go-package-example/dispatches", auth), &body)
     r.Header.Set("Accept", "application/vnd.github+json")
@@ -124,4 +117,34 @@ func (c collectHandler) Put(ctx *gin.Context) {
         "data":   "",
         "msg":    "ok",
     })
+}
+
+func descriptionDo(description string) string {
+    if len(description) < 1 {
+        return ""
+    }
+
+    info := whatlanggo.Detect(description)
+    lang := info.Lang.String()
+    if lang != "" && lang != "Mandarin" {
+        result, err := gdeeplx.Translate(description, "", "zh", 0)
+        if err == nil {
+            res := result.(map[string]interface{})
+            description = strings.TrimSpace(res["data"].(string))
+        }
+    }
+
+    return description
+}
+
+func languageDo(uri, language string) string {
+    if len(language) > 0 {
+        return language
+    }
+
+    doc, _ := htmlquery.LoadURL(uri)
+    node := htmlquery.FindOne(doc, "//*[@id=\"repo-content-turbo-frame\"]/div/div/div[2]/div[2]/div/div[7]/div/ul/li[1]/a/span[1]")
+    language = htmlquery.InnerText(node)
+
+    return language
 }
