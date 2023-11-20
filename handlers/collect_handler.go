@@ -5,9 +5,9 @@ import (
     "fmt"
     "github.com/OwO-Network/gdeeplx"
     "github.com/abadojack/whatlanggo"
-    "github.com/antchfx/htmlquery"
     "github.com/gin-gonic/gin"
     "github.com/sirupsen/logrus"
+    "github.com/tidwall/gjson"
     db "github.com/xiaoxuan6/go-package-db"
     "io/ioutil"
     "net/http"
@@ -91,7 +91,7 @@ func (c collectHandler) Put(ctx *gin.Context) {
     }
 
     description = descriptionDo(strings.TrimSpace(description))
-    language = languageDo(uri, language)
+    language = languageDo(uri, strings.TrimSpace(language), description)
 
     var body bytes.Buffer
     body.WriteString(fmt.Sprintf(`{"event_type": "push", "client_payload": {"url": "%s", "description":"%s", "demo_url":"", "language": "%s"}}`, uri, description, language))
@@ -137,14 +137,44 @@ func descriptionDo(description string) string {
     return description
 }
 
-func languageDo(uri, language string) string {
+func languageDo(uri, language, description string) string {
     if len(language) > 0 {
         return language
     }
 
-    doc, _ := htmlquery.LoadURL(uri)
-    node := htmlquery.FindOne(doc, "//*[@id=\"repo-content-turbo-frame\"]/div/div/div[2]/div[2]/div/div[7]/div/ul/li[1]/a/span[1]")
-    language = htmlquery.InnerText(node)
+    u, _ := url.Parse(uri)
+    u.Path = strings.TrimPrefix(u.Path, "/")
+    paths := strings.Split(u.Path, "/")
+
+    fn := func() string {
+        if strings.Contains(description, "Go") || strings.Contains(description, "golang") {
+            return "Go"
+        } else if strings.Contains(description, "PHP") || strings.Contains(description, "php") {
+            return "PHP"
+        } else {
+            return "Other"
+        }
+    }
+
+    // 未授权每小时60次，授权每小时5000次
+    res, err := http.Get(fmt.Sprintf("https://api.github.com/repos/%s/%s", paths[0], paths[1]))
+    defer res.Body.Close()
+
+    if err != nil {
+        logrus.Error("get language error", err.Error()+" "+uri)
+        return fn()
+    }
+
+    b, err := ioutil.ReadAll(res.Body)
+    if err != nil {
+        logrus.Error("get language error", err.Error()+" "+uri)
+        return fn()
+    }
+
+    language = gjson.Get(string(b), "language").String()
+    if len(language) < 1 {
+        return fn()
+    }
 
     return language
 }
