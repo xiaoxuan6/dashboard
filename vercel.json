@@ -26,11 +26,11 @@
         },
         {
             "src": "/search",
-            "dest": "/view/search/search.html"
+            "dest": "/views/search/search.html"
         },
         {
             "src": "/login",
-            "dest": "/view/search/login.html"
+            "dest": "/views/search/login.html"
         },
         {
             "src": "/trending",
