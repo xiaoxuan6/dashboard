@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Not Found</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #777;
+        }
+
+        #countdown {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+<h1>404 Not Found</h1>
+<p>Sorry, the page you are looking for might be in another castle.</p>
+<p>Returning to the previous page in <span id="countdown">3</span> seconds...</p>
+
+<script>
+    function countdown() {
+        var seconds = 3;
+        var countdownElement = document.getElementById('countdown');
+
+        function updateCountdown() {
+            countdownElement.textContent = seconds;
+            seconds--;
+
+            if (seconds < 0) {
+                window.history.back();
+            } else {
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+
+        updateCountdown();
+    }
+
+    document.addEventListener('DOMContentLoaded', countdown);
+</script>
+</body>
+</html>

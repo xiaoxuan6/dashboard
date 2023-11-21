@@ -35,6 +35,11 @@
         {
             "src": "/trending",
             "dest": "/api/trending.go"
+        },
+        {
+            "src": "/404",
+            "dest": "/views/404.html",
+            "status": 404
         }
     ],
     "env": {
