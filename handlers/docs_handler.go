@@ -42,6 +42,7 @@ type (
         Docs struct {
             Dirtyfilter Item `json:"dirtyfilter"`
             EmailCheck  Item `json:"email_check"`
+            RandomImg   Item `json:"random_img"`
         } `json:"docs"`
     }
     Item struct {
@@ -80,6 +81,8 @@ func (d docsHandler) Show(c *gin.Context) {
         result = docs.Docs.Dirtyfilter
     case "email_check":
         result = docs.Docs.EmailCheck
+    case "random_img":
+        result = docs.Docs.RandomImg
     }
 
     c.JSON(http.StatusOK, gin.H{

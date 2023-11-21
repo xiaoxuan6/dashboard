@@ -7,6 +7,10 @@ const (
     CollectExpiration = 30 // 分钟
     GoTags     = "go-package"
     PackageUrl = "https://ghproxy.com/https://github.com/xiaoxuan6/go-package-example/blob/main/README.md"
+
+    ImageUrl = "https://api.airandomimage.top/api/open/picture?current=%s"
+    BingUrl = "http://cn.bing.com"
+    BingImageUrl = BingUrl + "/HPImageArchive.aspx?idx=%s&n=1"
 )
 
 var TAGS = []string{"README", "action", "api", "chat", "docker", "dockerfile", "email", "git", "go", "heiliao", "js", "linux", "logo", "makefile", "ocr", "pic", "send", "tool", "vip", GoTags}
