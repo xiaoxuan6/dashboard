@@ -11,7 +11,7 @@ import (
 
 var (
     handlers map[string]lib.Handler
-    // 允许执行 Do
+    // 允许执行 Do (需要接受参数)
     allowMethods = []string{common.LOGIN, common.CHECK, common.SEARCH}
     // 路由允许执行的中间件
     allowMiddlewares map[string][]string
@@ -22,10 +22,15 @@ var (
 
 func init() {
     handlers = map[string]lib.Handler{
-        "test":        lib.TestHandler{},
-        "index":       lib.IndexHandler{},
-        common.LOGIN:  lib.LoginHandler{},
-        common.CHECK:  lib.TokenHandler{},
+        // 不需要接受参数，不需要执行 Do 方法
+        "index": lib.IndexHandler{},
+        "rss":   lib.RssHandler{},
+
+        // 需要接受参数，需要执行 Do 方法
+        common.LOGIN: lib.LoginHandler{},
+        common.CHECK: lib.TokenHandler{},
+
+        // 需要执行中间件
         common.SEARCH: lib.SearchHandler{},
     }
 
@@ -63,8 +68,7 @@ func Run(w http.ResponseWriter, r *http.Request) {
             body = handler.Run()
         }
     } else {
-        handler, _ = handlers["test"]
-        body = handler.Run()
+        body = lib.FailWithMsg("无效的请求")
     }
 
     middleware = nil

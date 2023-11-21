@@ -138,6 +138,10 @@ func descriptionDo(description string) string {
 }
 
 func languageDo(uri, language, description string) string {
+    if len(language) > 10 {
+        language = ""
+    }
+
     if len(language) > 0 {
         return language
     }
