@@ -10,11 +10,11 @@
         },
         {
             "src": "/apis/index",
-            "dest": "/apis_index.html"
+            "dest": "/views/docs/index.html"
         },
         {
             "src": "/apis/docs/index",
-            "dest": "/apis_docs.html"
+            "dest": "/views/docs/docs.html"
         },
         {
             "src": "/apis/(?!(index$|docs/index$))(.*)",
@@ -26,11 +26,11 @@
         },
         {
             "src": "/search",
-            "dest": "/search.html"
+            "dest": "/view/search/search.html"
         },
         {
             "src": "/login",
-            "dest": "/login.html"
+            "dest": "/view/search/login.html"
         },
         {
             "src": "/trending",
