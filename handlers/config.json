@@ -100,7 +100,7 @@
         "random_img": {
             "url": "https://xiaoxuan6.vercel.app/apis/random_img",
             "method": "get",
-            "url_demo": "https://xiaoxuan6.vercel.app/apis/random_img",
+            "url_demo": "https://xiaoxuan6.vercel.app/apis/random_img?type=1",
             "params": [
                 {
                     "name": "type",
