@@ -14,6 +14,9 @@ const (
 )
 
 var (
+    GoLanguage  = []string{"Go", "go", "Golang", "golang"}
+    PhpLanguage = []string{"PHP", "php"}
+
     Communes = []string{"https://www.v2ex.com/index.xml", "https://learnku.com/feed"}
     TAGS     = []string{"README", "action", "api", "chat", "docker", "dockerfile", "email", "git", "go", "heiliao", "js", "linux", "logo", "makefile", "ocr", "pic", "send", "tool", "vip", GoTags}
 )

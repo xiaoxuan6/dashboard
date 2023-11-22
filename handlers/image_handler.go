@@ -7,11 +7,8 @@ import (
     xj "github.com/basgys/goxml2json"
     "github.com/gin-gonic/gin"
     "github.com/tidwall/gjson"
-    "math/rand"
     "net/http"
-    "strconv"
     "strings"
-    "time"
 )
 
 var ImageHandler = new(imageHandler)
@@ -61,7 +58,7 @@ func randomImg(c *gin.Context) {
 }
 
 func randomXJJ(c *gin.Context) {
-    res, err := util.Get(fmt.Sprintf(common.ImageUrl, random(15, 1)))
+    res, err := util.Get(fmt.Sprintf(common.ImageUrl, util.Random(15, 1)))
     if err != nil {
         c.JSON(http.StatusOK, gin.H{
             "status": http.StatusBadRequest,
@@ -70,18 +67,10 @@ func randomXJJ(c *gin.Context) {
         })
     }
 
-    uri := gjson.Parse(res).Get(fmt.Sprintf("data.records.%s.url", random(20, 0))).String()
+    uri := gjson.Parse(res).Get(fmt.Sprintf("data.records.%s.url", util.Random(20, 0))).String()
     c.JSON(http.StatusOK, gin.H{
         "status": http.StatusOK,
         "data":   uri,
         "msg":    "ok",
     })
-}
-
-func random(num int, incr int) string {
-    rand.Seed(time.Now().UnixNano())
-
-    randomNum := rand.Intn(num) + incr
-
-    return strconv.Itoa(randomNum)
 }

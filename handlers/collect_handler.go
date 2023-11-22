@@ -2,10 +2,13 @@ package handlers
 
 import (
     "bytes"
+    "dashboard/common"
+    "dashboard/util"
     "fmt"
     "github.com/OwO-Network/gdeeplx"
     "github.com/abadojack/whatlanggo"
     "github.com/gin-gonic/gin"
+    "github.com/samber/lo"
     "github.com/sirupsen/logrus"
     "github.com/tidwall/gjson"
     db "github.com/xiaoxuan6/go-package-db"
@@ -151,9 +154,9 @@ func languageDo(uri, language, description string) string {
     paths := strings.Split(u.Path, "/")
 
     fn := func() string {
-        if strings.Contains(description, "Go") || strings.Contains(description, "golang") {
+        if lo.ContainsBy(common.GoLanguage, util.Contains(description)) {
             return "Go"
-        } else if strings.Contains(description, "PHP") || strings.Contains(description, "php") {
+        } else if lo.ContainsBy(common.PhpLanguage, util.Contains(description)) {
             return "PHP"
         } else {
             return "Other"

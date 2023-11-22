@@ -19,6 +19,7 @@ require (
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	github.com/mmcdole/gofeed v1.2.1
 	github.com/redis/go-redis/v9 v9.2.1
+	github.com/samber/lo v1.38.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.8.4
 	github.com/tidwall/gjson v1.16.0
@@ -88,6 +89,7 @@ require (
 	go.etcd.io/bbolt v1.3.7 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/crypto v0.14.0 // indirect
+	golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17 // indirect
 	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
