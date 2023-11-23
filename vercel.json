@@ -40,6 +40,10 @@
             "src": "/404",
             "dest": "/views/404.html",
             "status": 404
+        },
+        {
+            "src": "/docs",
+            "dest": "/views/docs.html"
         }
     ],
     "env": {

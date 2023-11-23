@@ -23,6 +23,10 @@
         {
             "title": "免费 API",
             "url": "/apis"
+        },
+        {
+            "title": "文档",
+            "url": "/docs"
         }
     ]
 }
