@@ -25,6 +25,7 @@ func init() {
         // 不需要接受参数，不需要执行 Do 方法
         "index": lib.IndexHandler{},
         "rss":   lib.RssHandler{},
+        "docs":  lib.DocsHandler{},
 
         // 需要接受参数，需要执行 Do 方法
         common.LOGIN: lib.LoginHandler{},
