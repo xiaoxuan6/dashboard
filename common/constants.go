@@ -54,6 +54,7 @@ var (
         "Caddy":              "https://caddyserver.com/docs/",
         "Caddy - 中文文档":       "https://dengxiaolong.com/caddy/zh/",
         "Makefile":           "https://www.zhaixue.cc/makefile/makefile-intro.html",
+        "Vercel":             "https://vercel.com/docs/projects/project-configuration#routes",
     }
 
     Docs = map[string]map[string]string{

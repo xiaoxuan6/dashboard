@@ -44,6 +44,10 @@
         {
             "src": "/docs",
             "dest": "/views/docs.html"
+        },
+        {
+            "src": "/favicon.ico",
+            "dest": "https://fav.farm/\uD83D\uDE9C"
         }
     ],
     "env": {
