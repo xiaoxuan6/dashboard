@@ -64,8 +64,9 @@ var (
         "Python": Python,
         "Other":  Other,
         "Reference": map[string]string{
-            "Quick": "https://wangchujiang.com/reference/index.html",
-            "在Git项目中增加pre-commit校验":"https://jasonkayzk.github.io/2021/10/10/%E5%9C%A8Git%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%A2%9E%E5%8A%A0pre-commit%E6%A0%A1%E9%AA%8C/"
+            "Quick":                     "https://wangchujiang.com/reference/index.html",
+            "在 Git 项目中增加 pre-commit 校验": "https://jasonkayzk.github.io/2021/10/10/%E5%9C%A8Git%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%A2%9E%E5%8A%A0pre-commit%E6%A0%A1%E9%AA%8C/",
+            "phpstorm 与 xdebug 的调试配置":   "https://www.cnblogs.com/eminer/p/17247178.html",
         },
     }
 )

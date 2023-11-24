@@ -12,21 +12,31 @@
     <style>
         li {
             margin-right: 10px;
+            border: 1px solid #666; /* 黑色边框 */
+            padding: 5px; /* 列表项的内边距 */
+            border-radius: 8px; /* 设置四个圆角的半径 */
         }
 
         ul.flex {
             flex-wrap: wrap;
+        }
+
+        li:hover {
+            background-color: #666; /* 鼠标悬停时的背景色 */
+            color: #fff; /* 鼠标悬停时的文字颜色 */
         }
     </style>
 </head>
 
 <body class="bg-gray-200 p-4">
 
-<h1 class="text-2xl md:text-4xl font-bold mb-4">xxx</h1>
-<div class="bg-white p-6 rounded-lg mb-4 shadow">
-    <ul class="mb-4 flex">
-        <li class="mb-4 overflow-wrap"><a href="">xxx</a></li>
-    </ul>
+<div id="app">
+    <h1 class="text-2xl md:text-4xl font-bold mb-4">xxx</h1>
+    <div class="bg-white p-6 rounded-lg mb-4 shadow">
+        <ul class="mb-4 flex">
+            <li class="mb-4 overflow-wrap"><a href="">xxx</a></li>
+        </ul>
+    </div>
 </div>
 
 <!--<h1 class="text-2xl md:text-4xl font-bold mb-4">Welcome to Xiaoxuan Docs</h1>
@@ -51,22 +61,22 @@
     $(function () {
         axios.get('/api?action=docs').then(function (response) {
             let data = response.data;
-            if (data.code !== 0) {
-                notiflix.Notify.Failure(data.msg);
+            if (data.status !== 200) {
+                Notiflix.Notify.failure(data.msg);
             } else {
-                let data = data.data;
                 let html = '';
-                $.each(data, function (index, item) {
+                let items = JSON.parse(JSON.stringify(data.data));
+                $.each(items, function (index, item) {
                     html += '<h1 class="text-2xl md:text-4xl font-bold mb-4">' + index + '</h1>';
                     html += '<div class="bg-white p-6 rounded-lg mb-4 shadow">';
                     html += '<ul class="mb-4 flex">';
-                    $.each(item, function (index, item1) {
-                        html += '<li class="mb-4 overflow-wrap"><a href="' + index + '">' + item1 + '</a></li>';
+                    $.each(item, function (index, item) {
+                        html += '<li class="mb-4 overflow-wrap"><a href="' + item + '" target="_blank">' + index + '</a></li>';
                     });
                     html += '</ul>';
                     html += '</div>';
                 });
-                $('body').innerHTML = html;
+                document.getElementById('app').innerHTML = html;
             }
         });
     });
