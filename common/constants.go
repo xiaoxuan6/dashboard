@@ -30,12 +30,13 @@ var (
     }
 
     GO = map[string]string{
-        "Go 语言设计模式":  "https://www.topgoer.cn/docs/golang-design-pattern/Singleton",
-        "Go Example": "https://gobyexample.com",
-        "goreleaser": "https://llever.com/goreleaser-zh/",
-        "gin":        "https://gin-gonic.com/docs/introduction/",
-        "GORM":       "https://gorm.io/zh_CN/docs/",
-        "beego":      "https://git-books.github.io/books/beego/",
+        "Go 语言设计模式":         "https://www.topgoer.cn/docs/golang-design-pattern/Singleton",
+        "Go Example":        "https://gobyexample.com",
+        "goreleaser":        "https://llever.com/goreleaser-zh/",
+        "gin":               "https://gin-gonic.com/docs/introduction/",
+        "GORM":              "https://gorm.io/zh_CN/docs/",
+        "beego":             "https://git-books.github.io/books/beego/",
+        "pre-commit-golang": "https://github.com/dnephin/pre-commit-golang",
     }
 
     Python = map[string]string{
@@ -47,7 +48,7 @@ var (
         "Elasticsearch":      "https://www.elastic.co/guide/cn/elasticsearch/php/current/_index_management_operations.html",
         "Elasticsearch 中文文档": "https://doc.codingdict.com/elasticsearch/74",
         "RabbitMQ 中文文档－PHP版": "https://rabbitmq.shujuwajue.com/ying-yong-jiao-cheng/php-ban",
-        "Pre Commit":         "https://pre-commit.com/#2-add-a-pre-commit-configuration",
+        "pre-commit":         "https://pre-commit.com/",
         "gRPC":               "https://grpc.io/docs/languages/",
         "Tampermonkey - 篡改猴": "https://www.tampermonkey.net/documentation.php?locale=zh",
         "Greasy Fork - 油猴":   "https://greasyfork.org/zh-CN/help/meta-keys",
@@ -64,6 +65,7 @@ var (
         "Other":  Other,
         "Reference": map[string]string{
             "Quick": "https://wangchujiang.com/reference/index.html",
+            "在Git项目中增加pre-commit校验":"https://jasonkayzk.github.io/2021/10/10/%E5%9C%A8Git%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%A2%9E%E5%8A%A0pre-commit%E6%A0%A1%E9%AA%8C/"
         },
     }
 )

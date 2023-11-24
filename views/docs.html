@@ -7,7 +7,8 @@
     <link rel="icon" href="https://fav.farm/🚜"/>
     <meta name="description" content='xiaoxuan‘s 的文档列表'>
     <meta name="anthor" content="xiaoxuan6">
-    <link href="../static/css/tailwind-2.2.19.min.css" rel="stylesheet">
+    <link href="/static/css/tailwind-2.2.19.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/notiflix-3.2.6.min.css">
     <style>
         li {
             margin-right: 10px;
@@ -20,20 +21,55 @@
 </head>
 
 <body class="bg-gray-200 p-4">
-<h1 class="text-2xl md:text-4xl font-bold mb-4">Welcome to Xiaoxuan Docs</h1>
+
+<h1 class="text-2xl md:text-4xl font-bold mb-4">xxx</h1>
 <div class="bg-white p-6 rounded-lg mb-4 shadow">
-    <div class="mb-4">
-        <h2 class="text-xl mb-4 font-bold">在需要授权的服务器上，执行以下命令获取授权：</h2>
+    <ul class="mb-4 flex">
+        <li class="mb-4 overflow-wrap"><a href="">xxx</a></li>
+    </ul>
+</div>
+
+<!--<h1 class="text-2xl md:text-4xl font-bold mb-4">Welcome to Xiaoxuan Docs</h1>
+<div class="bg-white p-6 rounded-lg mb-4 shadow">
+&lt;!&ndash;    <div class="mb-4">&ndash;&gt;
+&lt;!&ndash;        <h2 class="text-xl mb-4 font-bold">在需要授权的服务器上，执行以下命令获取授权：</h2>&ndash;&gt;
         <ul class="mb-4 flex">
             <li class="mb-4 overflow-wrap"><a href="">xxxxxxxxxxxxxxxx</a></li>
         </ul>
-    </div>
-</div>
+&lt;!&ndash;    </div>&ndash;&gt;
+</div>-->
 
 <!--<h1 class="text-2xl md:text-4xl font-bold mb-4">Welcome to PandoraNext</h1>-->
 <!--<div class="bg-white p-6 rounded-lg mb-4 shadow">-->
 <!--    <h2 class="text-xl mb-4 font-bold">在需要授权的服务器上，执行以下命令获取授权：</h2>-->
 <!--</div>-->
 
+<script src="/static/js/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/static/js/notiflix-3.2.6.min.js"></script>
+<script>
+    $(function () {
+        axios.get('/api?action=docs').then(function (response) {
+            let data = response.data;
+            if (data.code !== 0) {
+                notiflix.Notify.Failure(data.msg);
+            } else {
+                let data = data.data;
+                let html = '';
+                $.each(data, function (index, item) {
+                    html += '<h1 class="text-2xl md:text-4xl font-bold mb-4">' + index + '</h1>';
+                    html += '<div class="bg-white p-6 rounded-lg mb-4 shadow">';
+                    html += '<ul class="mb-4 flex">';
+                    $.each(item, function (index, item1) {
+                        html += '<li class="mb-4 overflow-wrap"><a href="' + index + '">' + item1 + '</a></li>';
+                    });
+                    html += '</ul>';
+                    html += '</div>';
+                });
+                $('body').innerHTML = html;
+            }
+        });
+    });
+</script>
 </body>
 </html>
