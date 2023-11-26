@@ -9,6 +9,7 @@
     <meta name="anthor" content="xiaoxuan6">
     <link href="/static/css/tailwind-2.2.19.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/notiflix-3.2.6.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css">
     <style>
         li {
             margin-right: 10px;
@@ -31,37 +32,19 @@
 <body class="bg-gray-200 p-4">
 
 <div id="app">
-    <h1 class="text-2xl md:text-4xl font-bold mb-4">xxx</h1>
-    <div class="bg-white p-6 rounded-lg mb-4 shadow">
-        <ul class="mb-4 flex">
-            <li class="mb-4 overflow-wrap"><a href="">xxx</a></li>
-        </ul>
-    </div>
 </div>
-
-<!--<h1 class="text-2xl md:text-4xl font-bold mb-4">Welcome to Xiaoxuan Docs</h1>
-<div class="bg-white p-6 rounded-lg mb-4 shadow">
-&lt;!&ndash;    <div class="mb-4">&ndash;&gt;
-&lt;!&ndash;        <h2 class="text-xl mb-4 font-bold">在需要授权的服务器上，执行以下命令获取授权：</h2>&ndash;&gt;
-        <ul class="mb-4 flex">
-            <li class="mb-4 overflow-wrap"><a href="">xxxxxxxxxxxxxxxx</a></li>
-        </ul>
-&lt;!&ndash;    </div>&ndash;&gt;
-</div>-->
-
-<!--<h1 class="text-2xl md:text-4xl font-bold mb-4">Welcome to PandoraNext</h1>-->
-<!--<div class="bg-white p-6 rounded-lg mb-4 shadow">-->
-<!--    <h2 class="text-xl mb-4 font-bold">在需要授权的服务器上，执行以下命令获取授权：</h2>-->
-<!--</div>-->
 
 <script src="/static/js/jquery.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="/static/js/notiflix-3.2.6.min.js"></script>
+<script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
 <script>
     $(function () {
+        NProgress.start();
         axios.get('/api?action=docs').then(function (response) {
             let data = response.data;
             if (data.status !== 200) {
+                NProgress.done();
                 Notiflix.Notify.failure(data.msg);
             } else {
                 let html = '';
@@ -77,6 +60,7 @@
                     html += '</div>';
                 });
                 document.getElementById('app').innerHTML = html;
+                NProgress.done();
             }
         });
     });
