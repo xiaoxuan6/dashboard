@@ -44,22 +44,32 @@ var (
     }
 
     Other = map[string]string{
-        "Swoole":             "https://wiki.swoole.com/#/environment?id=安装准备",
-        "Elasticsearch":      "https://www.elastic.co/guide/cn/elasticsearch/php/current/_index_management_operations.html",
-        "Elasticsearch 中文文档": "https://doc.codingdict.com/elasticsearch/74",
-        "RabbitMQ 中文文档－PHP版": "https://rabbitmq.shujuwajue.com/ying-yong-jiao-cheng/php-ban",
-        "pre-commit":         "https://pre-commit.com/",
-        "gRPC":               "https://grpc.io/docs/languages/",
-        "Tampermonkey - 篡改猴": "https://www.tampermonkey.net/documentation.php?locale=zh",
-        "Greasy Fork - 油猴":   "https://greasyfork.org/zh-CN/help/meta-keys",
-        "Caddy":              "https://caddyserver.com/docs/",
-        "Caddy - 中文文档":       "https://dengxiaolong.com/caddy/zh/",
-        "Makefile":           "https://www.zhaixue.cc/makefile/makefile-intro.html",
-        "Vercel":             "https://vercel.com/docs/projects/project-configuration#routes",
+        "Swoole":               "https://wiki.swoole.com/#/environment?id=安装准备",
+        "Elasticsearch":        "https://www.elastic.co/guide/cn/elasticsearch/php/current/_index_management_operations.html",
+        "Elasticsearch 中文文档":   "https://doc.codingdict.com/elasticsearch/74",
+        "RabbitMQ 中文文档－PHP版":   "https://rabbitmq.shujuwajue.com/ying-yong-jiao-cheng/php-ban",
+        "pre-commit":           "https://pre-commit.com/",
+        "gRPC":                 "https://grpc.io/docs/languages/",
+        "Tampermonkey - 篡改猴":   "https://www.tampermonkey.net/documentation.php?locale=zh",
+        "Greasy Fork - 油猴":     "https://greasyfork.org/zh-CN/help/meta-keys",
+        "Tampermonkey油猴脚本中文文档": "https://www.itblogcn.com/article/2233.html",
+        "Caddy":                "https://caddyserver.com/docs/",
+        "Caddy - 中文文档":         "https://dengxiaolong.com/caddy/zh/",
+        "Makefile":             "https://www.zhaixue.cc/makefile/makefile-intro.html",
+        "Vercel":               "https://vercel.com/docs/projects/project-configuration#routes",
+    }
+
+    Html = map[string]string{
+        "Typescript":   "https://wangdoc.com/typescript",
+        "Axios - 中文文档": "http://axios-js.com/zh-cn/docs/index.html",
+        "Axios":        "https://axios-http.com/zh/docs/intro",
+        "Notiflix":     "https://notiflix.github.io/notify",
+        "NProgress":    "https://github.com/rstacruz/nprogress",
     }
 
     Docs = map[string]map[string]string{
         "PHP":    PHP,
+        "前端":     Html,
         "Go":     GO,
         "Python": Python,
         "Other":  Other,
