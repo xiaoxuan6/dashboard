@@ -57,6 +57,7 @@ var (
         "Caddy - 中文文档":         "https://dengxiaolong.com/caddy/zh/",
         "Makefile":             "https://www.zhaixue.cc/makefile/makefile-intro.html",
         "Vercel":               "https://vercel.com/docs/projects/project-configuration#routes",
+        "MkDocs":                "https://www.mkdocs.org/",
     }
 
     Html = map[string]string{
