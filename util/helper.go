@@ -1,7 +1,9 @@
 package util
 
 import (
+    "github.com/gin-gonic/gin"
     "math/rand"
+    "net/http"
     "strconv"
     "strings"
     "time"
@@ -19,4 +21,24 @@ func Random(num int, incr int) string {
     randomNum := rand.Intn(num) + incr
 
     return strconv.Itoa(randomNum)
+}
+
+func Success(ctx *gin.Context) {
+    SuccessWithData(ctx, "")
+}
+
+func SuccessWithData(ctx *gin.Context, data interface{}) {
+    ctx.JSON(http.StatusOK, gin.H{
+        "status": http.StatusOK,
+        "data":   data,
+        "msg":    "ok",
+    })
+}
+
+func Fail(ctx *gin.Context, msg string) {
+    ctx.JSON(http.StatusOK, gin.H{
+        "status": http.StatusBadRequest,
+        "data":   "",
+        "msg":    msg,
+    })
 }

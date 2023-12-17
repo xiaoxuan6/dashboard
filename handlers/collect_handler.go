@@ -2,13 +2,11 @@ package handlers
 
 import (
     "bytes"
-    "dashboard/common"
     "dashboard/util"
     "fmt"
     "github.com/OwO-Network/gdeeplx"
     "github.com/abadojack/whatlanggo"
     "github.com/gin-gonic/gin"
-    "github.com/samber/lo"
     "github.com/sirupsen/logrus"
     "github.com/tidwall/gjson"
     db "github.com/xiaoxuan6/go-package-db"
@@ -30,11 +28,7 @@ func (c collectHandler) Put(ctx *gin.Context) {
     b, _ := ioutil.ReadAll(ctx.Request.Body)
     decodedString, err := url.QueryUnescape(string(b))
     if err != nil {
-        ctx.JSON(http.StatusOK, gin.H{
-            "status": http.StatusBadRequest,
-            "data":   "",
-            "msg":    err.Error(),
-        })
+        util.Fail(ctx, err.Error())
         return
     }
 
@@ -45,56 +39,19 @@ func (c collectHandler) Put(ctx *gin.Context) {
     description := values.Get("description")
     language := values.Get("language")
 
-    if auth == "" || uri == "" {
-        ctx.JSON(http.StatusOK, gin.H{
-            "status": 400,
-            "data":   "",
-            "msg":    "auth or url not empty",
-        })
+    ok, msg := checkParams(auth, uri)
+    if !ok {
+        util.Fail(ctx, msg)
         return
     }
 
-    if auth != os.Getenv("GITHUB_OWNER") {
-        ctx.JSON(http.StatusOK, gin.H{
-            "status": 400,
-            "data":   "",
-            "msg":    "auth error",
-        })
-        return
-    }
-
-    u, _ := url.Parse(uri)
-    if u.Host != "github.com" {
-        ctx.JSON(http.StatusOK, gin.H{
-            "status": 400,
-            "data":   "",
-            "msg":    "url error",
-        })
-        return
-    }
-
-    db.Init(
-        os.Getenv("DB_HOST"),
-        os.Getenv("DB_PORT"),
-        os.Getenv("DB_USER"),
-        os.Getenv("DB_PASSWORD"),
-        os.Getenv("DB_NAME"),
-    )
-    defer db.Close()
-    db.AutoMigrate()
-
-    uri = strings.ReplaceAll(uri, "https://", "")
-    if db.DB.Where("url = ?", uri).First(&db.Collect{}).RowsAffected > 0 {
-        ctx.JSON(http.StatusOK, gin.H{
-            "status": 400,
-            "data":   "",
-            "msg":    "url exists",
-        })
+    if isExists(uri) {
+        util.Fail(ctx, "url exists")
         return
     }
 
     description = descriptionDo(strings.TrimSpace(description))
-    language = languageDo(uri, strings.TrimSpace(language), description)
+    language = languageDo(uri, strings.TrimSpace(language))
 
     var body bytes.Buffer
     body.WriteString(fmt.Sprintf(`{"event_type": "push", "client_payload": {"url": "%s", "description":"%s", "demo_url":"", "language": "%s"}}`, uri, description, language))
@@ -107,19 +64,43 @@ func (c collectHandler) Put(ctx *gin.Context) {
     res, _ := http.DefaultClient.Do(r)
     if res.StatusCode != 204 {
         logrus.Error("dispatch error", body.String())
-        ctx.JSON(http.StatusOK, gin.H{
-            "status": 400,
-            "data":   "",
-            "msg":    "dispatch error",
-        })
+        util.Fail(ctx, "dispatch error")
         return
     }
 
-    ctx.JSON(http.StatusOK, gin.H{
-        "status": http.StatusOK,
-        "data":   "",
-        "msg":    "ok",
-    })
+    util.Success(ctx)
+}
+
+func checkParams(auth, uri string) (bool, string) {
+    if auth == "" || uri == "" {
+        return false, "auth or url not empty"
+    }
+
+    if auth != os.Getenv("GITHUB_OWNER") {
+        return false, "auth error"
+    }
+
+    u, _ := url.Parse(uri)
+    if u.Host != "github.com" {
+        return false, "url error"
+    }
+
+    return true, ""
+}
+
+func isExists(uri string) bool {
+    db.Init(
+        os.Getenv("DB_HOST"),
+        os.Getenv("DB_PORT"),
+        os.Getenv("DB_USER"),
+        os.Getenv("DB_PASSWORD"),
+        os.Getenv("DB_NAME"),
+    )
+    defer db.Close()
+    db.AutoMigrate()
+
+    uri = strings.ReplaceAll(uri, "https://", "")
+    return db.DB.Where("url = ?", uri).First(&db.Collect{}).RowsAffected > 0
 }
 
 func descriptionDo(description string) string {
@@ -140,7 +121,7 @@ func descriptionDo(description string) string {
     return description
 }
 
-func languageDo(uri, language, description string) string {
+func languageDo(uri, language string) string {
     if len(language) > 10 {
         language = ""
     }
@@ -153,34 +134,14 @@ func languageDo(uri, language, description string) string {
     u.Path = strings.TrimPrefix(u.Path, "/")
     paths := strings.Split(u.Path, "/")
 
-    fn := func() string {
-        if lo.ContainsBy(common.GoLanguage, util.Contains(description)) {
-            return "Go"
-        } else if lo.ContainsBy(common.PhpLanguage, util.Contains(description)) {
-            return "PHP"
-        } else {
-            return "Other"
-        }
-    }
-
-    // 未授权每小时60次，授权每小时5000次
-    res, err := http.Get(fmt.Sprintf("https://api.github.com/repos/%s/%s", paths[0], paths[1]))
-    defer res.Body.Close()
-
+    res, err := util.Get(fmt.Sprintf("https://api.github.com/repos/%s/%s", paths[0], paths[1]))
     if err != nil {
-        logrus.Error("get language error", err.Error()+" "+uri)
-        return fn()
+        return "Other"
     }
 
-    b, err := ioutil.ReadAll(res.Body)
-    if err != nil {
-        logrus.Error("get language error", err.Error()+" "+uri)
-        return fn()
-    }
-
-    language = gjson.Get(string(b), "language").String()
+    language = gjson.Get(res, "language").String()
     if len(language) < 1 {
-        return fn()
+        return "Other"
     }
 
     return language

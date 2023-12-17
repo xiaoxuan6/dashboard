@@ -1,6 +1,7 @@
 package handlers
 
 import (
+    "dashboard/util"
     _ "embed"
     "encoding/json"
     "github.com/gin-gonic/gin"
@@ -30,11 +31,7 @@ func (d docsHandler) Index(c *gin.Context) {
     var cs Config
     _ = json.Unmarshal(config, &cs)
 
-    c.JSON(http.StatusOK, gin.H{
-        "status": 200,
-        "data":   cs,
-        "msg":    "ok",
-    })
+    util.SuccessWithData(c, cs)
 }
 
 type (
@@ -85,9 +82,5 @@ func (d docsHandler) Show(c *gin.Context) {
         result = docs.Docs.RandomImg
     }
 
-    c.JSON(http.StatusOK, gin.H{
-        "status": http.StatusOK,
-        "data":   result,
-        "msg":    "ok",
-    })
+    util.SuccessWithData(c, result)
 }

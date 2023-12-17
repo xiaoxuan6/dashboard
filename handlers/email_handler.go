@@ -1,13 +1,13 @@
 package handlers
 
 import (
+    "dashboard/util"
     "fmt"
     emailverifier "github.com/AfterShip/email-verifier"
     "github.com/gin-gonic/gin"
     validation "github.com/go-ozzo/ozzo-validation/v4"
     "github.com/go-ozzo/ozzo-validation/v4/is"
     "io/ioutil"
-    "net/http"
     "net/url"
 )
 
@@ -21,12 +21,7 @@ func (e emailHandler) Check(c *gin.Context) {
 
     decodedString, err := url.QueryUnescape(string(b))
     if err != nil {
-        c.JSON(http.StatusOK, gin.H{
-            "status": http.StatusBadRequest,
-            "data":   "",
-            "msg":    fmt.Sprintf("url decode error: %s", err.Error()),
-        })
-        return
+        util.Fail(c, fmt.Sprintf("url decode error: %s", err.Error()))
     }
 
     values, _ := url.ParseQuery(decodedString)
@@ -38,12 +33,7 @@ func (e emailHandler) Check(c *gin.Context) {
         is.Email,
     )
     if err != nil {
-        c.JSON(http.StatusOK, gin.H{
-            "status": http.StatusBadRequest,
-            "data":   "",
-            "msg":    err.Error(),
-        })
-        return
+        util.Fail(c, err.Error())
     }
 
     var verifier = emailverifier.
@@ -51,17 +41,8 @@ func (e emailHandler) Check(c *gin.Context) {
         EnableAutoUpdateDisposable()
 
     if verifier.IsDisposable(email) {
-        c.JSON(http.StatusNotFound, gin.H{
-            "status": http.StatusNotFound,
-            "data":   "",
-            "msg":    "disposable email",
-        })
-        return
+        util.Fail(c, "disposable email")
     }
 
-    c.JSON(http.StatusOK, gin.H{
-        "status": http.StatusOK,
-        "data":   "",
-        "msg":    "ok",
-    })
+    util.Success(c)
 }

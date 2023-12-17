@@ -2,10 +2,10 @@ package handlers
 
 import (
     "dashboard/pkg/dirtryfilter"
+    "dashboard/util"
     "github.com/gin-gonic/gin"
     validation "github.com/go-ozzo/ozzo-validation/v4"
     "io/ioutil"
-    "net/http"
     "net/url"
 )
 
@@ -19,11 +19,7 @@ func (d dirtryfilterHandler) Filter(c *gin.Context) {
 
     decodedString, err := url.QueryUnescape(string(b))
     if err != nil {
-        c.JSON(http.StatusOK, gin.H{
-            "status": http.StatusBadRequest,
-            "data":   "",
-            "msg":    err.Error(),
-        })
+        util.Fail(c, err.Error())
         return
     }
 
@@ -31,18 +27,10 @@ func (d dirtryfilterHandler) Filter(c *gin.Context) {
     keyword := values.Get("keyword")
     err = validation.Validate(keyword, validation.Required.Error("keyword not empty"))
     if err != nil {
-        c.JSON(http.StatusOK, gin.H{
-            "status": http.StatusBadRequest,
-            "data":   "",
-            "msg":    err.Error(),
-        })
+        util.Fail(c, err.Error())
         return
     }
 
     result := dirtryfilter.Filter(keyword)
-    c.JSON(http.StatusOK, gin.H{
-        "status": http.StatusOK,
-        "data":   result,
-        "msg":    "ok",
-    })
+    util.SuccessWithData(c, result)
 }
