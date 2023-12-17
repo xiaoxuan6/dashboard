@@ -5,7 +5,6 @@ import (
     _ "embed"
     "encoding/json"
     "github.com/gin-gonic/gin"
-    "net/http"
 )
 
 //go:embed config.json
