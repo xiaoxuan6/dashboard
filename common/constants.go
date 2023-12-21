@@ -58,6 +58,7 @@ var (
         "Makefile":             "https://www.zhaixue.cc/makefile/makefile-intro.html",
         "Vercel":               "https://vercel.com/docs/projects/project-configuration#routes",
         "MkDocs":                "https://www.mkdocs.org/",
+        "jq":                    "https://jqlang.github.io/jq",
     }
 
     Html = map[string]string{
