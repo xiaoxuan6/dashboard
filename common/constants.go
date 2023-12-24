@@ -1,12 +1,8 @@
 package common
 
-const HOLIDAY = "https://timor.tech/api/holiday/tts/next"
-const HOLIDAY_INFO = "http://timor.tech/api/holiday/info/%s"
-
 const (
-    CollectExpiration = 30 // 分钟
-    GoTags            = "go-package"
-    PackageUrl        = "https://ghproxy.com/https://github.com/xiaoxuan6/go-package-example/blob/main/README.md"
+    GoTags     = "go-package"
+    PackageUrl = "https://ghproxy.com/https://github.com/xiaoxuan6/go-package-example/blob/main/README.md"
 
     ImageUrl     = "https://api.airandomimage.top/api/open/picture?current=%s"
     BingUrl      = "http://cn.bing.com"
@@ -14,11 +10,7 @@ const (
 )
 
 var (
-    GoLanguage  = []string{"Go", "go", "Golang", "golang"}
-    PhpLanguage = []string{"PHP", "php"}
-
     Communes = []string{"https://www.v2ex.com/index.xml", "https://learnku.com/feed"}
-    TAGS     = []string{"README", "action", "api", "chat", "docker", "dockerfile", "email", "git", "go", "heiliao", "js", "linux", "logo", "makefile", "ocr", "pic", "send", "tool", "vip", GoTags}
 
     // PHP docs
     PHP = map[string]string{
@@ -57,8 +49,8 @@ var (
         "Caddy - 中文文档":         "https://dengxiaolong.com/caddy/zh/",
         "Makefile":             "https://www.zhaixue.cc/makefile/makefile-intro.html",
         "Vercel":               "https://vercel.com/docs/projects/project-configuration#routes",
-        "MkDocs":                "https://www.mkdocs.org/",
-        "jq":                    "https://jqlang.github.io/jq",
+        "MkDocs":               "https://www.mkdocs.org/",
+        "jq":                   "https://jqlang.github.io/jq",
     }
 
     Html = map[string]string{
