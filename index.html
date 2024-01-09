@@ -1,22 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>Website Aggregator</title>
+    <style>
+        .container {
+            display: flex;
+        }
 
-    <title>xiaoxuan6's 导航栏</title>
-    <link rel="icon" href="https://fav.farm/🚜"/>
-    <meta name="description" content='xiaoxuan6‘s 的收藏导航栏'>
-    <meta name="anthor" content="xiaoxuan6">
-    <link rel="stylesheet" href="static/css/notiflix-3.2.6.min.css">
-    <link rel="stylesheet" href="static/css/index.css" type="text/css">
+        .website {
+            display: inline-block;
+            width: 200px;
+            height: 50px;
+            margin: 5px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            padding: 10px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .website a {
+            color: black; /* 初始文本颜色 */
+            text-decoration: none; /* 移除链接的下划线 */
+        }
+
+        .website:hover {
+            background-color: darkgrey; /* 悬停时文本颜色 */
+        }
+
+        .website:hover a {
+            color: white;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(200deg, #fff, #dfe9f3);
+        }
+    </style>
 </head>
-
 <body>
-
-<ul id="content">
-</ul>
+<h1 style="width: 100%; text-align: center;">xiaoxuan6's dashboard</h1>
+<div id="container"></div>
 
 <!--<script src="http://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>-->
 <script src="static/js/jquery.min.js"></script>
@@ -25,5 +52,4 @@
 <script src="static/js/base.js"></script>
 <script src="static/js/index.js"></script>
 </body>
-
 </html>

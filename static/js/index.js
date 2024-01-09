@@ -17,20 +17,21 @@ function init() {
 }
 
 function append(item) {
-    document.getElementById('content').innerHTML = '';
+    const container = document.getElementById("container");
+
+    let innerHtml;
     for (let i = 0; i < item.length; i++) {
-        const li = document.createElement('li');
-        let innerHtml = ""
-        innerHtml = "<div>" + item[i].title + "</div>";
 
         if (isURL(item[i].url)) {
-            innerHtml = innerHtml + "<div><a href=\"" + item[i].url + "\" style='color: white' target=\"_blank\">" + item[i]["title"] + "</a></div>"
+            innerHtml = "<a href=\"" + item[i].url + "\" target=\"_blank\">" + item[i]["title"] + "</a>"
         } else {
-            innerHtml = innerHtml + "<div><a href=\"" + item[i].url + "\" style='color: white'>" + item[i]["title"] + "</a></div>"
+            innerHtml = "<a href=\"" + item[i].url + "\">" + item[i]["title"] + "</a>"
         }
 
-        li.innerHTML = innerHtml;
-        document.getElementById('content').appendChild(li);
+        const websiteElement = document.createElement("div");
+        websiteElement.className = "website";
+        websiteElement.innerHTML = innerHtml;
+        container.appendChild(websiteElement);
     }
 }
 
