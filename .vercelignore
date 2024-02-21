@@ -1,8 +1,8 @@
 .github
-.gitignore
+tests/
 .editorconfig
+.gitignore
 LICENSE
+main.go
 Makefile
 README.md
-main.go
-tests/
