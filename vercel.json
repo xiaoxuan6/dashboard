@@ -58,11 +58,5 @@
         "MAIL_PORT": "587",
         "MAIL_TO": "1527736751@qq.com",
         "MAIL_SUBJECT": "Github Trending"
-    },
-    "crons": [
-        {
-            "path": "/api/trending.go",
-            "schedule": "0 23 * * *"
-        }
-    ]
+    }
 }
