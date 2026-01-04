@@ -1,6 +1,6 @@
 module dashboard
 
-go 1.18
+go 1.24
 
 require (
 	github.com/AfterShip/email-verifier v1.3.3
@@ -10,7 +10,7 @@ require (
 	github.com/antlinker/go-dirtyfilter v1.2.0
 	github.com/avast/retry-go v2.7.0+incompatible
 	github.com/basgys/goxml2json v1.1.0
-	github.com/blevesearch/bleve/v2 v2.3.10
+	github.com/blevesearch/bleve/v2 v2.4.5-0.20251216145535-19bf4669d181
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible
@@ -18,29 +18,30 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	github.com/mmcdole/gofeed v1.2.1
-	github.com/redis/go-redis/v9 v9.2.1
+	github.com/redis/go-redis/v9 v9.7.3
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.8.4
 	github.com/tidwall/gjson v1.16.0
 	github.com/xiaoxuan6/go-package-db v0.0.0-20231107110144-d35333cccd16
-	golang.org/x/oauth2 v0.12.0
+	golang.org/x/oauth2 v0.27.0
 )
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.1 // indirect
-	github.com/RoaringBitmap/roaring v1.2.3 // indirect
+	github.com/RoaringBitmap/roaring v1.9.3 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/antlinker/go-cmap v0.0.0-20160407022646-0c5e57012e96 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20200108200545-475eaeb16496 // indirect
 	github.com/bitly/go-simplejson v0.5.1 // indirect
-	github.com/bits-and-blooms/bitset v1.2.0 // indirect
-	github.com/blevesearch/bleve_index_api v1.0.6 // indirect
-	github.com/blevesearch/geo v0.1.18 // indirect
+	github.com/bits-and-blooms/bitset v1.22.0 // indirect
+	github.com/blevesearch/bleve_index_api v1.1.13-0.20250408143424-7650bf7414fb // indirect
+	github.com/blevesearch/geo v0.1.20 // indirect
+	github.com/blevesearch/go-faiss v1.0.25 // indirect
 	github.com/blevesearch/go-porterstemmer v1.0.3 // indirect
 	github.com/blevesearch/gtreap v0.1.1 // indirect
 	github.com/blevesearch/mmap-go v1.0.4 // indirect
-	github.com/blevesearch/scorch_segment_api/v2 v2.1.6 // indirect
+	github.com/blevesearch/scorch_segment_api/v2 v2.2.17-0.20250408144238-c77c8b053a92 // indirect
 	github.com/blevesearch/segment v0.9.1 // indirect
 	github.com/blevesearch/snowballstem v0.9.0 // indirect
 	github.com/blevesearch/upsidedown_store_api v1.0.2 // indirect
@@ -49,7 +50,8 @@ require (
 	github.com/blevesearch/zapx/v12 v12.3.10 // indirect
 	github.com/blevesearch/zapx/v13 v13.3.10 // indirect
 	github.com/blevesearch/zapx/v14 v14.3.10 // indirect
-	github.com/blevesearch/zapx/v15 v15.3.13 // indirect
+	github.com/blevesearch/zapx/v15 v15.3.16 // indirect
+	github.com/blevesearch/zapx/v16 v16.1.9-0.20251215174229-a406f70c703b // indirect
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
